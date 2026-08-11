@@ -32,7 +32,15 @@ Everything below comes from one **actual run of the evaluation path on a synthet
 
 **The proxy score, saying what it cannot see** - only F and C are computed; the clinician-only subscales report NOT_COMPUTABLE and the upper bound imputes at ceiling:
 
-![MOS-R proxy summary chart for the synthetic run](examples/example-mosr-summary.png)
+| Subscale | Points | Max | Status |
+|---|---:|---:|---|
+| F (Fidgety movements) | 12 | 12 | computed (partial) |
+| P (Observed movement patterns) | - | 4 | **NOT_COMPUTABLE** |
+| R (Age-adequate movement repertoire) | - | 4 | **NOT_COMPUTABLE** |
+| Po (Observed postural patterns) | - | 4 | **NOT_COMPUTABLE** |
+| C (Movement character) | 4 | 4 | computed (partial) |
+
+Computable proxy 16/16 against a ceiling-imputed upper bound of 28/28: the clinician-only rows impute at maximum, never at middle values, because middle values would fabricate pathology. The [example report](examples/example-mosr-report.md) carries the full table with per-subscale reasoning and the verbatim interpretation guardrail.
 
 ## Why I built it
 
