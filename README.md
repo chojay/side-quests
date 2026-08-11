@@ -1,0 +1,93 @@
+# Side Quests
+
+Things I build outside work. By day I am a semiconductor process and materials engineer; evenings and weekends produce what's in this repo: thermodynamic screening on open materials data, local-first AI tooling, parametric CAD written as Python, medical-imaging pipelines, and an espresso machine that files telemetry reports.
+
+Everything here shares three habits:
+
+1. **Code over artifacts.** Parts, pipelines, and reports are all regenerable from scripts. No orphaned binaries; no personal data ships with this repo, ever.
+2. **Validation as a first-class step.** Watertight checks and containment truth tables for printed parts, synthetic-data test suites for pipelines, adversarial review passes for research documents.
+3. **Calibrated AI-assist notes.** All of this was built with Claude in the loop. Each project documents concretely what AI acceleration bought and where it confidently failed, because both halves are the interesting part.
+
+## Map
+
+```mermaid
+flowchart LR
+    SQ((side-quests)) --> CM["computational-materials"]
+    CM --- CMd(["gate-dielectric screening · 18 etch gases at 0 K vs 300 K · a caught API data bug"])
+    SQ --> AI["ai-tooling"]
+    AI --- AId(["Zotero 7 plugin · on-device BM25 + embeddings · RAG to the Claude API"])
+    SQ --> SK["claude-skills"]
+    SK --- SKd(["9 working skills · CAD, figures, arXiv PDFs · retrieval, research, transcripts"])
+    SQ --> PR["3d-printing"]
+    PR --- PRd(["14 parametric builds · 2 design playbooks · everything is a program"])
+    SQ --> HW["hardware-tools"]
+    HW --- HWd(["NIIMBOT BLE batch printing · firmware-dialect detection · dry-run byte tracing"])
+    SQ --> MI["medical-imaging"]
+    MI --- MId(["GMA video pipeline · DICOM MRI toolkit · honest about limits"])
+    SQ --> ES["espresso-gaggiuino"]
+    ES --- ESd(["639-shot telemetry corpus · drift detection · diagnosis-style troubleshooting"])
+```
+
+| Section | What's inside |
+|---|---|
+| [computational-materials/](computational-materials/) | Materials Project interface-reaction screening: gate-dielectric stability, an 18-gas etch-chemistry study at 0 K vs 300 K, and a caught-and-fixed API data bug |
+| [ai-tooling/](ai-tooling/) | A Zotero 7 plugin doing fully on-device retrieval (BM25 + ONNX embeddings, rank-fused) with only winning passages sent to the Claude API |
+| [claude-skills/](claude-skills/) | Nine working Claude Code skills: parametric CAD, academic figures, arXiv PDFs, hybrid retrieval, research orchestration, transcript tooling |
+| [3d-printing/](3d-printing/) | Fourteen parametric builds plus two design playbooks; every part is a Python or OpenSCAD program |
+| [hardware-tools/](hardware-tools/) | Batch label printing for a phone-app-only NIIMBOT printer: reverse-engineered BLE protocol, firmware-dialect detection, dry-run byte tracing |
+| [medical-imaging/](medical-imaging/) | An infant-movement video pipeline (SAM 3 on Apple Silicon) and a DICOM MRI toolkit, both de-identified, code-only, honest about limits |
+| [espresso-gaggiuino/](espresso-gaggiuino/) | An open-source machine mod run as a data project: 639-shot telemetry corpus, drift detection, troubleshooting as differential diagnosis |
+
+## Highlights
+
+<table>
+<tr>
+<td align="center" width="25%"><a href="3d-printing/projects/kumiko-vent-covers/"><img src="docs/gallery/kumiko.png" alt="Kumiko asanoha lattice vent cover, code-generated"></a><br><sub><b>Kumiko lattice, from code</b><br>bed-split with real joinery</sub></td>
+<td align="center" width="25%"><a href="medical-imaging/dicom-mri-toolkit/"><img src="docs/gallery/mri.png" alt="Three-plane MRI slices of the public MNI152 template with a basal ganglia annotation"></a><br><sub><b>MRI, annotated in code</b><br>public-template example</sub></td>
+<td align="center" width="25%"><a href="medical-imaging/gma-video-pipeline/"><img src="docs/gallery/gma.png" alt="Supine-validity timeline with the excluded rolling segment shaded red"></a><br><sub><b>Catching a roll mid-recording</b><br>synthetic-run validity mask</sub></td>
+<td align="center" width="25%"><a href="computational-materials/mp-interface-reactions/"><img src="docs/gallery/materials.png" alt="Si and Ta2O5 interface reaction energy with the suggested reaction starred"></a><br><sub><b>Ta2O5 decomposing on silicon</b><br>0 K interface screening, open data</sub></td>
+</tr>
+</table>
+
+## The projects
+
+### [Computational Materials](computational-materials/)
+
+A [Materials Project interface-reaction tool](computational-materials/mp-interface-reactions/) that walks pseudo-binary mixing lines for reaction-energy kinks, MP-website style. The demo reproduces the classic gate-dielectric screening from open data: Ta2O5 decomposes against silicon into silicides + SiO2 (why it lost the high-k race) while HfO2 and Si3N4 sit at exactly 0.00 eV/atom (why they get to touch silicon). The companion study runs silicon against 18 fab gases - Bosch etch, chamber cleans, MEMS release - at 0 K and at 300 K via a SISSO-Gibbs mode, measuring exactly when the 0 K ranking stops being trustworthy and flagging where the 300 K mode itself deserves skepticism. Also documents a silently changed API default (mixed GGA/R2SCAN hull) that was corrupting results until a literature cross-check caught it.
+
+### [AI Tooling](ai-tooling/)
+
+A [Zotero 7 plugin](ai-tooling/zotero-claude-assistant/) that answers questions about your own paper library from inside Zotero: a section-aware BM25 index and a quantized ONNX embedding model (bge-small-en-v1.5, running in a ChromeWorker via Transformers.js) retrieve on-device, Reciprocal Rank Fusion merges the rankings, and only the winning passages go to the Claude API. Papers never leave the machine at index time; the network surface is one hostname. TypeScript, esbuild, CI that deliberately builds without the model weights to keep the degraded path tested. Has an [ARCHITECTURE.md](ai-tooling/zotero-claude-assistant/ARCHITECTURE.md) with dataflow diagrams.
+
+### [Claude Code Skills](claude-skills/)
+
+Nine of the skills that automate the rest of this repo, published as adaptable public copies: the parametric-CAD skill that built the 3d-printing section, hybrid Zotero retrieval, deep-research orchestration into Obsidian, YouTube transcript tooling, arXiv-style PDF generation, and a coupon tester whose guardrails (never purchase, never touch payment fields) are the interesting part. Skills with private local dependencies declare them honestly in marked adaptation notes.
+
+### [3D Printing as Code](3d-printing/)
+
+Every part is a Python or OpenSCAD program; every STL is reproducible by running a script. Fourteen curated builds from a workshop of about 30, printed on a Bambu Lab H2D: a six-version rice-bowl gravity dispenser, a child-safe nursery floor register whose safety constraint is an `assert`, a print-in-place sliding-damper register whose slider is collision-swept across its full travel, a kumiko-lattice vent cover split for the bed with real joinery, and a multi-start replacement thread nut bracketed by an overnight eight-ring test matrix. Start with the [parametric design gotchas playbook](3d-printing/playbooks/parametric-design-gotchas.md): cross-project design rules, each traceable to a printed mistake.
+
+### [Hardware Tools](hardware-tools/)
+
+[Batch label printing](hardware-tools/niimbot-labelmaker/) for the NIIMBOT D110, which ships with no computer software at all - phone app only, one label at a time. This CLI takes a text file and prints the whole stack over one BLE connection: weekly baby-food containers, a pantry reorganization, a spice rack. Under it sits a reverse-engineered protocol driver whose best story is in its GOTCHAS file: visually identical printers ship with different firmware dialects, and the `_M` variant returns byte-perfect success traces while printing blanks. Folder-licensed GPL-3.0 because one upstream protocol source is GPL - the one non-MIT corner of the repo, labeled as such.
+
+### [Medical Imaging](medical-imaging/)
+
+Two side quests built to understand clinical imaging from first principles instead of passively receiving it. Neither ships any real imaging or reports (each carries one explicitly labeled synthetic or public-template example), and neither is remotely a medical device.
+
+- **[GMA video pipeline](medical-imaging/gma-video-pipeline/)**: turns consumer phone video of an infant into segmentation masks (SAM 3 on Apple Silicon, via a five-patch MPS compatibility shim), pose keypoints, kinematic features from the published GMA computer-vision literature, and a deliberately honest proxy score that reports what it cannot see as NOT_COMPUTABLE rather than guessing.
+- **[DICOM MRI toolkit](medical-imaging/dicom-mri-toolkit/)**: from a hospital CD to an interactive 3D reconstruction: series matching by pulse parameters, longitudinal difference maps, spline-curvature candidate detection on ventricle walls, five-sequence cross-validation, and a self-contained clickable HTML report.
+
+Each has an `ARCHITECTURE.md` with system diagrams.
+
+### [Espresso: Gaggiuino Build Research](espresso-gaggiuino/)
+
+Replaced the controls of a Gaggia Classic Evo Pro with the open-source Gaggiuino controller (STM32 + ESP32, pressure/flow profiling, PID), then treated eight months of daily use as a data project: a 639-shot telemetry corpus pulled from the machine's HTTP API, a machine-drift analysis that isolated OPV spring fatigue from grinder and coffee variables, and troubleshooting docs structured as differential diagnoses with explicit priors. Safety claims were checked against the firmware source, not forum consensus.
+
+## How this was built
+
+Nearly everything here was pair-built with Claude Code. The per-project "AI-assisted build notes" sections are deliberately specific: the MPS shim and validation harnesses that AI made fast, and also the silently wrong jerk normalization, the alignment approach that was confidently wrong twice, the fillet that no-opped five versions, and the ten citation errors an adversarial review pass caught. The stable division of labor across every section: AI writes geometry, plumbing, and checks; the human owns physical judgment, spatial semantics, and looking at the picture.
+
+## License
+
+MIT for all code (see [LICENSE](LICENSE)), with one labeled exception: [hardware-tools/niimbot-labelmaker/](hardware-tools/niimbot-labelmaker/) is GPL-3.0 because part of its protocol knowledge derives from a GPL-3.0 upstream. Documentation and research notes may be quoted with attribution. One 3D printing project adapts a community concept and credits it in its README.
