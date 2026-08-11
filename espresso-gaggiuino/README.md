@@ -4,6 +4,8 @@ A hardware and software side quest. In December 2025 I replaced the controls of 
 
 This folder is that documentation, compiled December 2025 to July 2026: 36 docs, 8 pressure-curve charts, and pointers to five community profiles worth installing first.
 
+![Workflow: a Gaggia Classic Evo Pro's controls are replaced by the Gaggiuino STM32 + ESP32 controller, which serves every shot over a local HTTP API into a 639-shot telemetry corpus](assets/telemetry-workflow.png)
+
 ## What I actually did
 
 - **Installed the mod.** Documented the full process as a [15-phase installation checklist](machine/Gaggiuino-Installation-Guide-Gaggia-Classic-Evo-Pro.md): kit options, tools, mains wiring, the OPV spring swap, and calibration.
