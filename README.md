@@ -42,10 +42,10 @@ flowchart LR
 
 <table>
 <tr>
-<td align="center" width="25%"><a href="3d-printing/projects/kumiko-vent-covers/"><img src="docs/gallery/kumiko.png" alt="Kumiko asanoha lattice vent cover, code-generated"></a><br><sub><b>Kumiko lattice vent cover</b><br>parametric asanoha pattern, bed-split with real joinery</sub></td>
-<td align="center" width="25%"><a href="medical-imaging/dicom-mri-toolkit/"><img src="docs/gallery/mri-putamen.png" alt="Axial MRI slice of the public MNI152 template with the putamen circled and labeled"></a><br><sub><b>DICOM MRI toolkit</b><br>annotating anatomy in code, on the public MNI152 template</sub></td>
-<td align="center" width="25%"><a href="medical-imaging/gma-video-pipeline/"><img src="docs/gallery/gma-limb-screen.png" alt="Scatter plot of the synthetic example run: each keypoint (left/right wrist, elbow, knee, ankle, hip, shoulder) plotted by symmetry index vs movement variety, unflagged keypoints in blue, pipeline-flagged left hip and right shoulder in red"></a><br><sub><b>Infant-movement video pipeline</b><br>the per-keypoint screen from the synthetic example run: left/right symmetry vs movement variety, in-norm limbs in blue, flagged in red</sub></td>
-<td align="center" width="25%"><a href="computational-materials/mp-interface-reactions/"><img src="docs/gallery/materials-hull.png" alt="Ternary convex hull of the O-Si-Ta system: stable phases as red nodes joined by tie-lines, including Ta2O5, SiO2, and TaSi2"></a><br><sub><b>Gate-dielectric screening</b><br>the computed O-Si-Ta convex hull: tie-lines route Ta2O5 + Si downhill to silicides + SiO2</sub></td>
+<td align="center" valign="top" width="25%"><a href="3d-printing/projects/kumiko-vent-covers/"><img src="docs/gallery/kumiko.png" alt="Kumiko asanoha lattice vent cover, code-generated"></a><br><sub><b>Kumiko lattice vent cover</b><br>parametric asanoha pattern, bed-split with real joinery</sub></td>
+<td align="center" valign="top" width="25%"><a href="medical-imaging/dicom-mri-toolkit/"><img src="docs/gallery/mri-putamen.png" alt="Axial MRI slice of the public MNI152 template with the putamen circled and labeled"></a><br><sub><b>DICOM MRI toolkit</b><br>annotating anatomy in code, on the public MNI152 template</sub></td>
+<td align="center" valign="top" width="25%"><a href="medical-imaging/gma-video-pipeline/"><img src="docs/gallery/gma-limb-screen.png" alt="Scatter plot of the synthetic example run: each keypoint (left/right wrist, elbow, knee, ankle, hip, shoulder) plotted by symmetry index vs movement variety, unflagged keypoints in blue, pipeline-flagged left hip and right shoulder in red"></a><br><sub><b>Infant-movement video pipeline</b><br>per-keypoint symmetry screen: in-norm limbs blue, flagged red</sub></td>
+<td align="center" valign="top" width="25%"><a href="computational-materials/mp-interface-reactions/"><img src="docs/gallery/materials-hull.png" alt="Ternary convex hull of the O-Si-Ta system: stable phases as red nodes joined by tie-lines, including Ta2O5, SiO2, and TaSi2"></a><br><sub><b>Gate-dielectric screening</b><br>the O-Si-Ta convex hull that routes Ta2O5 + Si to silicides + SiO2</sub></td>
 </tr>
 </table>
 
@@ -82,7 +82,7 @@ Each has an `ARCHITECTURE.md` with system diagrams.
 
 ### [Espresso: Gaggiuino Build Research](espresso-gaggiuino/)
 
-Replaced the controls of a [Gaggia Classic Evo Pro](https://en.wikipedia.org/wiki/Gaggia_Classic) with the open-source [Gaggiuino](https://gaggiuino.github.io/) controller (STM32 + ESP32, pressure/flow profiling, PID), then treated eight months of daily use as a data project: a 639-shot telemetry corpus pulled from the machine's HTTP API, a machine-drift analysis that isolated OPV spring fatigue from grinder and coffee variables, and troubleshooting docs structured as differential diagnoses with explicit priors. Safety claims were checked against the firmware source, not forum consensus.
+Replaced the controls of a [Gaggia Classic Evo Pro](https://www.gaggia-na.com/products/gaggia-classic-pro) with the open-source [Gaggiuino](https://gaggiuino.github.io/) controller (STM32 + ESP32, pressure/flow profiling, PID), then treated eight months of daily use as a data project: a 639-shot telemetry corpus pulled from the machine's HTTP API, a machine-drift analysis that isolated OPV spring fatigue from grinder and coffee variables, and troubleshooting docs structured as differential diagnoses with explicit priors. Safety claims were checked against the firmware source, not forum consensus.
 
 ## How this was built
 
