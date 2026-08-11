@@ -43,9 +43,9 @@ flowchart LR
 <table>
 <tr>
 <td align="center" width="25%"><a href="3d-printing/projects/kumiko-vent-covers/"><img src="docs/gallery/kumiko.png" alt="Kumiko asanoha lattice vent cover, code-generated"></a><br><sub><b>Kumiko lattice vent cover</b><br>parametric asanoha pattern, bed-split with real joinery</sub></td>
-<td align="center" width="25%"><a href="medical-imaging/dicom-mri-toolkit/"><img src="docs/gallery/mri.png" alt="Axial MRI slice of the public MNI152 template with the putamen circled and labeled"></a><br><sub><b>DICOM MRI toolkit</b><br>annotating anatomy in code, on the public MNI152 template</sub></td>
-<td align="center" width="25%"><a href="medical-imaging/gma-video-pipeline/"><img src="docs/gallery/gma.png" alt="Validity timeline of a synthetic run: green usable segments, red excluded roll"></a><br><sub><b>Infant-movement video pipeline</b><br>error handling for phone-video movement screening: a mid-recording roll is detected and excluded</sub></td>
-<td align="center" width="25%"><a href="computational-materials/mp-interface-reactions/"><img src="docs/gallery/materials.png" alt="Reaction energy vs mixing fraction: Ta2O5 dives to -0.285 eV/atom against Si while HfO2 and Si3N4 stay at zero"></a><br><sub><b>Gate-dielectric screening</b><br>why HfO2 gets to touch silicon and Ta2O5 does not, from open Materials Project data</sub></td>
+<td align="center" width="25%"><a href="medical-imaging/dicom-mri-toolkit/"><img src="docs/gallery/mri-putamen.png" alt="Axial MRI slice of the public MNI152 template with the putamen circled and labeled"></a><br><sub><b>DICOM MRI toolkit</b><br>annotating anatomy in code, on the public MNI152 template</sub></td>
+<td align="center" width="25%"><a href="medical-imaging/gma-video-pipeline/"><img src="docs/gallery/gma-validity.png" alt="Dark stat card: 91% of the recording was usable, with a green validity timeline and the excluded roll segment in red"></a><br><sub><b>Infant-movement video pipeline</b><br>error handling for phone-video movement screening: a mid-recording roll is detected and excluded</sub></td>
+<td align="center" width="25%"><a href="computational-materials/mp-interface-reactions/"><img src="docs/gallery/gate-dielectric.png" alt="Dark chart card: HfO2 and Si3N4 hold at 0.000 while Ta2O5 dives to -0.285 eV/atom against silicon"></a><br><sub><b>Gate-dielectric screening</b><br>why HfO2 gets to touch silicon and Ta2O5 does not, from open Materials Project data</sub></td>
 </tr>
 </table>
 
