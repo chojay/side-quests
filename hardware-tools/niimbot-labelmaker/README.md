@@ -1,8 +1,8 @@
 # LabelMaker: batch printing for the NIIMBOT D110 over Bluetooth
 
-![Rendered 40x12mm label preview: Cabbage 06/13](previews/label_001.png)
+![Workflow: a text file on a Mac goes over one Bluetooth LE connection to the NIIMBOT D110, which prints the whole batch of labels back to back](workflow.png)
 
-NIIMBOT label printers ship with no macOS or PC software at all: the only supported path is the phone app, one label at a time, tapping out text on a phone keyboard. That is fine for one label and miserable for twenty. The itch here was recurring batch runs - a week of baby-food containers, a pantry reorganization, a spice rack - where you want to type a list once and have the printer emit the whole stack.
+NIIMBOT label printers ship with no macOS or PC software at all: the only supported path is the phone app, one label at a time, tapping out text on a phone keyboard. That is fine for one label and miserable for twenty. The itch here was the good-husband weekend chores that come in batches - a week of baby-food containers, a whole-pantry reorganization - where you want to type a list once and have the printer emit the whole stack.
 
 This is a small command-line tool that does exactly that from a Mac: feed it a text file (one label per line, `--5` for five copies), and it renders, previews, and prints the entire batch over a single Bluetooth LE connection.
 
@@ -45,3 +45,5 @@ macOS notes: grant your terminal Bluetooth permission on first scan (System Sett
 ## License and attribution
 
 The NIIMBOT protocol knowledge here stands on three reverse-engineering projects: [AndBondStyle/niimprint](https://github.com/AndBondStyle/niimprint) (MIT), [labbots/NiimPrintX](https://github.com/labbots/NiimPrintX) (GPL-3.0), and [MultiMote/niimblue](https://github.com/MultiMote/niimblue) (MIT), whose `D110MV4PrintTask` documented the `_M` firmware dialect. Because packet sequences were taken from a GPL-3.0 project, **this folder is licensed GPL-3.0** (see [LICENSE](LICENSE)), unlike the rest of the repository, which is MIT. That is the conservative reading; protocol constants alone are arguably uncopyrightable facts, but conservative is cheap here.
+
+Icon credits (workflow diagram): Prompt by HideMaru, Bluetooth by Viktor Vorobyev, Label Printer by Aidan Stonehouse - all from [Noun Project](https://thenounproject.com/) (CC BY 3.0). Label preview is real output from `./label preview`.
