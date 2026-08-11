@@ -12,23 +12,7 @@ Everything here shares three habits:
 
 ## Map
 
-```mermaid
-flowchart LR
-    SQ((side-quests)) --> CM["computational-materials"]
-    CM --- CMd(["gate-dielectric screening · 18 etch gases at 0 K vs 300 K · a caught API data bug"])
-    SQ --> AI["ai-tooling"]
-    AI --- AId(["Zotero 7 plugin · on-device BM25 + embeddings · RAG to the Claude API"])
-    SQ --> SK["claude-skills"]
-    SK --- SKd(["9 working skills · CAD, figures, arXiv PDFs · retrieval, research, transcripts"])
-    SQ --> PR["3d-printing"]
-    PR --- PRd(["17 parametric builds · 2 design playbooks · everything is a program"])
-    SQ --> HW["hardware-tools"]
-    HW --- HWd(["NIIMBOT BLE batch printing · firmware-dialect detection · dry-run byte tracing"])
-    SQ --> MI["medical-imaging"]
-    MI --- MId(["GMA video pipeline · DICOM MRI toolkit · honest about limits"])
-    SQ --> ES["espresso-gaggiuino"]
-    ES --- ESd(["639-shot telemetry corpus · drift detection · diagnosis-style troubleshooting"])
-```
+![Card map of the repo: a side-quests title card plus seven section cards - computational-materials, ai-tooling, claude-skills, 3d-printing, hardware-tools, medical-imaging, and espresso-gaggiuino - each with a bold section name and three one-line highlights of what's inside](docs/section-map.png)
 
 | Section | What's inside |
 |---|---|
@@ -50,10 +34,10 @@ flowchart LR
 <td align="center" valign="middle" width="25%"><a href="computational-materials/mp-interface-reactions/"><img src="docs/gallery/convex-hull-4x3.png" alt="Ternary convex hull of the O-Si-Ta system: stable phases as red nodes joined by tie-lines, including Ta2O5, SiO2, and TaSi2"></a></td>
 </tr>
 <tr>
-<td align="center" valign="top"><sub><b>Kumiko lattice vent cover</b><br>parametric asanoha pattern, bed-split with real joinery</sub></td>
-<td align="center" valign="top"><sub><b>DICOM MRI toolkit</b><br>annotating anatomy in code on .dcm series; shown: the public MNI152 template</sub></td>
-<td align="center" valign="top"><sub><b>Infant-movement video pipeline</b><br>per-keypoint symmetry screen: in-norm limbs blue, flagged red</sub></td>
-<td align="center" valign="top"><sub><b>Gate-dielectric screening</b><br>the O-Si-Ta convex hull that routes Ta2O5 + Si to silicides + SiO2</sub></td>
+<td align="center" valign="top"><sub><b>Kumiko lattice vent cover</b><br>parametric asanoha pattern<br>bed-split with real joinery</sub></td>
+<td align="center" valign="top"><sub><b>DICOM MRI toolkit</b><br>annotating anatomy in code<br>runs on .dcm series<br>shown: public MNI152 template</sub></td>
+<td align="center" valign="top"><sub><b>GMA video pipeline</b><br>per-keypoint symmetry screen<br>in-norm limbs blue, flagged red</sub></td>
+<td align="center" valign="top"><sub><b>Gate-dielectric screening</b><br>the O-Si-Ta convex hull:<br>Ta2O5 + Si -> silicides + SiO2</sub></td>
 </tr>
 </table>
 
