@@ -192,4 +192,4 @@ The honest summary: the AI made the ambitious version of this project feasible i
 
 ## License and intent
 
-Personal project by Jay Cho. Shared as a code and methods showcase, not as a tool for assessing infants. If you are worried about an infant's development, talk to a pediatrician, not a GitHub repo.
+Personal project, shared as a code and methods showcase, not as a tool for assessing infants. If you are worried about an infant's development, talk to a pediatrician, not a GitHub repo.

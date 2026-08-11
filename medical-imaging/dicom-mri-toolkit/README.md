@@ -2,7 +2,7 @@
 
 A personal toolkit for reading, comparing, and 3D-reconstructing brain MRI studies straight from a hospital imaging CD. Python, built on pydicom, nibabel, NumPy, SciPy, scikit-image, matplotlib, and Plotly.
 
-By Jay Cho. This folder contains no patient imaging, no DICOM files, and no generated reports. The one image here is an [explicitly labeled example](examples/example-annotated-slices.png) rendered on the public MNI152 reference template.
+This folder contains no patient imaging, no DICOM files, and no generated reports. The one image here is an [explicitly labeled example](examples/example-annotated-slices.png) rendered on the public MNI152 reference template.
 
 ## Why I built this
 
