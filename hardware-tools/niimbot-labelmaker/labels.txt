@@ -1,0 +1,20 @@
+# LabelMaker print list - one design per line.
+#   \n     = line break within a label
+#   --N    = print N copies (omit = 1).  e.g.  Cabbage --5   (x5 and "5 pcs" also work)
+# Preview:  ./label preview --file labels.txt
+# Print:    ./label print   --file labels.txt
+
+# --- Produce / pantry (item + date) ---
+Cabbage\n06/13 --5
+Apple\n06/13
+Bokchoy\n06/13
+RICE\n06/14
+OAT\n06/14
+
+# --- Storage / category labels ---
+Cooking Oils
+Cooking Ingredient\n(Korean)
+Spices
+Sharps (Knifes)
+Cooking\nIngredients
+Spice Rack

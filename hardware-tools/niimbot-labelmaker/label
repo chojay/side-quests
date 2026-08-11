@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+#
+# label - convenience wrapper around print_labels.py.
+#
+# Runs the CLI inside the dedicated `labelmaker` conda env WITHOUT needing
+# `conda activate` first, and works no matter which directory you call it from.
+#
+# Examples:
+#   ./label scan
+#   ./label info
+#   ./label test
+#   ./label preview --file labels.txt
+#   ./label print "Test 1" "Test 2"
+#   ./label print --file labels.txt --address <UUID>
+#
+# Optional: make it callable as `label` from anywhere with
+#   sudo ln -sf "$(pwd)/label" /usr/local/bin/label
+# (the symlink keeps resolving back to this folder for print_labels.py and labels.txt)
+
+set -euo pipefail
+
+# Directory this script lives in (handles spaces in the path).
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Find conda's base so we can use the env's python directly.
+CONDA_BASE="$(conda info --base 2>/dev/null || echo "$HOME/opt/anaconda3")"
+PYBIN="$CONDA_BASE/envs/labelmaker/bin/python"
+
+if [[ ! -x "$PYBIN" ]]; then
+  echo "ERROR: labelmaker env python not found at:" >&2
+  echo "  $PYBIN" >&2
+  echo "Create it with:" >&2
+  echo "  conda create -y -n labelmaker python=3.12" >&2
+  echo "  conda run -n labelmaker pip install -r \"$SCRIPT_DIR/requirements.txt\"" >&2
+  exit 1
+fi
+
+# Run print_labels.py from THIS folder so labels.txt etc. resolve, but pass all
+# arguments straight through. Quoted to survive the spaces in the path.
+exec "$PYBIN" "$SCRIPT_DIR/print_labels.py" "$@"
