@@ -516,6 +516,49 @@ def generate_markdown(results, ref_name, materials_list, temperature=None):
     return "\n".join(md)
 
 
+def _deoverlap_phase_labels(ax, fig, pad_px=4, max_iter=8):
+    """Nudge colliding phase labels apart and leave a leader back to the anchor.
+
+    PDPlotter drops every stable-phase label at its composition coordinate, so
+    phases that sit close together on an edge (Ta3Si vs Ta5Si3 on the Ta-Si
+    edge was the shipped example) overprint into an unreadable pile. This is a
+    post-pass over ax.texts: keep the first label of any colliding pair, push
+    the second one down-and-outward until its bounding box clears, and draw a
+    thin gray leader from the moved label back to its original anchor so the
+    association survives the move.
+    """
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    texts = [t for t in ax.texts if t.get_text().strip()]
+    anchors = {t: t.get_position() for t in texts}
+    inv = ax.transData.inverted()
+    for _ in range(max_iter):
+        moved = False
+        for i, t in enumerate(texts):
+            tb = t.get_window_extent(renderer)
+            for u in texts[:i]:
+                ub = u.get_window_extent(renderer)
+                if tb.overlaps(ub):
+                    # push t below u's box, plus padding
+                    dy_px = (tb.y1 - ub.y0) + pad_px
+                    x_disp, y_disp = ax.transData.transform(t.get_position())
+                    new_x, new_y = inv.transform((x_disp, y_disp - dy_px))
+                    t.set_position((new_x, new_y))
+                    moved = True
+                    fig.canvas.draw()
+                    renderer = fig.canvas.get_renderer()
+                    tb = t.get_window_extent(renderer)
+        if not moved:
+            break
+    for t in texts:
+        ax_, ay_ = anchors[t]
+        tx, ty = t.get_position()
+        if abs(tx - ax_) > 1e-9 or abs(ty - ay_) > 1e-9:
+            ax.annotate("", xy=(ax_, ay_), xytext=(tx, ty),
+                        arrowprops=dict(arrowstyle="-", color="0.45", lw=0.8),
+                        zorder=1)
+
+
 def plot_convex_hull(pd_obj, chemsys, save_path):
     """Plot the convex hull for a chemical system."""
     try:
@@ -525,6 +568,7 @@ def plot_convex_hull(pd_obj, chemsys, save_path):
         fig = ax.figure
         fig.set_size_inches(8, 6)
         ax.set_title(f"Convex Hull: {chemsys} System", fontsize=14, fontweight='bold')
+        _deoverlap_phase_labels(ax, fig)
         fig.savefig(save_path, dpi=150, bbox_inches='tight')
         plt.close(fig)
         print(f"  Saved convex hull: {save_path}")

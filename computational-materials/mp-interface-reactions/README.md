@@ -4,7 +4,7 @@
 
 A command-line tool that answers "what happens, thermodynamically, when material A touches material B?" using the open [Materials Project](https://next-gen.materialsproject.org/) database and pymatgen's `InterfacialReactivity`. Give it a reference material and a list of counterparties and it fetches every entry in each combined chemical system, applies MP2020 compatibility corrections, builds the phase diagram, walks the pseudo-binary mixing line for the reaction-energy kinks, and emits MP-website-style plots, convex hulls, and markdown reports per pair.
 
-By Jay Cho. Bring your own API key: the tool reads `MP_API_KEY` from the environment and refuses to run without it (keys are free).
+Bring your own API key: the tool reads `MP_API_KEY` from the environment and refuses to run without it (keys are free).
 
 ## The demo: why HfO2 won and Ta2O5 lost
 
@@ -42,7 +42,9 @@ The first foundry-chemistry runs of this export produced two anomalies: Si | HfO
 The per-pair pair of plots for Si | Ta2O5, as emitted by the tool:
 
 ![Si-Ta2O5 reaction energy vs mixing fraction with kinks annotated](Si_Ta2O5_interface_rxn.png)
-![Convex hull of the combined Si-Ta-O chemical system](Si_Ta2O5_convex_hull.png)
+![Convex hull of the combined Si-Ta-O chemical system](Si_Ta2O5_convex_hull_v2.png)
+
+**Figure gotcha - overlapping phase labels.** `PDPlotter` drops every stable-phase label at its composition coordinate, so phases that sit close together on an edge overprint into an unreadable pile - in this system, Ta3Si (25% Si) and Ta5Si3 (37.5% Si) collided on the Ta-Si edge. `plot_convex_hull` now runs a de-overlap post-pass (`_deoverlap_phase_labels`): colliding labels are staggered downward and a thin leader ties each moved label back to its composition point. The figure above carries the same stagger applied to the shipped render (regenerating from scratch needs a live `MP_API_KEY`).
 
 ## AI-assisted build notes
 
