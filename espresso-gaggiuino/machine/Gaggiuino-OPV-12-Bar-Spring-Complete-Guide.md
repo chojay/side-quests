@@ -217,7 +217,7 @@ An analog gauge per [Gaggia-OPV-Pressure-Gauge-Installation-Guide](Gaggia-OPV-Pr
 
 ## Confidence Assessment
 
-Overall confidence: **High (0.92)** - 47+ sources; unanimous consensus, zero dissenting opinions found.
+Overall confidence: **High** - 47+ sources; unanimous consensus, zero dissenting opinions found.
 
 | Finding | Confidence | Basis |
 |---|---|---|

@@ -705,7 +705,7 @@ After successfully completing the OPV mod, consider these complementary upgrades
 
 **Last Updated:** 2025-12-06
 **Version:** 1.0
-**Confidence Score:** 0.92 (High - strong community consensus, proven technique)
+**Confidence:** High (strong community consensus, proven technique)
 
 ---
 

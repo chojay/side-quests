@@ -6,7 +6,8 @@
 
 ## Methodology
 
-- Source: 639 valid shots pulled from the Gaggiuino `/api/shots/{id}` endpoint on 2026-06-03 (raw JSON archived locally).
+- Source: 650 shots pulled from the Gaggiuino `/api/shots/{id}` endpoint on 2026-06-03 (raw JSON archived locally); 11 arrived truncated (IDs below), leaving 639 valid.
+- Counting note (re-verified against the archived raw JSON, 2026-08-10): profile totals within the 639 valid shots are Londinium 256, Blooming espresso 261, IUIUIU Classic 112, Adaptive 8, Zer0 2. The 606-shot espresso set excludes 33 water/flush runs identified by end weight. Bucket Ns in the tables below count the shots for which the bucketed metric is computable, so they sum below the profile totals; the drift conclusions ride on bucket medians, not on exact exclusion membership.
 - Excluded: 33 water/flush tests (`maxP < 3 bar` or `endWeight = 0`).
 - Bucketed by **shot ID** (monotonic counter), not timestamp - many shots had `timestamp=0` from post-reboot NTP-unsynced state.
 - Compared only **within the same profile** (apples-to-apples). Beans/grind/dose varied but **time-to-pressure**, **pump flow during low-P**, **temp delta**, and **steady-state temp** are machine-dominant.
@@ -22,7 +23,7 @@
 
 ## Findings - by profile + shot-ID bucket
 
-### Londinium (256 real shots, dominant since shot ~270)
+### Londinium (256 shots on this profile, dominant since shot ~270)
 
 | Bucket | N | TT3bar (s, median) | flow_lowP (ml/s, median) | tempΔ | tempSS |
 |---|---:|---:|---:|---:|---:|
@@ -46,7 +47,7 @@ The "pump pushes more water but takes longer to build pressure" combination stro
 3. **Group gasket leak**: water escapes around the portafilter. Would also be visually obvious during shots.
 4. **Pump itself**: vibratory pumps degrade by losing peak flow, not by gaining flow. So the pump is **probably not** the cause (recent flow is higher, not lower).
 
-### Blooming espresso (251 real shots)
+### Blooming espresso (261 shots on this profile)
 
 | Bucket | N | TT3bar (s, median) | flow_lowP (ml/s, median) | tempΔ | tempSS |
 |---|---:|---:|---:|---:|---:|
@@ -59,7 +60,7 @@ The "pump pushes more water but takes longer to build pressure" combination stro
 
 **Reading**: Same pattern, weaker signal. `TT3bar` drifted from 8.0s (bucket 400-499) to 10.9s (bucket 600-649), but Blooming has a long zero-flow bloom phase that itself adds variability. Worth noting tempSS dropped 0.23C in the latest bucket.
 
-### IUIUIU Classic (108 real shots, dominant in early period)
+### IUIUIU Classic (112 shots on this profile, dominant in early period)
 
 | Bucket | N | TT3bar (s, median) | flow_lowP (ml/s, median) | tempΔ | tempSS |
 |---|---:|---:|---:|---:|---:|
