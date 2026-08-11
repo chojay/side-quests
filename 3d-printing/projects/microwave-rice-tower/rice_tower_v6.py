@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Hetbahn tower dispenser v6 - 8 bowls, bottom pull-out, max open area.
+"""Microwave rice tower dispenser v6 - 8 bowls, bottom pull-out, max open area.
 
 v5 with openings enlarged to cut filament ~20%: slots grow to 30 deg
 arc x 30mm tall (posts 6 deg / ~8mm, inter-row strips ~8.5mm), a slot
@@ -122,12 +122,12 @@ holder = tower.part.solid()
 if __name__ == "__main__":
     import os
     out_dir = os.path.dirname(os.path.abspath(__file__))
-    stl_path = os.path.join(out_dir, "hetbahn tower v6.stl")
+    stl_path = os.path.join(out_dir, "rice tower v6.stl")
     export_stl(holder, stl_path)
 
     mesher = Mesher()
     mesher.add_shape(holder)
-    mesher.write(os.path.join(out_dir, "hetbahn tower v6.3mf"))
+    mesher.write(os.path.join(out_dir, "rice tower v6.3mf"))
 
     import trimesh
     m = trimesh.load(stl_path)

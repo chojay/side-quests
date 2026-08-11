@@ -1,5 +1,11 @@
 # Nursery Flush Floor Vent (child-safe, one-piece on a 350 mm bed)
 
+![LUXE single-slot style, the printed version, iso render](preview_luxe_single_v3.png)
+
+<sub>Two more of the generated styles and the print-orientation check:</sub>
+
+![Kumiko diamond-lattice style render](preview_kumiko_max.png) ![Print-orientation render - what touches the bed](preview_print_orientation.png)
+
 A flush, minimalist drop-in floor register for a 350 x 147 mm duct opening in a nursery, replacing a stamped register whose openings were a finger-entrapment risk for small children. One OpenSCAD source generates four visual styles from a shared body: lengthwise slots, a 45-degree kumiko diamond lattice, and two "frameless" nested-channel looks.
 
 **The two constraints that drove everything:**

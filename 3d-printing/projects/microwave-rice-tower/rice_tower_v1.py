@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Hetbahn tower dispenser v1 - 6 bowls, bottom pull-out.
+"""Microwave rice tower dispenser v1 - 6 bowls, bottom pull-out.
 
 Tower-style holder modeled after the Design IVY birch-plywood camping
-dispenser (blog.naver.com/kang7293/223941241626): bowls stack flat
+dispenser (a Korean camping community build): bowls stack flat
 inside a slat cage, the bottom bowl pulls straight out the front mouth
 and the stack drops down. Their 10-bowl prototype was too heavy to pull
 from; 6 is the proven count.
@@ -102,12 +102,12 @@ holder = tower.part.solid()
 if __name__ == "__main__":
     import os
     out_dir = os.path.dirname(os.path.abspath(__file__))
-    stl_path = os.path.join(out_dir, "hetbahn tower v1.stl")
+    stl_path = os.path.join(out_dir, "rice tower v1.stl")
     export_stl(holder, stl_path)
 
     mesher = Mesher()
     mesher.add_shape(holder)
-    mesher.write(os.path.join(out_dir, "hetbahn tower v1.3mf"))
+    mesher.write(os.path.join(out_dir, "rice tower v1.3mf"))
 
     import trimesh
     m = trimesh.load(stl_path)

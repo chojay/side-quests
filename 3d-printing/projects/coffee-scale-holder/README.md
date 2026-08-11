@@ -1,5 +1,7 @@
 # Coffee Scale Under-Beam Garages
 
+![Under-beam garage docks for two coffee scales, iso render](preview.png)
+
 Two "garage" docks that glue under a horizontal beam next to the espresso machine, one per scale: a Maestri House K112 (105 x 105 x 22 mm) and a BOOKOO Themis Mini (80 x 80 x 15 mm). The scale slides in flat, display up, and rests on silicone-feet friction. No screws anywhere; the top plane prints as a smooth vertical wall and takes VHB tape.
 
 **Why it took four architectures in one session:** v1 was a combined drop-in tray, v2 split with a back-wall mount, v3 a flat cradle, v4 the under-beam garage. Each pivot cost minutes, not hours, because one CadQuery script with named constants (`CLEAR_XY = 2.0`, `CLEAR_Z = 4.0`) emits both holders from a `SCALES` table.

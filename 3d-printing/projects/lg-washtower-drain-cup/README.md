@@ -1,5 +1,7 @@
 # LG WashTower Pump-Drain Catch Cup
 
+![Catch cup with angled socket and spout tongue, iso render](preview.png)
+
 Draining the pump filter on an LG WashTower dumps water from a round filter cap ~110 mm off the floor, and the gap under it fits no container I own. This is a two-part catch system: a cylindrical cup with an angled socket, and a thin spout tongue that slips into the gap under the filter opening and guides water into the cup. The pattern follows the proven "drain bowl" class of models for round LG filter caps (cf. Printables model 1536585); the geometry here is original.
 
 **How it works:** trimesh + manifold3d boolean CSG, no BREP kernel. The cup is a difference of cylinders; a full-height buttress boss carries a socket slot that is cut at a 13-degree downward tilt (rotated about the wall entry point, so the spout tip rides just under the cap while its root drains into the cup). A C-clip column inside the cup snaps the machine's emergency drain hose (15 mm OD kept by a 9 mm mouth) so it drains into the same cup. Both parts print flat with zero supports; the spout root slides into the socket as a snug 0.25 mm-clearance fit.

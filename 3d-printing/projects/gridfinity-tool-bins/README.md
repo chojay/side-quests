@@ -1,5 +1,7 @@
 # Gridfinity Tool Bins (custom-fit, 42 mm standard)
 
+![Custom-fit Gridfinity bin, iso render from the generator](gridfinity_focemta_preview.png)
+
 Three bins on the Gridfinity 42 mm / 7 mm-unit standard, each custom-fit to a specific tool instead of being a generic tray:
 
 - `gridfinity_kaiweets_ht100.py` - 4x1 bin for a KAIWEETS HT100 pen-style voltage tester (158 x 23 x 20 mm) with a finger scoop

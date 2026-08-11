@@ -1,5 +1,7 @@
 # Eufy E340 Doorbell "Baby Sleeping" Sign
 
+![Inverted-U frame front view](eufy_e340_inverted_u_front.png) ![Inverted-U frame top view](eufy_e340_inverted_u_deep_topview.png)
+
 A two-color "PLEASE DON'T RING, BABY SLEEPING" sign for the Eufy Video Doorbell E340, built to keep nap time quiet at the front door. Concept adapted from sebtobar's Ring doorbell frame on MakerWorld (model 1139309); that model's license does not allow redistribution, so the geometry here was authored independently in build123d and only the idea is borrowed.
 
 **Four architectures, because the mounting requirement kept changing:**

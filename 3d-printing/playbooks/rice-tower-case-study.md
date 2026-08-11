@@ -1,12 +1,12 @@
-# Parametric Design Playbook - Hetbahn Tower Case Study
+# Parametric Design Playbook - Microwave Rice Tower Case Study
 
-How a dispenser for an object with **no published dimensions** (CJ 햇반 instant rice bowl) went from idea to a successful print in 6 versions. Each principle below is written to be reused on the next similar project. Case artifacts live in [../projects/hetbahn-tower/](../projects/hetbahn-tower/) (v1 and the final v6 script; final print: **hetbahn tower v6**, dia151 x 320 mm, 199 cm3, printed 2026-06 on a Bambu Lab H2D upright with no supports).
+How a dispenser for an object with **no published dimensions** (CJ 햇반 instant rice bowl) went from idea to a successful print in 6 versions. Each principle below is written to be reused on the next similar project. Case artifacts live in [../projects/microwave-rice-tower/](../projects/microwave-rice-tower/) (v1 and the final v6 script; final print: **rice tower v6**, dia151 x 320 mm, 199 cm3, printed 2026-06 on a Bambu Lab H2D upright with no supports).
 
 ---
 
 ## TL;DR Workflow Checklist
 
-1. **Research dimensions** you cannot measure: Korean products -> Naver blog 실측 posts (hobbyist communities measure what manufacturers keep 비공개)
+1. **Research dimensions** you cannot measure: Korean products -> hobbyist hand-measurement posts (communities measure what manufacturers keep private)
 2. **Size to the worst-case variant** + explicit clearance, both as named parameters
 3. **Map the motion envelope first** (how the object enters/exits) - it dictates where material CANNOT exist
 4. **Let print physics shape the form**: 45-degree rule, no floating islands, curved walls cannot bridge
@@ -19,7 +19,7 @@ How a dispenser for an object with **no published dimensions** (CJ 햇반 instan
 
 ## 1. Getting dimensions when none are published
 
-CJ does not publish 햇반 container dimensions. Web search failed; **Naver blog search** found a camping blogger who hand-measured every major brand for backpack packing ([source](https://blog.naver.com/tourinside/220914613789)):
+CJ does not publish 햇반 container dimensions. Web search failed; a Korean camping community post hand-measured every major brand for backpack packing:
 
 | Product | Measured size |
 |---|---|
@@ -28,7 +28,7 @@ CJ does not publish 햇반 container dimensions. Web search failed; **Naver blog
 | 오뚜기밥 210g | dia 139 x H38.5 (the widest common bowl) |
 
 **Reusable rules:**
-- For Korean consumer products, search Naver with terms like `{product} 크기 지름 높이` and prefer posts marked 실측 (hand-measured). Camping/packing (패킹) communities measure everything.
+- For Korean consumer products, search in Korean for `{product} 크기 지름 높이` and prefer hand-measured (실측) posts. Camping and packing communities measure everything.
 - One blogger measuring 5 brands beats 5 spec sheets: cross-brand context reveals the worst case.
 - **Design to the worst-case variant, not the named one.** The "햇반 holder" is actually sized for 오뚜기밥 (139 > 137), so "most microwavable rice" fits. `BOWL_DIA = 139.0` + `SLACK = 3.5` per side, both named parameters with the alternatives in comments.
 - Record measured values verbatim in the script docstring AND in project memory; the next session should not re-research.
@@ -59,7 +59,7 @@ Consequences that shaped the whole tower:
 - The two side columns sit exactly at the corridor edge (they are the "cheeks" guiding the bowl out)
 - Verified numerically every version: filter mesh vertices inside the corridor box, assert count == 0
 
-Related lesson from the donor design (a birch-plywood camping dispenser documented on a Naver blog: [source](https://blog.naver.com/kang7293/223941241626)): their front slat just floats above the gap because plywood is assembled. A one-piece FDM print cannot do that, which leads to:
+Related lesson from the donor concept (a birch-plywood camping dispenser from a Korean woodworking post): their front slat just floats above the gap because plywood is assembled. A one-piece FDM print cannot do that, which leads to:
 
 ## 5. Print physics as the form-giver (upright, support-free)
 
@@ -107,8 +107,8 @@ v6 cut filament 23% (258 -> 199 cm3) only after the design was settled and liked
 
 | File | What |
 |---|---|
-| `../projects/hetbahn-tower/hetbahn_tower_v6.py` | Final parametric source (printed); running it regenerates the STL + 3MF |
-| `../projects/hetbahn-tower/hetbahn_tower_v1.py` | First version, kept to show the iteration distance |
+| `../projects/microwave-rice-tower/rice_tower_v6.py` | Final parametric source (printed); running it regenerates the STL + 3MF |
+| `../projects/microwave-rice-tower/rice_tower_v1.py` | First version, kept to show the iteration distance |
 
 STL/3MF print files are not checked in; each script regenerates them. The ramen-box style donor STL was a third-party download and is not redistributed here.
 

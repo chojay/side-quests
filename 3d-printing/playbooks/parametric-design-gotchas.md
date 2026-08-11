@@ -3,7 +3,7 @@
 Consolidated, reusable design principles and gotchas from real printed projects. Every rule below was learned (often the hard way) on a specific project, tagged in brackets. Read this BEFORE starting the next holder/dispenser/dock design.
 
 **Source case studies:**
-- **[Hetbahn]** = Hetbahn Tower (rice-bowl dispenser, 6 versions, printed and verified; see [hetbahn-tower-case-study.md](hetbahn-tower-case-study.md) and [../projects/hetbahn-tower/](../projects/hetbahn-tower/))
+- **[RiceTower]** = Microwave Rice Tower (rice-bowl dispenser, 6 versions, printed and verified; see [rice-tower-case-study.md](rice-tower-case-study.md) and [../projects/microwave-rice-tower/](../projects/microwave-rice-tower/))
 - **[Scales]** = Coffee Scale Holders (under-beam garage docks for Maestri K112 + BOOKOO Themis Mini, 4 versions in one session; [../projects/coffee-scale-holder/](../projects/coffee-scale-holder/))
 - **[Glove]** = Glove Box Dispenser (the original sleeve + scoop + keyhole design DNA; [../projects/glove-dispenser/](../projects/glove-dispenser/))
 - **[E340]** = Eufy E340 Doorbell Sign (trapped surround -> tilted wedge -> removable clip-on cover -> inverted-U; [../projects/eufy-doorbell-sign/](../projects/eufy-doorbell-sign/))
@@ -12,7 +12,7 @@ Consolidated, reusable design principles and gotchas from real printed projects.
 
 ## TL;DR Checklist (run top to bottom)
 
-1. Get real dimensions: labels, owner photos, Naver hand-measured blogs, manuals. Size to the worst case.
+1. Get real dimensions: labels, owner photos, hand-measured community posts, manuals. Size to the worst case.
 2. Resolve ambiguous spatial words ("lip", "center face") with screenshots and renders, not assumptions.
 3. Map the motion/access envelope first: insert, remove, charge, press buttons, see display.
 4. Pick the print orientation WHILE designing; shape walls so layer 1 grounds everything.
@@ -27,18 +27,18 @@ Consolidated, reusable design principles and gotchas from real printed projects.
 ## 1. Getting dimensions and hardware facts
 
 - **The object's own label is a primary source.** The K112's full spec (105 x 105 x 22 mm) was on its bottom sticker, photographed by the owner. Ask for photos before searching the web. **[Scales]**
-- **Korean products with no published specs: search Naver** for `{product} 크기 지름 높이`, prefer 실측 (hand-measured) posts. Camping/packing bloggers measure everything. One blogger measuring 5 brands beats 5 spec sheets. **[Hetbahn]**
-- **Design to the worst-case variant, not the named one.** The "Hetbahn holder" is sized for Ottogi-bap (139 > 137 dia), so most rice bowls fit. Keep the variant table in code comments. **[Hetbahn]**
+- **Korean products with no published specs: search in Korean** for `{product} 크기 지름 높이`, prefer hand-measured (실측) posts. Camping and packing communities measure everything. One hobbyist measuring 5 brands beats 5 spec sheets. **[RiceTower]**
+- **Design to the worst-case variant, not the named one.** The rice tower is sized for Ottogi-bap (139 > 137 dia), so most rice bowls fit. Keep the variant table in code comments. **[RiceTower]**
 - **Spec sheets and manuals document electrical specs, not physical layout.** Seven written sources (official manual, retailer pages, reviews) confirmed "USB-C charging" without ever naming the port's edge. The answer was in the manual's product RENDER: zoom on images, do not just read text. **[Scales]**
 - **If a fetch 403s, use the browser.** manuals.plus blocks plain HTTP fetches but renders fine in Chrome. Product diagrams there showed the K112's Type-C flap mid-right-edge and OFF/ON switch ~28 mm from the front corner. **[Scales]**
 - **When a feature location stays unknown, design around the uncertainty.** Square footprint means 4 loading rotations are equivalent: symmetric windows on both side walls cover any port edge (rotate 90 degrees while charging). Symmetry beats more research. **[Scales]**
-- Record measured values verbatim in the script docstring and the design spec; the next session must not re-research. **[Hetbahn] [Scales]**
+- Record measured values verbatim in the script docstring and the design spec; the next session must not re-research. **[RiceTower] [Scales]**
 
 ## 2. Interpreting design intent (the conversation is part of the workflow)
 
 - **Spatial language is ambiguous; geometry is not.** "Remove this lip", "the center face", "missing a top plane" each had 3+ plausible readings. The fix loop: user sends a slicer screenshot, designer answers with labeled renders. Two misreadings were caught this way; zero made it to the printer. **[Scales]**
-- **The user orbiting a viewer/slicer finds what you cannot.** Open-front request, rounded windows, and the pointy arch all came from the human looking at the model, not from checks. Always deliver the HTML viewer. **[Hetbahn] [Scales]**
-- **Pivots are cheap when everything is parametric.** Scale holder went v1 combined drop-in, v2 split + back-wall mount, v3 flat cradle, v4 under-beam garage in one session, because each version was one script with named constants and derived values (`R_IN = DIA/2 + SLACK`). One script can emit N part files (one per scale). **[Scales] [Hetbahn]**
+- **The user orbiting a viewer/slicer finds what you cannot.** Open-front request, rounded windows, and the pointy arch all came from the human looking at the model, not from checks. Always deliver the HTML viewer. **[RiceTower] [Scales]**
+- **Pivots are cheap when everything is parametric.** Scale holder went v1 combined drop-in, v2 split + back-wall mount, v3 flat cradle, v4 under-beam garage in one session, because each version was one script with named constants and derived values (`R_IN = DIA/2 + SLACK`). One script can emit N part files (one per scale). **[Scales] [RiceTower]**
 - **Reuse local design DNA.** Clearance conventions, the elliptical grab scoop, gravity retention, and support-free orientation all transferred from the glove dispenser through 4 scale-holder redesigns. Check sibling project folders before inventing. **[Glove] [Scales]**
 
 ### Clearance conventions (house rules)
@@ -50,41 +50,41 @@ Consolidated, reusable design principles and gotchas from real printed projects.
 | Squishy/cardboard object, depth | +6 mm |
 | Printer build limit | hard `assert` in the export step |
 
-**[Glove] [Scales] [Hetbahn]**
+**[Glove] [Scales] [RiceTower]**
 
 ## 3. Motion envelope and lifecycle access
 
-- **Map where material CANNOT exist before drawing where it can.** Bottom-dispense corridor (bowl radius + slack, floor to bowl height + tilt margin) dictated the whole tower; verified numerically each version (vertices inside corridor == 0). **[Hetbahn]**
+- **Map where material CANNOT exist before drawing where it can.** Bottom-dispense corridor (bowl radius + slack, floor to bowl height + tilt margin) dictated the whole tower; verified numerically each version (vertices inside corridor == 0). **[RiceTower]**
 - **Design the full lifecycle, not just storage**: insert, remove (pinch strip + floor scoop), charge while docked (side windows), reach the power switch, read the display. The K112 windows were widened and shifted only after locating the switch. **[Scales]**
 - **Grab features**: an elliptical scoop cut from an edge is the house pattern (glove dispenser front wall, scale holder floor edge). Pair a scoop (thumb) with an exposed strip (finger) for a pinch grip; a top plate set back 20-25 mm from the mouth provides it. **[Glove] [Scales]**
-- **Retention without latches**: gravity for vertical sleeves, silicone-feet friction for flat garages on a level mount. Mouth/headroom needs a few mm extra so the object can tilt during extraction. **[Glove] [Hetbahn] [Scales]**
+- **Retention without latches**: gravity for vertical sleeves, silicone-feet friction for flat garages on a level mount. Mouth/headroom needs a few mm extra so the object can tilt during extraction. **[Glove] [RiceTower] [Scales]**
 - **Dual-mode mounting from one profile**: an L (top plate + wall) works resting ON a beam (gravity carries, adhesive prevents sliding) or glued UNDER it (adhesive in tension). Design once, let the installer choose. **[Scales]**
 
 ## 4. Print physics shapes the form
 
-- **45-degree rule decides the aesthetic**: gothic arch mouths, slot rings instead of wraparound bands, rounded-rectangle windows. On curved walls keep any opening's flat ceiling chord under ~35-40 mm; circular tops self-close when `2*sqrt(2*r*layer_height)` is small. **[Hetbahn]**
-- **Pick the orientation DURING design and shape topology for it.** v1 scale holder ran every sleeve wall full-height to the plate plane specifically so the inverted print grounds the entire footprint on layer 1. The v4 garage stands on its closed end wall for the same reason. If a wall would start mid-air, redesign it, do not support it. **[Scales] [Hetbahn]**
+- **45-degree rule decides the aesthetic**: gothic arch mouths, slot rings instead of wraparound bands, rounded-rectangle windows. On curved walls keep any opening's flat ceiling chord under ~35-40 mm; circular tops self-close when `2*sqrt(2*r*layer_height)` is small. **[RiceTower]**
+- **Pick the orientation DURING design and shape topology for it.** v1 scale holder ran every sleeve wall full-height to the plate plane specifically so the inverted print grounds the entire footprint on layer 1. The v4 garage stands on its closed end wall for the same reason. If a wall would start mid-air, redesign it, do not support it. **[Scales] [RiceTower]**
 - **Openings cut from an edge need no bridge; holes do.** A scoop opening toward print-top prints free. A window's top edge bridges only the wall thickness across the interior span (26 mm here, trivial). A plate edge suspended between distant walls is a disaster (the 107 mm near-miss, see section 6). **[Scales]**
 - **Adhesive faces want the smoothest surface FDM can make**: the first layer on a smooth plate, or a vertical exterior wall. Orient so the gluing face is one of those; never a supported or top surface. **[Scales]**
-- **No stalactites**: anything that begins in mid-air and cannot grow from <= 45 degrees gets redesigned away (the floating front slat of the wooden donor design is fine in plywood, impossible in one-piece FDM). **[Hetbahn]**
+- **No stalactites**: anything that begins in mid-air and cannot grow from <= 45 degrees gets redesigned away (the floating front slat of the wooden donor design is fine in plywood, impossible in one-piece FDM). **[RiceTower]**
 
 ## 5. CAD coding gotchas (build123d / CadQuery)
 
-- **build123d: `BuildSketch` vertices are in LOCAL plane coordinates** (Z always 0; local Y = world Z on Plane.XZ). Filtering by world `.Z` silently selects nothing and `fillet([])` no-ops without raising. The arch fillet was missing for 5 versions. Rule: `assert len(selection) == N` before every filtered fillet/chamfer. **[Hetbahn]**
+- **build123d: `BuildSketch` vertices are in LOCAL plane coordinates** (Z always 0; local Y = world Z on Plane.XZ). Filtering by world `.Z` silently selects nothing and `fillet([])` no-ops without raising. The arch fillet was missing for 5 versions. Rule: `assert len(selection) == N` before every filtered fillet/chamfer. **[RiceTower]**
 - **CadQuery: never trust Workplane normal sign conventions.** Build the cutter, read `val().BoundingBox()`, then `translate()` to the exact target. The scoop cutter can then never land in the wrong wall. **[Scales]**
 - **Rotation direction is a coin flip you will lose.** `rotate(axis X, -90)` vs `+90` both "stand the part up"; one put the mouth on the bed and made the top plate a 107 mm bridge. Only a render caught it (see section 6). **[Scales]**
 - **Fillet radius vs wall thickness**: a corner fillet bigger than the wall (r3 on a 2.5 wall) thins the corner to ~2.3 mm, acceptable; much larger fails or knife-edges. Fillet the solid block BEFORE cutting cavities (the glove pattern), and wrap decorative fillets/chamfers in try/except so geometry edge cases degrade instead of crashing. **[Glove] [Scales]**
-- **Environment note**: build123d wants a recent Python (3.12 here); older CadQuery installs still work fine for the CadQuery-based scripts. Either stack works; match the project's existing scripts. **[Hetbahn] [Scales]**
+- **Environment note**: build123d wants a recent Python (3.12 here); older CadQuery installs still work fine for the CadQuery-based scripts. Either stack works; match the project's existing scripts. **[RiceTower] [Scales]**
 - **CadQuery cannot export 3MF.** A minimal 3MF is just a zip: `[Content_Types].xml`, `_rels/.rels`, `3D/3dmodel.model` with vertices/triangles from trimesh. Bambu Studio opens it (with a harmless old-version warning). **[Scales]**
 
 ## 6. Validation: test the output, never the intent
 
 - **Watertight is necessary, not sufficient.** It says nothing about features being where you think they are.
 - **Point-containment truth table**: for every feature write (point, expected solid/empty) pairs and run `mesh.contains()`. Cavity empty, wall solid, window open, floor intact under notch, plate present rear / absent front. 12-17 assertions per part, runs in seconds, catches wrong-side cuts immediately. **[Scales]**
-- **Envelope asserts**: vertices inside the motion corridor == 0; `extents <= printer limit`. **[Hetbahn]**
-- **Dimension probes after every change**: measure the mesh for the feature you just edited (mouth ceiling z = 98.7 confirmed the fillet finally applied). **[Hetbahn]**
+- **Envelope asserts**: vertices inside the motion corridor == 0; `extents <= printer limit`. **[RiceTower]**
+- **Dimension probes after every change**: measure the mesh for the feature you just edited (mouth ceiling z = 98.7 confirmed the fillet finally applied). **[RiceTower]**
 - **THE BIG ONE: containment tests validate geometry, not orientation.** The flipped-export bug passed every containment test, because the test transform was derived from the same wrong rotation. Only rendering the print orientation ("what touches the bed? where is the worst bridge?") exposed it. Always do both: numeric truth table AND multi-view render of the exported file. **[Scales]**
-- Full pipeline per version: watertight -> containment/envelope asserts -> dimension probes -> multi-view matplotlib render -> interactive HTML viewer for the human. **[Hetbahn] [Scales]**
+- Full pipeline per version: watertight -> containment/envelope asserts -> dimension probes -> multi-view matplotlib render -> interactive HTML viewer for the human. **[RiceTower] [Scales]**
 
 ## 7. Adhesive mounting (no screws, no nails)
 
@@ -95,7 +95,7 @@ Consolidated, reusable design principles and gotchas from real printed projects.
 
 ## 8. Lighten last, in this order
 
-Only after the design is settled and liked (v6 cut 23% filament): dead zones first, then enlarge existing openings toward their print-physics limits, then new openings in over-solid areas, then trim non-critical bands. Never touch structural cheeks/fascia/foundation, and treat global wall thinning as the last lever (it costs stiffness everywhere). **[Hetbahn]**
+Only after the design is settled and liked (v6 cut 23% filament): dead zones first, then enlarge existing openings toward their print-physics limits, then new openings in over-solid areas, then trim non-critical bands. Never touch structural cheeks/fascia/foundation, and treat global wall thinning as the last lever (it costs stiffness everywhere). **[RiceTower]**
 
 ## 9. "Surround it" vs "cover it", and how mounting reframes everything [E340]
 
@@ -165,7 +165,7 @@ from the pivots:
 
 | Project | Where |
 |---|---|
-| Hetbahn Tower (printed, verified) | `../projects/hetbahn-tower/hetbahn_tower_v6.py`, [hetbahn-tower-case-study.md](hetbahn-tower-case-study.md) |
+| Microwave Rice Tower (printed, verified) | `../projects/microwave-rice-tower/rice_tower_v6.py`, [rice-tower-case-study.md](rice-tower-case-study.md) |
 | Coffee Scale Holders | `../projects/coffee-scale-holder/coffee_scale_holder.py` |
 | Glove Dispenser (design DNA origin) | `../projects/glove-dispenser/glove_dispenser.py` |
 | Eufy E340 Doorbell Sign (4 architectures) | `../projects/eufy-doorbell-sign/` |
