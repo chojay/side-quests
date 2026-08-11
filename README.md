@@ -2,7 +2,7 @@
 
 Things I build outside work. By day I am a semiconductor process and materials engineer; evenings and weekends produce what's in this repo: thermodynamic screening on open materials data, local-first AI tooling, parametric CAD written as Python, medical-imaging pipelines, and an espresso machine that files telemetry reports.
 
-![Three-stage illustration: a terminal for code over artifacts, a checklist for validation as a first-class step, and a plus-and-minus note for calibrated AI-assist notes](docs/three-habits.png)
+**In a hurry?** Three artifacts carry the flavor: the [caught-and-fixed API data bug](computational-materials/mp-interface-reactions/README.md) in the materials screening, the NIIMBOT driver's [GOTCHAS.md](hardware-tools/niimbot-labelmaker/GOTCHAS.md) (identical printers, different firmware dialects), and the GMA pipeline's [honest scorer](medical-imaging/gma-video-pipeline/src/gma_pipeline/mos_r.py) that declares three subscales NOT_COMPUTABLE rather than guessing.
 
 Everything here shares three habits:
 
@@ -12,7 +12,7 @@ Everything here shares three habits:
 
 ## Map
 
-![Card map of the repo: a side-quests title card plus seven section cards - computational-materials, ai-tooling, claude-skills, 3d-printing, hardware-tools, medical-imaging, and espresso-gaggiuino - each with a bold section name and three one-line highlights of what's inside](docs/section-map.png)
+![Tree map of the repo: a side-quests root card branches to seven section cards - computational-materials, ai-tooling, claude-skills, 3d-printing, hardware-tools, medical-imaging, and espresso-gaggiuino - each with a bold section name and three one-line highlights of what's inside](docs/section-map-tree.png)
 
 | Section | What's inside |
 |---|---|
@@ -29,7 +29,7 @@ Everything here shares three habits:
 <table>
 <tr>
 <td align="center" valign="middle" width="25%"><a href="3d-printing/projects/kumiko-vent-covers/"><img src="docs/gallery/kumiko.png" alt="Kumiko asanoha lattice vent cover, code-generated"></a></td>
-<td align="center" valign="middle" width="25%"><a href="medical-imaging/dicom-mri-toolkit/"><img src="docs/gallery/mri-putamen.png" alt="Axial MRI slice of the public MNI152 template with the putamen circled and labeled"></a></td>
+<td align="center" valign="middle" width="25%"><a href="medical-imaging/dicom-mri-toolkit/"><img src="docs/gallery/mri-axial-putamen.png" alt="Axial slice of the public MNI152 template with the putamen circled and a basal ganglia example annotation, labeled EXAMPLE - not patient data"></a></td>
 <td align="center" valign="middle" width="25%"><a href="medical-imaging/gma-video-pipeline/"><img src="docs/gallery/limb-screen-4x3.png" alt="Scatter plot of the synthetic example run: each keypoint (left/right wrist, elbow, knee, ankle, hip, shoulder) plotted by symmetry index vs movement variety, unflagged keypoints in blue, pipeline-flagged left hip and right shoulder in red"></a></td>
 <td align="center" valign="middle" width="25%"><a href="computational-materials/mp-interface-reactions/"><img src="docs/gallery/convex-hull-4x3.png" alt="Ternary convex hull of the O-Si-Ta system: stable phases as red nodes joined by tie-lines, including Ta2O5, SiO2, and TaSi2"></a></td>
 </tr>

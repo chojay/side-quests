@@ -1,0 +1,4 @@
+# Generated artifacts: keep the language bar honest
+3d-printing/**/*.html linguist-generated
+3d-printing/**/*.svg linguist-generated
+espresso-gaggiuino/assets/*.svg linguist-generated
