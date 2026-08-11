@@ -64,7 +64,7 @@ Consolidated, reusable design principles and gotchas from real printed projects.
 
 - **45-degree rule decides the aesthetic**: gothic arch mouths, slot rings instead of wraparound bands, rounded-rectangle windows. On curved walls keep any opening's flat ceiling chord under ~35-40 mm; circular tops self-close when `2*sqrt(2*r*layer_height)` is small. **[RiceTower]**
 
-  ![Before/after: a flat-topped opening leaves its ceiling chord bridging in mid-air with drooping strands; a gothic arch mouth closes itself with arcs that never exceed 45 degrees](figures/gotcha-45-degree-rule.png)
+  ![Before/after: a flat-topped opening leaves its ceiling chord bridging in mid-air with drooping strands; a gothic arch mouth closes itself with arcs that never exceed 45 degrees](figures/fig-45-degree-rule.png)
 - **Pick the orientation DURING design and shape topology for it.** v1 scale holder ran every sleeve wall full-height to the plate plane specifically so the inverted print grounds the entire footprint on layer 1. The v4 garage stands on its closed end wall for the same reason. If a wall would start mid-air, redesign it, do not support it. **[Scales] [RiceTower]**
 - **Openings cut from an edge need no bridge; holes do.** A scoop opening toward print-top prints free. A window's top edge bridges only the wall thickness across the interior span (26 mm here, trivial). A plate edge suspended between distant walls is a disaster (the 107 mm near-miss, see section 6). **[Scales]**
 - **Adhesive faces want the smoothest surface FDM can make**: the first layer on a smooth plate, or a vertical exterior wall. Orient so the gluing face is one of those; never a supported or top surface. **[Scales]**
@@ -87,7 +87,7 @@ Consolidated, reusable design principles and gotchas from real printed projects.
 - **Dimension probes after every change**: measure the mesh for the feature you just edited (mouth ceiling z = 98.7 confirmed the fillet finally applied). **[RiceTower]**
 - **THE BIG ONE: containment tests validate geometry, not orientation.** The flipped-export bug passed every containment test, because the test transform was derived from the same wrong rotation. Only rendering the print orientation ("what touches the bed? where is the worst bridge?") exposed it. Always do both: numeric truth table AND multi-view render of the exported file. **[Scales]**
 
-  ![Before/after: rotated one way the part's mouth sits on the bed and its top plate becomes a 107 mm bridge while every containment test still passes; rotated the other way the plate grounds on layer 1 and the walls grow from it](figures/gotcha-flipped-export.png)
+  ![Before/after: rotated one way the part's mouth sits on the bed and its top plate becomes a 107 mm bridge while every containment test still passes; rotated the other way the plate grounds on layer 1 and the walls grow from it](figures/fig-flipped-export.png)
 - Full pipeline per version: watertight -> containment/envelope asserts -> dimension probes -> multi-view matplotlib render -> interactive HTML viewer for the human. **[RiceTower] [Scales]**
 
 ## 7. Adhesive mounting (no screws, no nails)
@@ -120,7 +120,7 @@ from the pivots:
   OUTSIDE that. Copying the surround's opening size into a cover cavity guarantees a
   too-small part.
 
-  ![Before/after: reusing the surround's opening as a cover cavity leaves zero slip and jams on every face; sizing the cover as a chain puts a slip gap around the object and the wall outside that](figures/gotcha-surround-vs-cover.png)
+  ![Before/after: reusing the surround's opening as a cover cavity leaves zero slip and jams on every face; sizing the cover as a chain puts a slip gap around the object and the wall outside that](figures/fig-surround-vs-cover.png)
 - **A removable cover for a functional device must keep the function reachable.** For a
   camera doorbell the two cameras + button have to show through the opening; the
   retaining lip may only cover edge margin. Measure the margin from each edge to the
