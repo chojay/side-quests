@@ -1,0 +1,59 @@
+[project]
+name = "gma-video-pipeline"
+version = "0.1.0"
+description = "Personal-reference (non-medical) infant GMA video analysis pipeline. SAM 3 or SAM 2.1 segmentation + infant pose + kinematic features + MOS-R proxy scoring."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "MIT" }
+authors = [{ name = "Jay Cho" }]
+
+dependencies = [
+    "torch>=2.7",
+    "torchvision>=0.22",
+    "opencv-python>=4.10",
+    "numpy>=1.26,<2.0",
+    "scipy>=1.13",
+    "pandas>=2.2",
+    "pyarrow>=16.0",
+    "matplotlib>=3.9",
+    "pillow>=10.4",
+    "huggingface-hub>=0.24",
+    "mediapipe>=0.10.21",
+    "tqdm>=4.66",
+    "rich>=13.7",
+    "pyyaml>=6.0",
+    "typer>=0.12",
+    "einops>=0.8.2",
+    "sam-2",
+    "sam3",
+    "pycocotools>=2.0.11",
+    "psutil>=7.2.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[project.scripts]
+gma-pipeline = "gma_pipeline.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gma_pipeline"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.uv.sources]
+sam-2 = { git = "https://github.com/facebookresearch/sam2.git" }
+sam3 = { git = "https://github.com/facebookresearch/sam3.git" }

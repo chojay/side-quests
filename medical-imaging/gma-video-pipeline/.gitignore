@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# uv / venv
+.venv/
+.uv/
+venv/
+env/
+
+# Model weights (large, downloaded on demand)
+models/
+*.pt
+*.pth
+*.safetensors
+*.onnx
+*.tflite
+*.task
+
+# Inputs (raw videos - personal recordings must never be committed)
+inputs/
+*.mov
+*.MOV
+*.mp4
+
+# Outputs (per-run artifacts)
+outputs/
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
