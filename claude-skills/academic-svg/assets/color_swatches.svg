@@ -1,0 +1,281 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200">
+
+  <title>Academic SVG Color Palette Reference</title>
+
+  <style>
+    .section-title {
+      font-family: -apple-system, sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      fill: #2E2E2E;
+    }
+    .color-name {
+      font-family: -apple-system, sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      fill: #2E2E2E;
+    }
+    .color-code {
+      font-family: monospace;
+      font-size: 9px;
+      fill: #606060;
+    }
+    .usage-text {
+      font-family: -apple-system, sans-serif;
+      font-size: 8px;
+      fill: #808080;
+    }
+  </style>
+
+  <!-- Background -->
+  <rect width="900" height="1200" fill="#FAFAFA"/>
+
+  <!-- Main Title -->
+  <text x="450" y="30" class="section-title" font-size="20" text-anchor="middle">Academic SVG Color Palette</text>
+
+  <!-- ========== BLUES & CYANS ========== -->
+  <g id="blues" transform="translate(50, 60)">
+    <text x="0" y="0" class="section-title">Blues &amp; Cyans</text>
+    <text x="0" y="15" class="usage-text">Oxide dielectrics, conduction bands, plasma species</text>
+
+    <!-- Deep Blue -->
+    <rect x="0" y="25" width="80" height="50" fill="#4472C4" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="90" y="45" class="color-name">Deep Blue</text>
+    <text x="90" y="57" class="color-code">#4472C4</text>
+    <text x="90" y="67" class="usage-text">Primary structures, CB</text>
+
+    <!-- Medium Blue -->
+    <rect x="250" y="25" width="80" height="50" fill="#5B9BD5" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="340" y="45" class="color-name">Medium Blue</text>
+    <text x="340" y="57" class="color-code">#5B9BD5</text>
+
+    <!-- Light Blue -->
+    <rect x="500" y="25" width="80" height="50" fill="#7CB5E8" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="590" y="45" class="color-name">Light Blue</text>
+    <text x="590" y="57" class="color-code">#7CB5E8</text>
+    <text x="590" y="67" class="usage-text">Oxide (SiO&#8322;)</text>
+
+    <!-- Pale Blue -->
+    <rect x="0" y="85" width="80" height="50" fill="#B4D7EC" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="90" y="105" class="color-name">Pale Blue</text>
+    <text x="90" y="117" class="color-code">#B4D7EC</text>
+
+    <!-- Cyan -->
+    <rect x="250" y="85" width="80" height="50" fill="#4EC9E0" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="340" y="105" class="color-name">Cyan</text>
+    <text x="340" y="117" class="color-code">#4EC9E0</text>
+    <text x="340" y="127" class="usage-text">Plasma ions (Ar⁺)</text>
+
+    <!-- Teal -->
+    <rect x="500" y="85" width="80" height="50" fill="#00CED1" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="590" y="105" class="color-name">Teal</text>
+    <text x="590" y="117" class="color-code">#00CED1</text>
+  </g>
+
+  <!-- ========== YELLOWS & GOLDS ========== -->
+  <g id="yellows" transform="translate(50, 220)">
+    <text x="0" y="0" class="section-title">Yellows &amp; Golds</text>
+    <text x="0" y="15" class="usage-text">Metal gates, contacts, gold pads</text>
+
+    <!-- Bright Yellow -->
+    <rect x="0" y="25" width="80" height="50" fill="#FFD966" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="90" y="45" class="color-name">Bright Yellow</text>
+    <text x="90" y="57" class="color-code">#FFD966</text>
+
+    <!-- Golden Yellow -->
+    <rect x="250" y="25" width="80" height="50" fill="#F4C542" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="340" y="45" class="color-name">Golden Yellow</text>
+    <text x="340" y="57" class="color-code">#F4C542</text>
+    <text x="340" y="67" class="usage-text">Gate metal, Au</text>
+
+    <!-- Deep Gold -->
+    <rect x="500" y="25" width="80" height="50" fill="#F0A000" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="590" y="45" class="color-name">Deep Gold</text>
+    <text x="590" y="57" class="color-code">#F0A000</text>
+
+    <!-- Peach -->
+    <rect x="0" y="85" width="80" height="50" fill="#F2D7A9" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="90" y="105" class="color-name">Peach</text>
+    <text x="90" y="117" class="color-code">#F2D7A9</text>
+    <text x="90" y="127" class="usage-text">Substrates</text>
+
+    <!-- Cream -->
+    <rect x="250" y="85" width="80" height="50" fill="#FFF9E6" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="340" y="105" class="color-name">Cream</text>
+    <text x="340" y="117" class="color-code">#FFF9E6</text>
+    <text x="340" y="127" class="usage-text">Backgrounds</text>
+
+    <!-- Beige -->
+    <rect x="500" y="85" width="80" height="50" fill="#FAF0E6" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="590" y="105" class="color-name">Beige</text>
+    <text x="590" y="117" class="color-code">#FAF0E6</text>
+  </g>
+
+  <!-- ========== PINKS & REDS ========== -->
+  <g id="pinks" transform="translate(50, 380)">
+    <text x="0" y="0" class="section-title">Pinks &amp; Reds</text>
+    <text x="0" y="15" class="usage-text">Photoresist, high-k films, critical points</text>
+
+    <!-- Light Pink -->
+    <rect x="0" y="25" width="80" height="50" fill="#FFB6C1" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="90" y="45" class="color-name">Light Pink</text>
+    <text x="90" y="57" class="color-code">#FFB6C1</text>
+    <text x="90" y="67" class="usage-text">High-k (HfO&#8322;)</text>
+
+    <!-- Hot Pink -->
+    <rect x="250" y="25" width="80" height="50" fill="#FF69B4" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="340" y="45" class="color-name">Hot Pink</text>
+    <text x="340" y="57" class="color-code">#FF69B4</text>
+
+    <!-- Coral -->
+    <rect x="500" y="25" width="80" height="50" fill="#FF7F50" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="590" y="45" class="color-name">Coral</text>
+    <text x="590" y="57" class="color-code">#FF7F50</text>
+
+    <!-- Magenta -->
+    <rect x="0" y="85" width="80" height="50" fill="#DC143C" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="90" y="105" class="color-name">Magenta</text>
+    <text x="90" y="117" class="color-code">#DC143C</text>
+
+    <!-- Red -->
+    <rect x="250" y="85" width="80" height="50" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="340" y="105" class="color-name">Red</text>
+    <text x="340" y="117" class="color-code">#E83845</text>
+    <text x="340" y="127" class="usage-text">Failure, oxygen</text>
+
+    <!-- Dark Red -->
+    <rect x="500" y="85" width="80" height="50" fill="#B22222" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="590" y="105" class="color-name">Dark Red</text>
+    <text x="590" y="117" class="color-code">#B22222</text>
+  </g>
+
+  <!-- ========== GRAYS & NEUTRALS ========== -->
+  <g id="grays" transform="translate(50, 540)">
+    <text x="0" y="0" class="section-title">Grays &amp; Neutrals</text>
+    <text x="0" y="15" class="usage-text">Structural supports, text, inactive regions</text>
+
+    <!-- White -->
+    <rect x="0" y="25" width="80" height="50" fill="#FFFFFF" stroke="#2E2E2E" stroke-width="1"/>
+    <text x="90" y="45" class="color-name">White</text>
+    <text x="90" y="57" class="color-code">#FFFFFF</text>
+
+    <!-- Off-White -->
+    <rect x="250" y="25" width="80" height="50" fill="#FAFAFA" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="340" y="45" class="color-name">Off-White</text>
+    <text x="340" y="57" class="color-code">#FAFAFA</text>
+    <text x="340" y="67" class="usage-text">Backgrounds</text>
+
+    <!-- Light Gray -->
+    <rect x="500" y="25" width="80" height="50" fill="#D3D3D3" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="590" y="45" class="color-name">Light Gray</text>
+    <text x="590" y="57" class="color-code">#D3D3D3</text>
+    <text x="590" y="67" class="usage-text">Inactive regions</text>
+
+    <!-- Medium Gray -->
+    <rect x="0" y="85" width="80" height="50" fill="#808080" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="90" y="105" class="color-name">Medium Gray</text>
+    <text x="90" y="117" class="color-code">#808080</text>
+
+    <!-- Dark Gray -->
+    <rect x="250" y="85" width="80" height="50" fill="#606060" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="340" y="105" class="color-name">Dark Gray</text>
+    <text x="340" y="117" class="color-code">#606060</text>
+    <text x="340" y="127" class="usage-text">TiN, metal lines</text>
+
+    <!-- Charcoal -->
+    <rect x="500" y="85" width="80" height="50" fill="#404040" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="590" y="105" class="color-name">Charcoal</text>
+    <text x="590" y="117" class="color-code">#404040</text>
+
+    <!-- Almost Black -->
+    <rect x="0" y="145" width="80" height="50" fill="#2E2E2E" stroke="#808080" stroke-width="0.5"/>
+    <text x="90" y="165" class="color-name">Almost Black</text>
+    <text x="90" y="177" class="color-code">#2E2E2E</text>
+    <text x="90" y="187" class="usage-text">Text, outlines</text>
+  </g>
+
+  <!-- ========== GREENS ========== -->
+  <g id="greens" transform="translate(50, 760)">
+    <text x="0" y="0" class="section-title">Greens</text>
+    <text x="0" y="15" class="usage-text">Protective layers, specific phases</text>
+
+    <!-- Sage Green -->
+    <rect x="0" y="25" width="80" height="50" fill="#8FBC8F" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="90" y="45" class="color-name">Sage Green</text>
+    <text x="90" y="57" class="color-code">#8FBC8F</text>
+
+    <!-- Olive -->
+    <rect x="250" y="25" width="80" height="50" fill="#6B8E23" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="340" y="45" class="color-name">Olive</text>
+    <text x="340" y="57" class="color-code">#6B8E23</text>
+    <text x="340" y="67" class="usage-text">Organic films</text>
+
+    <!-- Forest Green -->
+    <rect x="500" y="25" width="80" height="50" fill="#228B22" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="590" y="45" class="color-name">Forest Green</text>
+    <text x="590" y="57" class="color-code">#228B22</text>
+
+    <!-- Mint -->
+    <rect x="0" y="85" width="80" height="50" fill="#98FF98" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="90" y="105" class="color-name">Mint</text>
+    <text x="90" y="117" class="color-code">#98FF98</text>
+  </g>
+
+  <!-- ========== PURPLES ========== -->
+  <g id="purples" transform="translate(50, 900)">
+    <text x="0" y="0" class="section-title">Purples &amp; Violets</text>
+    <text x="0" y="15" class="usage-text">Alternative phases, intermediate states</text>
+
+    <!-- Light Purple -->
+    <rect x="0" y="25" width="80" height="50" fill="#9370DB" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="90" y="45" class="color-name">Light Purple</text>
+    <text x="90" y="57" class="color-code">#9370DB</text>
+
+    <!-- Medium Purple -->
+    <rect x="250" y="25" width="80" height="50" fill="#8B7BB8" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="340" y="45" class="color-name">Medium Purple</text>
+    <text x="340" y="57" class="color-code">#8B7BB8</text>
+
+    <!-- Dark Purple -->
+    <rect x="500" y="25" width="80" height="50" fill="#6A5ACD" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="590" y="45" class="color-name">Dark Purple</text>
+    <text x="590" y="57" class="color-code">#6A5ACD</text>
+
+    <!-- Lavender -->
+    <rect x="0" y="85" width="80" height="50" fill="#E6E6FA" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="90" y="105" class="color-name">Lavender</text>
+    <text x="90" y="117" class="color-code">#E6E6FA</text>
+  </g>
+
+  <!-- ========== ORANGES ========== -->
+  <g id="oranges" transform="translate(50, 1040)">
+    <text x="0" y="0" class="section-title">Oranges</text>
+    <text x="0" y="15" class="usage-text">Accents, copper interconnects, warnings</text>
+
+    <!-- Orange -->
+    <rect x="0" y="25" width="80" height="50" fill="#FF8C00" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="90" y="45" class="color-name">Orange</text>
+    <text x="90" y="57" class="color-code">#FF8C00</text>
+
+    <!-- Dark Orange -->
+    <rect x="250" y="25" width="80" height="50" fill="#FF6600" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="340" y="45" class="color-name">Dark Orange</text>
+    <text x="340" y="57" class="color-code">#FF6600</text>
+
+    <!-- Burnt Orange -->
+    <rect x="500" y="25" width="80" height="50" fill="#CC5500" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="590" y="45" class="color-name">Burnt Orange</text>
+    <text x="590" y="57" class="color-code">#CC5500</text>
+
+    <!-- Light Peach -->
+    <rect x="0" y="85" width="80" height="50" fill="#FFDAB9" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="90" y="105" class="color-name">Light Peach</text>
+    <text x="90" y="117" class="color-code">#FFDAB9</text>
+  </g>
+
+  <!-- Footer note -->
+  <text x="450" y="1180" font-size="10" fill="#808080" text-anchor="middle">
+    Academic SVG Skill • Color Palette derived from leading materials science publications
+  </text>
+
+</svg>

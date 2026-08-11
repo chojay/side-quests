@@ -1,0 +1,8 @@
+# Required dependencies
+yt-dlp>=2024.0.0          # Video metadata extraction
+youtube-transcript-api>=0.6.3  # Transcript extraction (updated for new API)
+
+# Optional dependencies (for --download mode)
+# Uncomment if you want to download videos locally:
+# markitdown>=0.0.1       # Local video transcription
+# pytubefix>=9.0.0        # Fallback video downloader

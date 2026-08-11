@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+
+  <!-- ========================================
+       FIGURE TEMPLATE
+       Basic structure for academic SVG figures
+       ======================================== -->
+
+  <!-- Accessibility -->
+  <title id="title">Figure title here</title>
+  <desc id="desc">Detailed description of figure content for screen readers</desc>
+
+  <!-- ========================================
+       DEFINITIONS
+       Reusable elements, gradients, patterns
+       ======================================== -->
+  <defs>
+
+    <!-- Standard arrowhead marker -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#2E2E2E"/>
+    </marker>
+
+    <!-- Colored arrow for plasma/ion species -->
+    <marker id="ionArrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#4EC9E0"/>
+    </marker>
+
+    <!-- Bold process arrow -->
+    <marker id="boldArrow" markerWidth="14" markerHeight="14" refX="13" refY="5" orient="auto">
+      <polygon points="0 0, 14 5, 0 10" fill="#2E2E2E"/>
+    </marker>
+
+    <!-- Metal gate/contact gradient -->
+    <linearGradient id="metalGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD966"/>
+      <stop offset="100%" style="stop-color:#F4C542"/>
+    </linearGradient>
+
+    <!-- Oxide dielectric gradient -->
+    <linearGradient id="oxideGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#B4D7EC"/>
+      <stop offset="100%" style="stop-color:#7CB5E8"/>
+    </linearGradient>
+
+    <!-- High-k dielectric gradient -->
+    <linearGradient id="highkGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFB6C1"/>
+      <stop offset="100%" style="stop-color:#FF69B4"/>
+    </linearGradient>
+
+    <!-- Radial gradient for 3D spheres (atoms) -->
+    <radialGradient id="sphereGradient" cx="35%" cy="35%">
+      <stop offset="0%" style="stop-color:#B0C4DE"/>
+      <stop offset="100%" style="stop-color:#708090"/>
+    </radialGradient>
+
+    <!-- Reusable symbols (optional) -->
+    <symbol id="siliconAtom" viewBox="0 0 20 20">
+      <circle cx="10" cy="10" r="9" fill="url(#sphereGradient)" stroke="#2E2E2E" stroke-width="0.5"/>
+    </symbol>
+
+  </defs>
+
+  <!-- ========================================
+       STYLES
+       CSS classes for consistent styling
+       ======================================== -->
+  <style>
+    /* Text styles */
+    .panel-label {
+      font-family: -apple-system, sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      fill: #2E2E2E;
+    }
+
+    .main-label {
+      font-family: -apple-system, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      fill: #2E2E2E;
+    }
+
+    .axis-label {
+      font-family: -apple-system, sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      fill: #2E2E2E;
+    }
+
+    .annotation {
+      font-family: -apple-system, sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      fill: #606060;
+    }
+
+    /* Shape styles */
+    .layer-outline {
+      stroke: #2E2E2E;
+      stroke-width: 1;
+    }
+
+    .dashed-line {
+      stroke: #808080;
+      stroke-width: 1;
+      stroke-dasharray: 5,3;
+      fill: none;
+    }
+
+    .info-box {
+      fill: #E6F3FF;
+      stroke: #4472C4;
+      stroke-width: 1;
+    }
+  </style>
+
+  <!-- ========================================
+       BACKGROUND
+       ======================================== -->
+  <rect width="800" height="600" fill="#FAFAFA"/>
+
+  <!-- ========================================
+       PANEL LABEL (if multi-panel)
+       ======================================== -->
+  <text x="15" y="25" class="panel-label">a</text>
+
+  <!-- ========================================
+       MAIN CONTENT
+       Replace this section with your figure content
+       ======================================== -->
+  <g id="main-content">
+
+    <!-- Example: Layered structure -->
+    <g id="layers" transform="translate(100, 150)">
+      <rect x="0" y="0" width="600" height="50" fill="#606060" class="layer-outline"/>
+      <text x="300" y="28" class="main-label" text-anchor="middle">Layer 1</text>
+
+      <rect x="0" y="50" width="600" height="80" fill="url(#metalGradient)" class="layer-outline"/>
+      <text x="300" y="93" class="main-label" text-anchor="middle">Layer 2</text>
+
+      <rect x="0" y="130" width="600" height="100" fill="#7CB5E8" class="layer-outline"/>
+      <text x="300" y="183" class="main-label" text-anchor="middle">Layer 3</text>
+    </g>
+
+    <!-- Example: Arrow with label -->
+    <g id="arrow-example">
+      <line x1="200" y1="400" x2="300" y2="400" stroke="#4EC9E0" stroke-width="2" marker-end="url(#ionArrow)"/>
+      <text x="250" y="395" class="annotation" text-anchor="middle">Process direction</text>
+    </g>
+
+  </g>
+
+  <!-- ========================================
+       LEGEND (optional)
+       ======================================== -->
+  <g id="legend" transform="translate(650, 50)">
+    <rect x="0" y="0" width="130" height="80" fill="#FFFFFF" stroke="#2E2E2E" stroke-width="0.8" rx="3"/>
+
+    <line x1="10" y1="20" x2="40" y2="20" stroke="#4472C4" stroke-width="2"/>
+    <text x="45" y="24" class="annotation">Item 1</text>
+
+    <line x1="10" y1="40" x2="40" y2="40" stroke="#E83845" stroke-width="2"/>
+    <text x="45" y="44" class="annotation">Item 2</text>
+
+    <circle cx="25" cy="60" r="5" fill="#F4C542" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="45" y="64" class="annotation">Item 3</text>
+  </g>
+
+  <!-- ========================================
+       SCALE BAR (optional)
+       ======================================== -->
+  <g id="scale-bar" transform="translate(680, 550)">
+    <line x1="0" y1="0" x2="50" y2="0" stroke="#2E2E2E" stroke-width="2.5" stroke-linecap="square"/>
+    <line x1="0" y1="-2.5" x2="0" y2="2.5" stroke="#2E2E2E" stroke-width="2.5"/>
+    <line x1="50" y1="-2.5" x2="50" y2="2.5" stroke="#2E2E2E" stroke-width="2.5"/>
+    <text x="25" y="13" class="annotation" text-anchor="middle">Scale</text>
+  </g>
+
+  <!-- ========================================
+       ANNOTATIONS / CALLOUTS (optional)
+       ======================================== -->
+  <g id="callout-example">
+    <!-- Leader line -->
+    <polyline points="400,200 420,180 480,180" fill="none" stroke="#2E2E2E" stroke-width="0.8"/>
+    <!-- Text -->
+    <text x="485" y="184" class="annotation">Annotation text</text>
+  </g>
+
+</svg>

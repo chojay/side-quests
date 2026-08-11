@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350" role="img" aria-labelledby="title desc">
+
+  <title id="title">Layered material schematic</title>
+  <desc id="desc">Cross-sectional view of a multi-layered thin film structure showing substrate, buffer layer, active layer, and protective coating with thickness labels</desc>
+
+  <style>
+    .label { font-family: -apple-system, sans-serif; font-size: 11px; font-weight: 600; fill: #2E2E2E; }
+    .dimension { font-family: -apple-system, sans-serif; font-size: 9px; fill: #606060; }
+    .layer { stroke: #2E2E2E; stroke-width: 1; }
+    .panel-label { font-size: 16px; font-weight: 700; fill: #2E2E2E; }
+  </style>
+
+  <!-- Background -->
+  <rect width="500" height="350" fill="#FAFAFA"/>
+
+  <!-- Panel label -->
+  <text x="15" y="25" class="panel-label">a</text>
+
+  <!-- Layered structure -->
+  <g id="layers">
+
+    <!-- Substrate -->
+    <rect x="80" y="80" width="340" height="60" fill="#FAF0E6" class="layer"/>
+    <text x="250" y="113" class="label" text-anchor="middle">Si substrate</text>
+
+    <!-- Buffer layer -->
+    <rect x="80" y="140" width="340" height="25" fill="#8FBC8F" class="layer"/>
+    <text x="250" y="155" class="label" text-anchor="middle" font-size="10">Buffer (SiO<tspan baseline-shift="sub" font-size="0.7em">2</tspan>)</text>
+
+    <!-- Active layer 1 -->
+    <rect x="80" y="165" width="340" height="35" fill="#F4C542" class="layer"/>
+    <text x="250" y="185" class="label" text-anchor="middle">Active layer (Au)</text>
+
+    <!-- Active layer 2 -->
+    <rect x="80" y="200" width="340" height="30" fill="#4472C4" class="layer"/>
+    <text x="250" y="218" class="label" text-anchor="middle" fill="#FFFFFF">Functional layer</text>
+
+    <!-- Protective coating -->
+    <rect x="80" y="230" width="340" height="15" fill="#8B7BB8" opacity="0.7" class="layer"/>
+    <text x="250" y="240" class="label" text-anchor="middle" font-size="9">Protective coating</text>
+
+  </g>
+
+  <!-- Dimension lines -->
+  <g id="dimensions">
+
+    <!-- Substrate dimension -->
+    <line x1="430" y1="80" x2="430" y2="140" stroke="#606060" stroke-width="0.8"/>
+    <line x1="427" y1="80" x2="433" y2="80" stroke="#606060" stroke-width="0.8"/>
+    <line x1="427" y1="140" x2="433" y2="140" stroke="#606060" stroke-width="0.8"/>
+    <text x="440" y="113" class="dimension">600 nm</text>
+
+    <!-- Buffer dimension -->
+    <line x1="430" y1="140" x2="430" y2="165" stroke="#606060" stroke-width="0.8"/>
+    <line x1="427" y1="165" x2="433" y2="165" stroke="#606060" stroke-width="0.8"/>
+    <text x="440" y="155" class="dimension">50 nm</text>
+
+    <!-- Active layer 1 dimension -->
+    <line x1="430" y1="165" x2="430" y2="200" stroke="#606060" stroke-width="0.8"/>
+    <line x1="427" y1="200" x2="433" y2="200" stroke="#606060" stroke-width="0.8"/>
+    <text x="440" y="185" class="dimension">80 nm</text>
+
+    <!-- Active layer 2 dimension -->
+    <line x1="430" y1="200" x2="430" y2="230" stroke="#606060" stroke-width="0.8"/>
+    <line x1="427" y1="230" x2="433" y2="230" stroke="#606060" stroke-width="0.8"/>
+    <text x="440" y="218" class="dimension">60 nm</text>
+
+    <!-- Coating dimension -->
+    <line x1="430" y1="230" x2="430" y2="245" stroke="#606060" stroke-width="0.8"/>
+    <line x1="427" y1="245" x2="433" y2="245" stroke="#606060" stroke-width="0.8"/>
+    <text x="440" y="240" class="dimension">30 nm</text>
+
+  </g>
+
+  <!-- Interface annotation -->
+  <g id="interface-callout">
+    <circle cx="95" cy="165" r="3" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+    <polyline points="98,165 110,155 150,155" fill="none" stroke="#E83845" stroke-width="0.8"/>
+    <text x="155" y="152" font-size="9" fill="#E83845">Critical interface</text>
+    <text x="155" y="162" font-size="8" fill="#606060">Buffer-Au junction</text>
+  </g>
+
+  <!-- Scale bar -->
+  <g id="scale" transform="translate(380, 300)">
+    <line x1="0" y1="0" x2="50" y2="0" stroke="#2E2E2E" stroke-width="2.5" stroke-linecap="square"/>
+    <line x1="0" y1="-2.5" x2="0" y2="2.5" stroke="#2E2E2E" stroke-width="2.5"/>
+    <line x1="50" y1="-2.5" x2="50" y2="2.5" stroke="#2E2E2E" stroke-width="2.5"/>
+    <text x="25" y="13" class="dimension" text-anchor="middle">100 nm</text>
+  </g>
+
+</svg>

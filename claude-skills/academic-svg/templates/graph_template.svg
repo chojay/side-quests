@@ -1,0 +1,209 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" role="img" aria-labelledby="title desc">
+
+  <!-- ========================================
+       GRAPH/CHART TEMPLATE
+       For data visualization figures
+       ======================================== -->
+
+  <title id="title">Graph title</title>
+  <desc id="desc">Graph showing relationship between X and Y variables</desc>
+
+  <defs>
+    <!-- Data point markers -->
+    <marker id="dataPoint1" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3" fill="#4472C4" stroke="#2E2E2E" stroke-width="0.5"/>
+    </marker>
+
+    <marker id="dataPoint2" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+    </marker>
+  </defs>
+
+  <style>
+    .panel-label {
+      font-family: -apple-system, sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      fill: #2E2E2E;
+    }
+
+    .axis-label {
+      font-family: -apple-system, sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      fill: #2E2E2E;
+    }
+
+    .tick-label {
+      font-family: -apple-system, sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      fill: #606060;
+    }
+
+    .legend-text {
+      font-family: -apple-system, sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      fill: #2E2E2E;
+    }
+
+    .axis-line {
+      stroke: #2E2E2E;
+      stroke-width: 2;
+    }
+
+    .tick-line {
+      stroke: #2E2E2E;
+      stroke-width: 1;
+    }
+
+    .grid-line {
+      stroke: #D3D3D3;
+      stroke-width: 0.5;
+      stroke-dasharray: 2,2;
+    }
+  </style>
+
+  <!-- Background -->
+  <rect width="600" height="500" fill="#FAFAFA"/>
+
+  <!-- Panel label -->
+  <text x="15" y="25" class="panel-label">a</text>
+
+  <!-- ========================================
+       GRAPH AREA
+       ======================================== -->
+  <g id="graph" transform="translate(100, 80)">
+
+    <!-- Plot area background (optional) -->
+    <rect x="0" y="0" width="400" height="300" fill="#FFFFFF" stroke="none"/>
+
+    <!-- Grid lines (optional) -->
+    <g id="gridlines">
+      <!-- Horizontal gridlines -->
+      <line x1="0" y1="60" x2="400" y2="60" class="grid-line"/>
+      <line x1="0" y1="120" x2="400" y2="120" class="grid-line"/>
+      <line x1="0" y1="180" x2="400" y2="180" class="grid-line"/>
+      <line x1="0" y1="240" x2="400" y2="240" class="grid-line"/>
+
+      <!-- Vertical gridlines -->
+      <line x1="100" y1="0" x2="100" y2="300" class="grid-line"/>
+      <line x1="200" y1="0" x2="200" y2="300" class="grid-line"/>
+      <line x1="300" y1="0" x2="300" y2="300" class="grid-line"/>
+    </g>
+
+    <!-- ========================================
+         AXES
+         ======================================== -->
+    <!-- X-axis -->
+    <line x1="0" y1="300" x2="400" y2="300" class="axis-line"/>
+
+    <!-- X-axis ticks -->
+    <g id="x-ticks">
+      <line x1="0" y1="300" x2="0" y2="305" class="tick-line"/>
+      <text x="0" y="320" class="tick-label" text-anchor="middle">0</text>
+
+      <line x1="100" y1="300" x2="100" y2="305" class="tick-line"/>
+      <text x="100" y="320" class="tick-label" text-anchor="middle">25</text>
+
+      <line x1="200" y1="300" x2="200" y2="305" class="tick-line"/>
+      <text x="200" y="320" class="tick-label" text-anchor="middle">50</text>
+
+      <line x1="300" y1="300" x2="300" y2="305" class="tick-line"/>
+      <text x="300" y="320" class="tick-label" text-anchor="middle">75</text>
+
+      <line x1="400" y1="300" x2="400" y2="305" class="tick-line"/>
+      <text x="400" y="320" class="tick-label" text-anchor="middle">100</text>
+    </g>
+
+    <!-- X-axis label -->
+    <text x="200" y="350" class="axis-label" text-anchor="middle">X-axis label (units)</text>
+
+    <!-- Y-axis -->
+    <line x1="0" y1="0" x2="0" y2="300" class="axis-line"/>
+
+    <!-- Y-axis ticks -->
+    <g id="y-ticks">
+      <line x1="-5" y1="0" x2="0" y2="0" class="tick-line"/>
+      <text x="-10" y="5" class="tick-label" text-anchor="end">100</text>
+
+      <line x1="-5" y1="60" x2="0" y2="60" class="tick-line"/>
+      <text x="-10" y="65" class="tick-label" text-anchor="end">80</text>
+
+      <line x1="-5" y1="120" x2="0" y2="120" class="tick-line"/>
+      <text x="-10" y="125" class="tick-label" text-anchor="end">60</text>
+
+      <line x1="-5" y1="180" x2="0" y2="180" class="tick-line"/>
+      <text x="-10" y="185" class="tick-label" text-anchor="end">40</text>
+
+      <line x1="-5" y1="240" x2="0" y2="240" class="tick-line"/>
+      <text x="-10" y="245" class="tick-label" text-anchor="end">20</text>
+
+      <line x1="-5" y1="300" x2="0" y2="300" class="tick-line"/>
+      <text x="-10" y="305" class="tick-label" text-anchor="end">0</text>
+    </g>
+
+    <!-- Y-axis label -->
+    <text x="-60" y="150" class="axis-label" text-anchor="middle" transform="rotate(-90 -60 150)">Y-axis label (units)</text>
+
+    <!-- ========================================
+         DATA SERIES
+         ======================================== -->
+
+    <!-- Data series 1 (line with points) -->
+    <g id="data-series-1">
+      <!-- Line -->
+      <polyline points="0,280 50,240 100,200 150,180 200,160 250,150 300,145 350,143 400,142"
+                fill="none" stroke="#4472C4" stroke-width="2"/>
+
+      <!-- Data points -->
+      <circle cx="0" cy="280" r="3" fill="#4472C4" stroke="#2E2E2E" stroke-width="0.5"/>
+      <circle cx="50" cy="240" r="3" fill="#4472C4" stroke="#2E2E2E" stroke-width="0.5"/>
+      <circle cx="100" cy="200" r="3" fill="#4472C4" stroke="#2E2E2E" stroke-width="0.5"/>
+      <circle cx="150" cy="180" r="3" fill="#4472C4" stroke="#2E2E2E" stroke-width="0.5"/>
+      <circle cx="200" cy="160" r="3" fill="#4472C4" stroke="#2E2E2E" stroke-width="0.5"/>
+      <circle cx="250" cy="150" r="3" fill="#4472C4" stroke="#2E2E2E" stroke-width="0.5"/>
+      <circle cx="300" cy="145" r="3" fill="#4472C4" stroke="#2E2E2E" stroke-width="0.5"/>
+      <circle cx="350" cy="143" r="3" fill="#4472C4" stroke="#2E2E2E" stroke-width="0.5"/>
+      <circle cx="400" cy="142" r="3" fill="#4472C4" stroke="#2E2E2E" stroke-width="0.5"/>
+    </g>
+
+    <!-- Data series 2 (different style) -->
+    <g id="data-series-2">
+      <!-- Line (dashed) -->
+      <polyline points="0,260 50,235 100,210 150,195 200,185 250,178 300,172 350,168 400,165"
+                fill="none" stroke="#E83845" stroke-width="2" stroke-dasharray="5,3"/>
+
+      <!-- Data points (squares) -->
+      <rect x="-3" y="257" width="6" height="6" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+      <rect x="47" y="232" width="6" height="6" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+      <rect x="97" y="207" width="6" height="6" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+      <rect x="147" y="192" width="6" height="6" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+      <rect x="197" y="182" width="6" height="6" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+      <rect x="247" y="175" width="6" height="6" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+      <rect x="297" y="169" width="6" height="6" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+      <rect x="347" y="165" width="6" height="6" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+      <rect x="397" y="162" width="6" height="6" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+    </g>
+
+  </g>
+
+  <!-- ========================================
+       LEGEND
+       ======================================== -->
+  <g id="legend" transform="translate(420, 100)">
+    <rect x="0" y="0" width="150" height="60" fill="#FFFFFF" stroke="#2E2E2E" stroke-width="0.8" rx="3"/>
+
+    <!-- Series 1 -->
+    <line x1="10" y1="20" x2="40" y2="20" stroke="#4472C4" stroke-width="2"/>
+    <circle cx="25" cy="20" r="3" fill="#4472C4" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="45" y="24" class="legend-text">Series 1</text>
+
+    <!-- Series 2 -->
+    <line x1="10" y1="45" x2="40" y2="45" stroke="#E83845" stroke-width="2" stroke-dasharray="5,3"/>
+    <rect x="22" y="42" width="6" height="6" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="45" y="49" class="legend-text">Series 2</text>
+  </g>
+
+</svg>

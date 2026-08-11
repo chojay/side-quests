@@ -1,0 +1,279 @@
+%% arxiv-preprint.latex - Pandoc template for arXiv-style preprints
+%% Produces single-column, Computer Modern, numbered-section PDFs
+%% that match the visual signature of typical arXiv submissions.
+%%
+%% Usage: pandoc input.md -o output.pdf --template=arxiv-preprint.latex
+
+\pdfoutput=1
+\documentclass[$if(fontsize)$$fontsize$$else$11pt$endif$,$if(papersize)$$papersize$$else$letterpaper$endif$]{article}
+
+%% ──────────────────────────────────────────────
+%% Geometry & Layout
+%% ──────────────────────────────────────────────
+\usepackage[
+  $if(geometry)$
+  $for(geometry)$$geometry$$sep$,$endfor$
+  $else$
+  margin=1in
+  $endif$
+]{geometry}
+
+%% ──────────────────────────────────────────────
+%% Fonts & Encoding
+%% ──────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+$if(fontfamily)$
+\usepackage{$fontfamily$}
+$else$
+\usepackage{lmodern}        % Latin Modern - scalable Computer Modern
+$endif$
+\usepackage{microtype}       % Microtypographic refinements
+
+%% ──────────────────────────────────────────────
+%% Math
+%% ──────────────────────────────────────────────
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{mathtools}
+\usepackage{bm}              % Bold math (\bm{x})
+$if(physics)$
+\usepackage{physics}
+$endif$
+
+%% ──────────────────────────────────────────────
+%% Graphics & Color
+%% ──────────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage[dvipsnames,svgnames,x11names]{xcolor}
+$if(graphics-path)$
+\graphicspath{{$graphics-path$}}
+$endif$
+
+%% ──────────────────────────────────────────────
+%% Tables
+%% ──────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{longtable}
+
+%% ──────────────────────────────────────────────
+%% Figures
+%% ──────────────────────────────────────────────
+\usepackage{subcaption}
+\usepackage{float}
+
+%% ──────────────────────────────────────────────
+%% Units (optional)
+%% ──────────────────────────────────────────────
+$if(siunitx)$
+\usepackage{siunitx}
+$endif$
+
+%% ──────────────────────────────────────────────
+%% Lists
+%% ──────────────────────────────────────────────
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=*}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+%% ──────────────────────────────────────────────
+%% Links & Cross-references
+%% ──────────────────────────────────────────────
+\usepackage[
+  colorlinks=true,
+  linkcolor=$if(linkcolor)$$linkcolor$$else$RoyalBlue$endif$,
+  citecolor=$if(citecolor)$$citecolor$$else$ForestGreen$endif$,
+  urlcolor=$if(urlcolor)$$urlcolor$$else$RoyalBlue$endif$,
+  bookmarks=true,
+  pdfauthor={$for(author)$$if(author.name)$$author.name$$else$$author$$endif$$sep$, $endfor$},
+  pdftitle={$if(title)$$title$$endif$},
+]{hyperref}
+\usepackage{cleveref}        % Must load after hyperref
+
+%% ──────────────────────────────────────────────
+%% Bibliography
+%% ──────────────────────────────────────────────
+$if(natbib)$
+\usepackage[numbers,sort&compress]{natbib}
+\bibliographystyle{$if(bibstyle)$$bibstyle$$else$unsrtnat$endif$}
+$endif$
+$if(biblatex)$
+\usepackage[backend=biber,$if(bibstyle)$style=$bibstyle$$else$style=numeric-comp$endif$]{biblatex}
+$for(bibliography)$
+\addbibresource{$bibliography$}
+$endfor$
+$endif$
+
+%% ──────────────────────────────────────────────
+%% Header / Footer (arXiv-style: page numbers only)
+%% ──────────────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{\thepage}
+
+%% First page: optional preprint header
+\fancypagestyle{firstpage}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  $if(arxiv-id)$
+  \fancyhead[R]{\small\texttt{arXiv:$arxiv-id$}}%
+  $endif$
+  $if(preprint-label)$
+  \fancyhead[L]{\small $preprint-label$}%
+  $endif$
+  \fancyfoot[C]{\thepage}%
+}
+
+%% ──────────────────────────────────────────────
+%% Spacing
+%% ──────────────────────────────────────────────
+$if(linespacing)$
+\usepackage{setspace}
+\$linespacing$spacing
+$endif$
+
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0pt plus 1pt}
+
+%% ──────────────────────────────────────────────
+%% Section heading style (arXiv-like: bold, normal size)
+%% ──────────────────────────────────────────────
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\itshape}{\thesubsubsection}{1em}{}
+\titlespacing*{\section}{0pt}{1.5ex plus 0.5ex minus 0.3ex}{0.8ex plus 0.2ex}
+\titlespacing*{\subsection}{0pt}{1.2ex plus 0.4ex minus 0.2ex}{0.5ex plus 0.1ex}
+\titlespacing*{\subsubsection}{0pt}{1.0ex plus 0.3ex minus 0.2ex}{0.3ex plus 0.1ex}
+
+%% ──────────────────────────────────────────────
+%% Captions
+%% ──────────────────────────────────────────────
+\usepackage[font=small,labelfont=bf,labelsep=period]{caption}
+
+%% ──────────────────────────────────────────────
+%% Code listings (if needed)
+%% ──────────────────────────────────────────────
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+%% ──────────────────────────────────────────────
+%% Custom header includes
+%% ──────────────────────────────────────────────
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+%% ══════════════════════════════════════════════
+%%  DOCUMENT
+%% ══════════════════════════════════════════════
+\begin{document}
+\thispagestyle{firstpage}
+
+%% ──────────────────────────────────────────────
+%% Title block
+%% ──────────────────────────────────────────────
+\begin{center}
+  {\LARGE\bfseries $title$ \par}
+  \vspace{0.8em}
+
+  %% Authors
+  $for(author)$
+  $if(author.name)$
+  \textbf{$author.name$}%
+  $if(author.affiliation)$
+  \textsuperscript{$author.affiliation$}%
+  $endif$
+  $if(author.email)$
+  \thanks{\texttt{$author.email$}}%
+  $endif$
+  $else$
+  \textbf{$author$}%
+  $endif$
+  $sep$,\quad
+  $endfor$
+
+  \vspace{0.6em}
+
+  %% Affiliations
+  $if(affiliations)$
+  {\small
+  $for(affiliations)$
+  \textsuperscript{$affiliations.id$}\textit{$affiliations.name$}\\
+  $endfor$
+  }
+  $endif$
+
+  \vspace{0.4em}
+
+  %% Date
+  $if(date)$
+  {\small $date$}
+  $else$
+  {\small \today}
+  $endif$
+\end{center}
+
+%% ──────────────────────────────────────────────
+%% Abstract
+%% ──────────────────────────────────────────────
+$if(abstract)$
+\vspace{1em}
+\begin{center}
+\begin{minipage}{0.92\textwidth}
+  \noindent\textbf{Abstract.}\quad
+  $abstract$
+\end{minipage}
+\end{center}
+$endif$
+
+%% Keywords
+$if(keywords)$
+\vspace{0.3em}
+\begin{center}
+\begin{minipage}{0.92\textwidth}
+  \noindent\small\textit{Keywords:} $for(keywords)$$keywords$$sep$, $endfor$
+\end{minipage}
+\end{center}
+$endif$
+
+%% PACS / MSC / Subject codes
+$if(pacs)$
+\begin{center}
+\begin{minipage}{0.92\textwidth}
+  \noindent\small\textit{PACS:} $pacs$
+\end{minipage}
+\end{center}
+$endif$
+
+\vspace{1.5em}
+
+%% ──────────────────────────────────────────────
+%% Body
+%% ──────────────────────────────────────────────
+$body$
+
+%% ──────────────────────────────────────────────
+%% Bibliography
+%% ──────────────────────────────────────────────
+$if(natbib)$
+$if(bibliography)$
+\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
+$endif$
+$endif$
+$if(biblatex)$
+\printbibliography$if(bibtitle)$[title=$bibtitle$]$endif$
+$endif$
+
+%% ──────────────────────────────────────────────
+%% Appendix
+%% ──────────────────────────────────────────────
+$for(include-after)$
+$include-after$
+$endfor$
+
+\end{document}

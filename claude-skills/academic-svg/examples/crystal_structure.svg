@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 450" role="img" aria-labelledby="title desc">
+
+  <title id="title">Silicon diamond cubic crystal structure</title>
+  <desc id="desc">Crystal structure diagram of the silicon diamond cubic unit cell, showing two interpenetrating face-centered cubic sublattices of silicon atoms offset by one quarter of the body diagonal, with tetrahedral bonds drawn for the interior basis atoms and unit cell boundaries indicated by dashed lines</desc>
+
+  <defs>
+    <!-- Atom shading for 3D effect: Si sublattice A (fcc sites) -->
+    <radialGradient id="siGradA" cx="35%" cy="35%">
+      <stop offset="0%" style="stop-color:#B0C4DE"/>
+      <stop offset="100%" style="stop-color:#708090"/>
+    </radialGradient>
+
+    <!-- Atom shading: Si sublattice B (interior tetrahedral basis atoms) -->
+    <radialGradient id="siGradB" cx="35%" cy="35%">
+      <stop offset="0%" style="stop-color:#FFD966"/>
+      <stop offset="100%" style="stop-color:#F4C542"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    .label { font-family: -apple-system, sans-serif; font-size: 12px; font-weight: 600; fill: #2E2E2E; }
+    .annotation { font-family: -apple-system, sans-serif; font-size: 10px; fill: #606060; }
+    .atom-outline { stroke: #2E2E2E; stroke-width: 0.5; }
+    .panel-label { font-size: 16px; font-weight: 700; fill: #2E2E2E; }
+    .unit-cell { stroke: #808080; stroke-width: 1; stroke-dasharray: 5,3; fill: none; }
+    .bond { stroke: #606060; stroke-width: 1.5; }
+  </style>
+
+  <!-- Background -->
+  <rect width="450" height="450" fill="#FAFAFA"/>
+
+  <!-- Panel label -->
+  <text x="15" y="25" class="panel-label">b</text>
+
+  <!-- Title -->
+  <text x="225" y="40" class="label" text-anchor="middle" font-size="14">Si Diamond Cubic Structure</text>
+
+  <!-- Unit cell -->
+  <g id="unit-cell" transform="translate(105, 90)">
+
+    <!-- Unit cell boundaries (dashed cube in oblique projection) -->
+    <!-- Front face -->
+    <rect x="0" y="0" width="200" height="200" class="unit-cell"/>
+    <!-- Back face (perspective) -->
+    <polygon points="40,40 240,40 240,240 40,240" class="unit-cell"/>
+    <!-- Connecting edges -->
+    <line x1="0" y1="0" x2="40" y2="40" class="unit-cell"/>
+    <line x1="200" y1="0" x2="240" y2="40" class="unit-cell"/>
+    <line x1="0" y1="200" x2="40" y2="240" class="unit-cell"/>
+    <line x1="200" y1="200" x2="240" y2="240" class="unit-cell"/>
+
+    <!-- Back plane atoms (z = 1): corners + back face center, sublattice A -->
+    <circle cx="40" cy="40" r="13" fill="url(#siGradA)" class="atom-outline"/>
+    <circle cx="240" cy="40" r="13" fill="url(#siGradA)" class="atom-outline"/>
+    <circle cx="40" cy="240" r="13" fill="url(#siGradA)" class="atom-outline"/>
+    <circle cx="240" cy="240" r="13" fill="url(#siGradA)" class="atom-outline"/>
+    <circle cx="140" cy="140" r="13" fill="url(#siGradA)" class="atom-outline"/>
+
+    <!-- Deep interior atoms (z = 3/4): sublattice B at (3/4,1/4,3/4) and (1/4,3/4,3/4) -->
+    <circle cx="180" cy="80" r="13" fill="url(#siGradB)" class="atom-outline"/>
+    <circle cx="80" cy="180" r="13" fill="url(#siGradB)" class="atom-outline"/>
+
+    <!-- Mid-plane atoms (z = 1/2): side face centers, sublattice A -->
+    <circle cx="120" cy="20" r="14" fill="url(#siGradA)" class="atom-outline"/>
+    <circle cx="120" cy="220" r="14" fill="url(#siGradA)" class="atom-outline"/>
+    <circle cx="20" cy="120" r="14" fill="url(#siGradA)" class="atom-outline"/>
+    <circle cx="220" cy="120" r="14" fill="url(#siGradA)" class="atom-outline"/>
+
+    <!-- Tetrahedral bonds for the near interior atoms (each Si has 4 nearest neighbors) -->
+    <line x1="60" y1="60" x2="0" y2="0" class="bond"/>
+    <line x1="60" y1="60" x2="100" y2="100" class="bond"/>
+    <line x1="60" y1="60" x2="120" y2="20" class="bond"/>
+    <line x1="60" y1="60" x2="20" y2="120" class="bond"/>
+
+    <line x1="160" y1="160" x2="200" y2="200" class="bond"/>
+    <line x1="160" y1="160" x2="100" y2="100" class="bond"/>
+    <line x1="160" y1="160" x2="120" y2="220" class="bond"/>
+    <line x1="160" y1="160" x2="220" y2="120" class="bond"/>
+
+    <!-- Near interior atoms (z = 1/4): sublattice B at (1/4,1/4,1/4) and (3/4,3/4,1/4) -->
+    <circle cx="60" cy="60" r="15" fill="url(#siGradB)" class="atom-outline"/>
+    <circle cx="160" cy="160" r="15" fill="url(#siGradB)" class="atom-outline"/>
+
+    <!-- Front plane atoms (z = 0): corners + front face center, sublattice A -->
+    <circle cx="0" cy="0" r="16" fill="url(#siGradA)" class="atom-outline"/>
+    <circle cx="200" cy="0" r="16" fill="url(#siGradA)" class="atom-outline"/>
+    <circle cx="0" cy="200" r="16" fill="url(#siGradA)" class="atom-outline"/>
+    <circle cx="200" cy="200" r="16" fill="url(#siGradA)" class="atom-outline"/>
+    <circle cx="100" cy="100" r="16" fill="url(#siGradA)" class="atom-outline"/>
+
+  </g>
+
+  <!-- Tetrahedral coordination callout -->
+  <g id="tetrahedral-callout">
+    <polyline points="175,160 205,135 235,135" fill="none" stroke="#2E2E2E" stroke-width="0.8"/>
+    <text x="240" y="132" font-size="8" fill="#2E2E2E">Tetrahedral bonding</text>
+    <text x="240" y="141" font-size="8" fill="#606060">(4 nearest neighbors)</text>
+  </g>
+
+  <!-- Legend -->
+  <g id="legend" transform="translate(30, 340)">
+    <rect x="0" y="0" width="200" height="70" fill="#FFFFFF" stroke="#2E2E2E" stroke-width="0.8" rx="3"/>
+
+    <!-- Si sublattice A -->
+    <circle cx="20" cy="20" r="10" fill="url(#siGradA)" class="atom-outline"/>
+    <text x="35" y="24" class="annotation">Si, fcc sublattice A</text>
+
+    <!-- Si sublattice B -->
+    <circle cx="20" cy="50" r="10" fill="url(#siGradB)" class="atom-outline"/>
+    <text x="35" y="54" class="annotation">Si, sublattice B (+a/4 &#10216;111&#10217;)</text>
+  </g>
+
+  <!-- Crystallographic axes -->
+  <g id="axes" transform="translate(370, 340)">
+    <!-- a-axis -->
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#2E2E2E" stroke-width="1.5" marker-end="url(#axis-arrow)"/>
+    <text x="35" y="5" class="annotation" font-style="italic">a</text>
+
+    <!-- b-axis -->
+    <line x1="0" y1="0" x2="0" y2="-30" stroke="#2E2E2E" stroke-width="1.5" marker-end="url(#axis-arrow)"/>
+    <text x="5" y="-33" class="annotation" font-style="italic">b</text>
+
+    <!-- c-axis -->
+    <line x1="0" y1="0" x2="-20" y2="-20" stroke="#2E2E2E" stroke-width="1.5" marker-end="url(#axis-arrow)"/>
+    <text x="-30" y="-25" class="annotation" font-style="italic">c</text>
+  </g>
+
+  <defs>
+    <marker id="axis-arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2E2E2E"/>
+    </marker>
+  </defs>
+
+  <!-- Lattice parameter annotation -->
+  <g id="lattice-param">
+    <line x1="105" y1="310" x2="305" y2="310" stroke="#606060" stroke-width="0.8"/>
+    <line x1="105" y1="307" x2="105" y2="313" stroke="#606060" stroke-width="0.8"/>
+    <line x1="305" y1="307" x2="305" y2="313" stroke="#606060" stroke-width="0.8"/>
+    <text x="205" y="325" class="annotation" text-anchor="middle" font-style="italic">a</text>
+    <text x="205" y="335" class="annotation" text-anchor="middle" font-size="8">= 5.43 &#197;</text>
+  </g>
+
+</svg>

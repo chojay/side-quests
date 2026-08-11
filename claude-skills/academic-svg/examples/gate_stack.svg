@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-labelledby="title desc">
+
+  <title id="title">High-k metal gate MOSFET cross-section</title>
+  <desc id="desc">Cross-sectional view of an n-channel MOSFET with a high-k metal gate stack, showing the p-type silicon substrate, n+ source and drain regions, interfacial silicon dioxide layer, hafnium dioxide high-k dielectric, titanium nitride metal gate, tungsten gate fill, and silicon nitride spacers, with the electron inversion channel indicated by a cyan arrow</desc>
+
+  <defs>
+    <!-- Arrow marker for carrier/plasma species movement -->
+    <marker id="ionArrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#4EC9E0"/>
+    </marker>
+
+    <!-- Metal gradient for gate fill depth -->
+    <linearGradient id="metalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD966;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F4C542;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- High-k dielectric gradient -->
+    <linearGradient id="highkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFB6C1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF69B4;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+
+  <style>
+    .label { font-family: -apple-system, sans-serif; font-size: 12px; font-weight: 600; fill: #2E2E2E; }
+    .annotation { font-family: -apple-system, sans-serif; font-size: 8px; fill: #2E2E2E; }
+    .dimension { font-family: -apple-system, sans-serif; font-size: 9px; fill: #606060; }
+    .layer { stroke: #2E2E2E; stroke-width: 1; }
+    .panel-label { font-size: 16px; font-weight: 700; fill: #2E2E2E; }
+  </style>
+
+  <!-- Background -->
+  <rect width="600" height="400" fill="#FAFAFA"/>
+
+  <!-- Panel label -->
+  <text x="15" y="25" class="panel-label">a</text>
+
+  <!-- Silicon substrate -->
+  <g id="substrate">
+    <rect x="75" y="230" width="450" height="100" fill="#F2D7A9" class="layer"/>
+    <text x="300" y="305" class="label" text-anchor="middle">p-Si substrate (100)</text>
+  </g>
+
+  <!-- Source and drain regions (n+ doped) -->
+  <g id="source-drain">
+    <rect x="75" y="230" width="160" height="40" fill="#4472C4" class="layer"/>
+    <text x="150" y="253" font-size="10" font-weight="600" fill="#FFFFFF" text-anchor="middle">n&#8314; source</text>
+
+    <rect x="365" y="230" width="160" height="40" fill="#4472C4" class="layer"/>
+    <text x="450" y="253" font-size="10" font-weight="600" fill="#FFFFFF" text-anchor="middle">n&#8314; drain</text>
+  </g>
+
+  <!-- Inversion channel (electron flow at Si surface under the gate) -->
+  <g id="channel">
+    <rect x="237" y="231" width="126" height="6" fill="#4EC9E0" opacity="0.35"/>
+    <line x1="247" y1="234" x2="350" y2="234" stroke="#4EC9E0" stroke-width="2" marker-end="url(#ionArrow)"/>
+    <text x="300" y="252" class="annotation" text-anchor="middle">Inversion channel (e&#8315;)</text>
+  </g>
+
+  <!-- Gate stack (bottom to top: SiO2 interfacial layer, HfO2, TiN, W) -->
+  <g id="gate-stack">
+    <!-- Interfacial SiO2 -->
+    <rect x="250" y="222" width="100" height="8" fill="#7CB5E8" class="layer"/>
+
+    <!-- High-k HfO2 -->
+    <rect x="250" y="208" width="100" height="14" fill="url(#highkGrad)" class="layer"/>
+
+    <!-- TiN metal gate -->
+    <rect x="250" y="186" width="100" height="22" fill="#606060" class="layer"/>
+    <text x="300" y="201" font-size="10" font-weight="600" fill="#FFFFFF" text-anchor="middle">TiN</text>
+
+    <!-- Tungsten gate fill -->
+    <rect x="250" y="150" width="100" height="36" fill="url(#metalGrad)" class="layer"/>
+    <text x="300" y="172" font-size="11" font-weight="600" fill="#2E2E2E" text-anchor="middle">W</text>
+  </g>
+
+  <!-- Nitride spacers -->
+  <g id="spacers">
+    <path d="M 250,230 L 226,230 Q 230,180 250,158 Z" fill="#8FBC8F" stroke="#2E2E2E" stroke-width="0.8"/>
+    <path d="M 350,230 L 374,230 Q 370,180 350,158 Z" fill="#8FBC8F" stroke="#2E2E2E" stroke-width="0.8"/>
+  </g>
+
+  <!-- Gate length dimension -->
+  <g id="gate-length">
+    <line x1="250" y1="138" x2="350" y2="138" stroke="#606060" stroke-width="0.8"/>
+    <line x1="250" y1="135" x2="250" y2="141" stroke="#606060" stroke-width="0.8"/>
+    <line x1="350" y1="135" x2="350" y2="141" stroke="#606060" stroke-width="0.8"/>
+    <text x="300" y="130" class="dimension" text-anchor="middle"><tspan font-style="italic">L</tspan><tspan baseline-shift="sub" font-size="0.7em">g</tspan> = 45 nm</text>
+  </g>
+
+  <!-- Callout: high-k dielectric -->
+  <g id="highk-callout">
+    <polyline points="352,214 380,196 410,196" fill="none" stroke="#2E2E2E" stroke-width="0.8"/>
+    <text x="415" y="193" class="annotation">High-&#954; HfO&#8322; (&#954; &#8776; 20)</text>
+    <text x="415" y="203" class="annotation" fill="#606060">~2 nm</text>
+  </g>
+
+  <!-- Callout: interfacial oxide -->
+  <g id="il-callout">
+    <polyline points="352,226 385,222 410,222" fill="none" stroke="#2E2E2E" stroke-width="0.8"/>
+    <text x="415" y="219" class="annotation">Interfacial SiO&#8322;</text>
+    <text x="415" y="229" class="annotation" fill="#606060">~1 nm</text>
+  </g>
+
+  <!-- Callout: nitride spacer -->
+  <g id="spacer-callout">
+    <polyline points="232,205 195,190 160,190" fill="none" stroke="#2E2E2E" stroke-width="0.8"/>
+    <text x="155" y="187" class="annotation" text-anchor="end">Si&#8323;N&#8324; spacer</text>
+  </g>
+
+  <!-- Callout: gate fill -->
+  <g id="gatefill-callout">
+    <polyline points="252,168 215,150 185,150" fill="none" stroke="#2E2E2E" stroke-width="0.8"/>
+    <text x="180" y="147" class="annotation" text-anchor="end">Gate fill (W)</text>
+  </g>
+
+  <!-- Scale note -->
+  <text x="525" y="360" class="dimension" text-anchor="end" fill="#808080">Schematic, not to scale</text>
+
+</svg>

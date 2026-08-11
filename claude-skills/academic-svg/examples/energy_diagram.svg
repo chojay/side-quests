@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-labelledby="title desc">
+
+  <title id="title">Band alignment energy diagram</title>
+  <desc id="desc">Energy level diagram showing band alignment at a heterointerface with conduction band, valence band, and Fermi level marked, illustrating band bending and charge transfer</desc>
+
+  <defs>
+    <!-- Arrow marker -->
+    <marker id="energyArrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#E83845"/>
+    </marker>
+  </defs>
+
+  <style>
+    .label { font-family: -apple-system, sans-serif; font-size: 11px; font-weight: 600; fill: #2E2E2E; }
+    .annotation { font-family: -apple-system, sans-serif; font-size: 9px; fill: #606060; }
+    .panel-label { font-size: 16px; font-weight: 700; fill: #2E2E2E; }
+  </style>
+
+  <!-- Background -->
+  <rect width="600" height="400" fill="#FAFAFA"/>
+
+  <!-- Panel label -->
+  <text x="15" y="25" class="panel-label">c</text>
+
+  <!-- Title -->
+  <text x="300" y="40" class="label" text-anchor="middle" font-size="13">Energy Band Diagram</text>
+
+  <!-- Energy axis -->
+  <g id="energy-axis">
+    <line x1="70" y1="80" x2="70" y2="330" stroke="#2E2E2E" stroke-width="2"/>
+    <text x="50" y="205" class="label" transform="rotate(-90 50 205)" text-anchor="middle" font-style="italic">Energy (eV)</text>
+
+    <!-- Tick marks -->
+    <line x1="65" y1="120" x2="75" y2="120" stroke="#2E2E2E" stroke-width="1"/>
+    <line x1="65" y1="200" x2="75" y2="200" stroke="#2E2E2E" stroke-width="1"/>
+    <line x1="65" y1="280" x2="75" y2="280" stroke="#2E2E2E" stroke-width="1"/>
+  </g>
+
+  <!-- Material A (left side) -->
+  <g id="material-a">
+    <text x="150" y="70" class="annotation" text-anchor="middle">Material A</text>
+
+    <!-- Conduction band -->
+    <line x1="90" y1="120" x2="250" y2="120" stroke="#4472C4" stroke-width="3"/>
+    <text x="260" y="124" class="label">CB</text>
+
+    <!-- Fermi level -->
+    <line x1="90" y1="200" x2="250" y2="200" stroke="#4EC9E0" stroke-width="2" stroke-dasharray="4,3"/>
+    <text x="260" y="204" class="label" fill="#4EC9E0">E<tspan baseline-shift="sub" font-size="0.7em">f</tspan></text>
+
+    <!-- Valence band -->
+    <line x1="90" y1="280" x2="250" y2="280" stroke="#4472C4" stroke-width="3"/>
+    <text x="260" y="284" class="label">VB</text>
+
+    <!-- Band gap shading -->
+    <rect x="90" y="120" width="160" height="160" fill="#B4D7EC" opacity="0.3"/>
+  </g>
+
+  <!-- Interface -->
+  <line x1="300" y1="80" x2="300" y2="330" stroke="#2E2E2E" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <text x="300" y="360" class="annotation" text-anchor="middle">Interface</text>
+
+  <!-- Material B (right side) with band bending -->
+  <g id="material-b">
+    <text x="420" y="70" class="annotation" text-anchor="middle">Material B</text>
+
+    <!-- Conduction band (with bending) -->
+    <path d="M 300,150 Q 325,145 350,143 L 550,143" fill="none" stroke="#4472C4" stroke-width="3"/>
+    <text x="560" y="147" class="label">CB</text>
+
+    <!-- Fermi level (continuous) -->
+    <line x1="300" y1="200" x2="550" y2="200" stroke="#4EC9E0" stroke-width="2" stroke-dasharray="4,3"/>
+
+    <!-- Valence band (with bending) -->
+    <path d="M 300,250 Q 325,255 350,257 L 550,257" fill="none" stroke="#4472C4" stroke-width="3"/>
+    <text x="560" y="261" class="label">VB</text>
+
+    <!-- Band gap shading -->
+    <polygon points="350,143 550,143 550,257 350,257" fill="#B4D7EC" opacity="0.3"/>
+
+    <!-- Bent region shading -->
+    <path d="M 300,150 Q 325,145 350,143 L 350,257 Q 325,255 300,250 Z" fill="#FFD966" opacity="0.3"/>
+  </g>
+
+  <!-- Energy barrier annotation -->
+  <g id="barrier">
+    <!-- Barrier height -->
+    <line x1="100" y1="120" x2="100" y2="143" stroke="#E83845" stroke-width="1" stroke-dasharray="2,2"/>
+    <line x1="95" y1="120" x2="105" y2="120" stroke="#E83845" stroke-width="1.5"/>
+    <line x1="95" y1="143" x2="105" y2="143" stroke="#E83845" stroke-width="1.5"/>
+
+    <text x="110" y="132" font-size="9" fill="#E83845">ΔE<tspan baseline-shift="sub" font-size="0.7em">CB</tspan></text>
+  </g>
+
+  <!-- Charge transfer arrow -->
+  <g id="charge-transfer">
+    <line x1="220" y1="165" x2="320" y2="165" stroke="#E83845" stroke-width="2" marker-end="url(#energyArrow)"/>
+    <text x="270" y="158" font-size="9" fill="#E83845">e<tspan baseline-shift="super" font-size="0.7em">−</tspan> transfer</text>
+  </g>
+
+  <!-- Band gap annotations -->
+  <g id="band-gaps">
+    <!-- Material A band gap -->
+    <text x="150" y="205" class="annotation" text-anchor="middle" font-style="italic">E<tspan baseline-shift="sub" font-size="0.7em">g</tspan> = 3.2 eV</text>
+
+    <!-- Material B band gap -->
+    <text x="450" y="205" class="annotation" text-anchor="middle" font-style="italic">E<tspan baseline-shift="sub" font-size="0.7em">g</tspan> = 2.4 eV</text>
+  </g>
+
+  <!-- Depletion region label -->
+  <g id="depletion">
+    <text x="325" y="300" font-size="8" fill="#606060" text-anchor="middle">Depletion</text>
+    <text x="325" y="310" font-size="8" fill="#606060" text-anchor="middle">region</text>
+  </g>
+
+</svg>

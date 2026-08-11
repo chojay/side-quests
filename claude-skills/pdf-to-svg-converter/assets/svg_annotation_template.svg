@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="612pt" height="792pt"
+     viewBox="0 0 612 792">
+
+  <!-- Metadata -->
+  <title>PDF Annotation Template</title>
+  <desc>Template for annotating converted PDF documents. Replace the image href with your converted PDF PNG file.</desc>
+
+  <!-- Definitions for reusable elements -->
+  <defs>
+    <!-- Arrow marker for measurement lines -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#2E2E2E" />
+    </marker>
+
+    <!-- Dot marker for property corners -->
+    <marker id="property-corner" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+    </marker>
+
+    <!-- Arrow marker (double-ended) for dimensions -->
+    <marker id="dimension-start" markerWidth="10" markerHeight="10" refX="1" refY="3" orient="auto">
+      <polygon points="10 0, 0 3, 10 6" fill="#4472C4" />
+    </marker>
+    <marker id="dimension-end" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#4472C4" />
+    </marker>
+  </defs>
+
+  <!-- Styles -->
+  <style>
+    .annotation-label { font-family: Arial, sans-serif; font-size: 11px; font-weight: 600; fill: #2E2E2E; }
+    .measurement-label { font-family: Arial, sans-serif; font-size: 10px; font-weight: 400; fill: #4472C4; }
+    .note-text { font-family: Arial, sans-serif; font-size: 9px; font-weight: 400; fill: #404040; }
+    .property-line { stroke: #E83845; stroke-width: 2; stroke-dasharray: 5,3; }
+    .measurement-line { stroke: #4472C4; stroke-width: 1.5; }
+    .highlight-area { fill: #FFD966; fill-opacity: 0.3; stroke: #F4C542; stroke-width: 1; }
+  </style>
+
+  <!-- Background: Replace this with your converted PDF image -->
+  <image x="0" y="0" width="612" height="792"
+         xlink:href="YOUR_CONVERTED_PDF_IMAGE.png"
+         preserveAspectRatio="none"/>
+
+  <!-- Annotation Layer: Add your custom elements below -->
+  <g id="annotations">
+
+    <!-- Example 1: Property corner marker -->
+    <g id="corner-marker-example">
+      <circle cx="150" cy="200" r="5" fill="#E83845" stroke="#2E2E2E" stroke-width="1"/>
+      <text x="160" y="205" class="annotation-label">Property Corner NW</text>
+    </g>
+
+    <!-- Example 2: Dimension/measurement line -->
+    <g id="dimension-example">
+      <line x1="150" y1="250" x2="450" y2="250"
+            class="measurement-line"
+            marker-start="url(#dimension-start)"
+            marker-end="url(#dimension-end)"/>
+      <text x="300" y="245" text-anchor="middle" class="measurement-label">100.5 ft</text>
+    </g>
+
+    <!-- Example 3: Property boundary line -->
+    <g id="boundary-example">
+      <polyline points="150,200 150,350 300,350"
+                class="property-line"
+                fill="none"
+                marker-start="url(#property-corner)"
+                marker-mid="url(#property-corner)"
+                marker-end="url(#property-corner)"/>
+    </g>
+
+    <!-- Example 4: Highlighted area -->
+    <g id="highlight-example">
+      <rect x="350" y="150" width="100" height="80"
+            class="highlight-area"/>
+      <text x="400" y="195" text-anchor="middle" class="annotation-label">Easement</text>
+    </g>
+
+    <!-- Example 5: Annotation note -->
+    <g id="note-example">
+      <rect x="100" y="500" width="200" height="60"
+            fill="#FFF9E6" stroke="#2E2E2E" stroke-width="1"/>
+      <text x="110" y="520" class="annotation-label">Note:</text>
+      <text x="110" y="535" class="note-text">Property line verified by</text>
+      <text x="110" y="548" class="note-text">licensed surveyor on MM/DD/YYYY</text>
+    </g>
+
+    <!-- Example 6: Directional arrow -->
+    <g id="direction-example">
+      <line x1="500" y1="100" x2="550" y2="100"
+            stroke="#2E2E2E" stroke-width="2"
+            marker-end="url(#arrowhead)"/>
+      <text x="570" y="105" class="annotation-label">N</text>
+    </g>
+
+    <!-- Your custom annotations go here -->
+    <!-- Delete the examples above and add your own elements -->
+
+  </g>
+
+  <!-- Legend (optional) -->
+  <g id="legend" transform="translate(20, 700)">
+    <rect width="180" height="70" fill="#FAFAFA" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="10" y="20" font-size="12" font-weight="700" fill="#2E2E2E">Legend</text>
+
+    <line x1="10" y1="35" x2="40" y2="35" class="property-line"/>
+    <text x="45" y="38" font-size="9" fill="#2E2E2E">Property Boundary</text>
+
+    <line x1="10" y1="50" x2="40" y2="50" class="measurement-line"/>
+    <text x="45" y="53" font-size="9" fill="#2E2E2E">Measurement</text>
+
+    <circle cx="25" cy="63" r="3" fill="#E83845" stroke="#2E2E2E" stroke-width="0.5"/>
+    <text x="45" y="66" font-size="9" fill="#2E2E2E">Property Corner</text>
+  </g>
+
+</svg>
