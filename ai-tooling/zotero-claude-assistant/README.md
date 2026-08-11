@@ -64,7 +64,7 @@ The retrieval half (`src/modules/local-rag.ts`) is a pure-TypeScript implementat
 
 ### Install the released plugin
 
-1. Download the latest `claude-assistant.xpi` from the [Releases](https://github.com/chojay/zotero-claude-assistant/releases) page.
+1. Download `claude-assistant.xpi`. The standalone release repo is not yet published, so until it is, build the XPI from this folder's source (one command - see [Build from source](#build-from-source) below).
 2. In Zotero, open **Tools → Add-ons** (or **Tools → Plugins**).
 3. Click the gear icon and choose **Install Plugin From File...**
 4. Select the `.xpi` file and restart Zotero.
