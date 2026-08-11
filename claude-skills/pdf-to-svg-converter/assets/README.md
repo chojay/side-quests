@@ -1,5 +1,7 @@
 # Assets Directory
 
+![Annotation template with callout, arrow, and label styles](svg_annotation_template.svg)
+
 This directory contains template files and examples for PDF to SVG conversion workflows.
 
 ## Contents
