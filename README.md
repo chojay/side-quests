@@ -12,7 +12,7 @@ Everything here shares three habits:
 
 ## Map
 
-![Tree map of the repo: a side-quests root card branches to seven section cards - computational-materials, ai-tooling, claude-skills, 3d-printing, hardware-tools, medical-imaging, and espresso-gaggiuino - each with a bold section name and three one-line highlights of what's inside](docs/section-map-tree.png)
+![Tree map of the repo: a side-quests root card branches to seven section cards - computational-materials, ai-tooling, claude-skills, 3d-printing, hardware-tools, medical-imaging, and espresso-gaggiuino - each with a bold section name, a one-line problem statement, and two indented lines for approach and outcome](docs/repo-map.png)
 
 | Section | What's inside |
 |---|---|
@@ -21,7 +21,7 @@ Everything here shares three habits:
 | [claude-skills/](claude-skills/) | Nine working Claude Code skills: parametric CAD, academic figures, arXiv PDFs, hybrid retrieval, research orchestration, transcript tooling |
 | [3d-printing/](3d-printing/) | Seventeen parametric builds plus two design playbooks; every part is a Python or OpenSCAD program |
 | [hardware-tools/](hardware-tools/) | Batch label printing for a phone-app-only NIIMBOT printer: reverse-engineered BLE protocol, firmware-dialect detection, dry-run byte tracing |
-| [medical-imaging/](medical-imaging/) | An infant-movement video pipeline (SAM 3 on Apple Silicon) and a DICOM MRI toolkit, both de-identified, code-only, honest about limits |
+| [medical-imaging/](medical-imaging/) | An infant-movement video pipeline (SAM 3 on Apple Silicon) and a DICOM MRI toolkit, both de-identified and code-only, with caveats and shortcomings documented |
 | [espresso-gaggiuino/](espresso-gaggiuino/) | An open-source machine mod run as a data project: 639-shot telemetry corpus, drift detection, troubleshooting as differential diagnosis |
 
 ## Highlights
