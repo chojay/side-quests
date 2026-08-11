@@ -1,8 +1,10 @@
 # Infant GMA Video Analysis Pipeline
 
-A personal side quest: replicate the ideas behind a published infant General Movements Assessment (GMA) pipeline on consumer hardware, using nothing but iPhone home video, open models, and a Mac.
+A personal side quest: replicate the ideas behind a published infant General Movements Assessment (GMA) pipeline on consumer hardware, using nothing but consumer phone video, open models, and a Mac.
 
 **Read [DISCLAIMER.md](DISCLAIMER.md) first. This is not a medical device. Every number it produces is an explicitly labeled proxy, not a clinical score.**
+
+![Workflow: consumer phone video is segmented and tracked into a 13-keypoint pose, passed through the supine-validity gate, and scored honestly with F and C computed and P/R/Po marked NOT_COMPUTABLE](workflow.png)
 
 No real videos, frames, pose data, or reports ship with this project; the pipeline expects you to supply your own recordings in `./inputs/`. The [examples folder](examples/) holds one evaluation generated entirely from the synthetic test fixtures, so the output format is visible without any recording.
 
