@@ -19,7 +19,7 @@ I did not set out to build a CAD portfolio. Each part exists because something i
 
 - **Every dimension is a named constant; everything else derives.** Scaling a 6-bowl dispenser to 8 bowls was one line. Re-fitting a caddy after caliper measurements is editing a table and re-running.
 - **Constraints become asserts.** Printer bed limits, a child-safety maximum opening, and motion-envelope clearances live as `assert` statements, so a bad future edit fails at build time instead of at install time.
-- **Validation is a program.** Watertight checks, point-containment truth tables (12-17 probes per part), envelope sweeps, and print-orientation renders run on every version. The nursery vent's "invisible understructure" is verified by a 1,476-point containment sweep.
+- **Validation is a program.** Watertight checks, point-containment truth tables (12-17 probes per part), envelope sweeps, and print-orientation renders run on every version. The nursery vent's "invisible understructure" is verified by containment sweeps (1,476 points on the printed v2, 528 on the deeper v3 grid).
 - **Iteration is versioned.** `rice_tower_v1.py` through `v6.py` is a readable design history in the workshop; the repo ships v1 and the printed v6 as the endpoints, with the pivots told in prose.
 
 ## Start with the playbooks
