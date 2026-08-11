@@ -21,6 +21,12 @@ These files were exported from a personal Obsidian vault: frontmatter removed, w
 |------|----------------|
 | [Gaggiuino-Popular-Community-Profiles-Research.md](Gaggiuino-Popular-Community-Profiles-Research.md) | Survey of the most popular community profiles (lever-style, blooming, turbo, Londinium and friends) with roast-specific recommendations |
 
+### Beans and roasters
+
+| File | What it covers |
+|------|----------------|
+| [Single-Origin-Espresso-Comparison-Verve-Saint-Frank-Onyx.md](Single-Origin-Espresso-Comparison-Verve-Saint-Frank-Onyx.md) | Deep comparison of three single-origin espresso programs (Verve, Saint Frank, Onyx): catalog breadth, roast approach, sourcing-transparency scoring, per-shot value math, and a documented correction of my own earlier framing |
+
 ### Steaming and workflow
 
 | File | What it covers |

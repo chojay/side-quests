@@ -85,7 +85,7 @@ Pointers to five community profiles from the official [Gaggiuino community profi
 
 ## research-notes/
 
-The original December 2025 to February 2026 research notes written while planning the build, kept for their fuller sourcing detail; several were later consolidated into the guides above. See the [research-notes index](research-notes/README.md).
+The original December 2025 to February 2026 research notes written while planning the build, kept for their fuller sourcing detail; several were later consolidated into the guides above. Includes a [three-roaster single-origin espresso comparison](research-notes/Single-Origin-Espresso-Comparison-Verve-Saint-Frank-Onyx.md) (Verve vs Saint Frank vs Onyx: transparency scoring, per-shot value, and which roasts need profiling hardware). See the [research-notes index](research-notes/README.md).
 
 ## assets/
 
