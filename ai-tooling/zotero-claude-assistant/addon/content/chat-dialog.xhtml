@@ -1,0 +1,1636 @@
+<?xml version="1.0"?>
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        id="claude-chat-window"
+        title="Claude Research Assistant"
+        width="900"
+        height="700"
+        persist="screenX screenY width height">
+
+  <html:style>
+    /* ═══════════════════════════════════════════════════════════════
+       Claude Research Assistant - Clean RAG Interface
+       Always searches your Zotero library for context
+       ═══════════════════════════════════════════════════════════════ */
+
+    :root {
+      --claude-orange: #d97706;
+      --claude-orange-light: #fbbf24;
+      --bg-main: #fafafa;
+      --bg-white: #ffffff;
+      --bg-hover: #f3f4f6;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-muted: #9ca3af;
+      --border-light: #e5e7eb;
+      --border-focus: #3b82f6;
+      --accent-blue: #2563eb;
+      --accent-green: #059669;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'SF Mono', Monaco, Consolas, monospace;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    #app {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: var(--bg-main);
+      font-family: var(--font-sans);
+      color: var(--text-primary);
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       Header
+       ───────────────────────────────────────────────────────────────── */
+    #header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      background: var(--bg-white);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img { width: 28px; height: 28px; }
+
+    .logo-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+    }
+
+    .status-dot.loading {
+      background: var(--claude-orange);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .new-chat-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      background: var(--bg-hover);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .new-chat-btn:hover {
+      background: var(--bg-white);
+      border-color: var(--border-focus);
+      color: var(--accent-blue);
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       Messages Area
+       ───────────────────────────────────────────────────────────────── */
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Welcome */
+    .welcome {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 20px;
+      flex: 1;
+    }
+
+    .welcome-icon { font-size: 40px; margin-bottom: 16px; }
+
+    .welcome-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .welcome-sub {
+      font-size: 14px;
+      color: var(--text-secondary);
+      max-width: 400px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      max-width: 500px;
+    }
+
+    .suggestion {
+      padding: 8px 14px;
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .suggestion:hover {
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+    }
+
+    /* Message bubbles */
+    .msg {
+      display: flex;
+      gap: 12px;
+      max-width: 85%;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg-user { align-self: flex-end; flex-direction: row-reverse; }
+    .msg-assistant { align-self: flex-start; }
+
+    .msg-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .msg-user .msg-avatar { background: var(--accent-blue); color: #fff; }
+    .msg-assistant .msg-avatar { background: var(--claude-orange); color: #fff; }
+
+    .msg-content { display: flex; flex-direction: column; gap: 8px; }
+
+    .msg-bubble {
+      padding: 12px 16px;
+      border-radius: var(--radius-lg);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .msg-user .msg-bubble {
+      background: var(--accent-blue);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg-assistant .msg-bubble {
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-bottom-left-radius: 4px;
+    }
+
+    /* Sources panel */
+    .sources {
+      margin-top: 8px;
+      padding: 10px 12px;
+      background: #f8fafc;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .sources-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .sources-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .sources-toggle {
+      font-size: 10px;
+      color: var(--text-muted);
+      transition: transform 0.15s;
+    }
+
+    .sources-header.open .sources-toggle { transform: rotate(90deg); }
+
+    .sources-list {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .sources-header.open + .sources-list { display: flex; }
+
+    .source {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 8px 10px;
+      background: var(--bg-white);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .source:hover {
+      border-color: var(--accent-blue);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .source-num {
+      width: 18px;
+      height: 18px;
+      background: var(--claude-orange);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 600;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .source-info { flex: 1; min-width: 0; }
+
+    .source-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-primary);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .source-meta {
+      display: flex;
+      gap: 8px;
+      margin-top: 2px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .source-score {
+      color: var(--accent-green);
+      font-weight: 500;
+      font-family: var(--font-mono);
+    }
+
+    /* Typing indicator */
+    .typing {
+      display: flex;
+      gap: 4px;
+      padding: 12px;
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      animation: bounce 1.4s ease-in-out infinite;
+    }
+
+    .typing-dot:nth-child(2) { animation-delay: 0.15s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       Input Area
+       ───────────────────────────────────────────────────────────────── */
+    #input-area {
+      padding: 16px 20px;
+      background: var(--bg-white);
+      border-top: 1px solid var(--border-light);
+    }
+
+    .input-box {
+      display: flex;
+      gap: 10px;
+      background: var(--bg-main);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 8px;
+      transition: all 0.15s;
+    }
+
+    .input-box:focus-within {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    #input {
+      flex: 1;
+      min-height: 40px;
+      max-height: 160px;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.5;
+      resize: none;
+      color: var(--text-primary);
+    }
+
+    #input:focus { outline: none; }
+    #input::placeholder { color: var(--text-muted); }
+
+    #send-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: var(--radius-md);
+      background: var(--accent-blue);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+
+    #send-btn:hover:not(:disabled) {
+      background: #1d4ed8;
+    }
+
+    #send-btn:disabled {
+      background: var(--text-muted);
+      cursor: not-allowed;
+    }
+
+    #send-btn svg { width: 18px; height: 18px; }
+
+    .input-hint {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .input-hint kbd {
+      padding: 2px 5px;
+      background: var(--bg-main);
+      border: 1px solid var(--border-light);
+      border-radius: 3px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+    }
+
+    /* Markdown in messages */
+    .msg-bubble code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: rgba(0,0,0,0.06);
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    .msg-bubble pre {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      margin: 8px 0;
+    }
+
+    .msg-bubble pre code { background: transparent; padding: 0; }
+    .msg-bubble strong { font-weight: 600; }
+    .msg-bubble em { font-style: italic; }
+    .msg-bubble ul, .msg-bubble ol { margin: 8px 0; padding-left: 20px; }
+    .msg-bubble li { margin: 4px 0; }
+
+    .citation {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      background: var(--claude-orange);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 600;
+      border-radius: 10px;
+      vertical-align: middle;
+      margin: 0 2px;
+      cursor: pointer;
+    }
+
+    .citation:hover { background: var(--claude-orange-light); }
+
+    /* Citation hover preview tooltip */
+    .citation-tooltip {
+      position: fixed;
+      max-width: 380px;
+      max-height: 200px;
+      padding: 12px 14px;
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text-primary);
+      overflow-y: auto;
+      z-index: 10000;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .citation-tooltip.visible { opacity: 1; }
+    .citation-tooltip .tooltip-header {
+      font-weight: 600;
+      font-size: 11px;
+      color: var(--claude-orange);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .citation-tooltip .tooltip-text {
+      color: var(--text-secondary);
+      display: -webkit-box;
+      -webkit-line-clamp: 8;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Mode badge on assistant messages */
+    .mode-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    .mode-badge.research { background: #dbeafe; color: #1e40af; }
+    .mode-badge.chat { background: #f3e8ff; color: #6b21a8; }
+
+    /* No-results warning */
+    .no-results-warning {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      color: #92400e;
+      margin-top: 6px;
+    }
+
+    /* Force-research toggle */
+    .research-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--bg-main);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .research-toggle:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+    .research-toggle.active {
+      background: #dbeafe;
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+      font-weight: 600;
+    }
+
+    /* Index banner */
+    .index-banner {
+      padding: 8px 16px;
+      background: #fef3c7;
+      border-bottom: 1px solid #fde68a;
+      font-size: 12px;
+      color: #92400e;
+      text-align: center;
+    }
+    .index-banner a { color: #b45309; text-decoration: underline; cursor: pointer; }
+
+    /* Follow-up suggestion chips */
+    .follow-up-suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-light);
+    }
+    .follow-up-chip {
+      padding: 6px 12px;
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: left;
+      max-width: 100%;
+      line-height: 1.3;
+      font-family: var(--font-sans);
+    }
+    .follow-up-chip:hover {
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+      background: #eff6ff;
+    }
+
+    /* Conversation history panel */
+    .conv-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .conv-history-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 10px;
+      background: var(--bg-hover);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: var(--font-sans);
+    }
+    .conv-history-btn:hover {
+      background: var(--bg-white);
+      border-color: var(--border-focus);
+      color: var(--accent-blue);
+    }
+    .conv-panel {
+      position: absolute;
+      top: 52px;
+      right: 16px;
+      width: 320px;
+      max-height: 400px;
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .conv-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .conv-panel-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .conv-panel-close {
+      width: 24px;
+      height: 24px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text-muted);
+      border-radius: 4px;
+    }
+    .conv-panel-close:hover { background: var(--bg-hover); color: var(--text-primary); }
+    .conv-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px;
+    }
+    .conv-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .conv-item:hover { background: var(--bg-hover); }
+    .conv-item.active { background: #dbeafe; border: 1px solid var(--accent-blue); }
+    .conv-item-info { flex: 1; min-width: 0; }
+    .conv-item-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .conv-item-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .conv-item-delete {
+      width: 20px;
+      height: 20px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+    .conv-item:hover .conv-item-delete { opacity: 1; }
+    .conv-item-delete:hover { background: #fecaca; color: #dc2626; }
+
+    /* Source selection panel */
+    .sources-panel-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 10px;
+      background: var(--bg-hover);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: var(--font-sans);
+    }
+    .sources-panel-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+    .src-panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 100%;
+      background: var(--bg-white);
+      border-right: 1px solid var(--border-light);
+      box-shadow: 4px 0 12px rgba(0,0,0,0.08);
+      z-index: 1001;
+      display: flex;
+      flex-direction: column;
+    }
+    .src-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .src-panel-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+    .src-panel-close {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--text-muted);
+      border-radius: 4px;
+    }
+    .src-panel-close:hover { background: var(--bg-hover); }
+    .src-panel-search {
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .src-panel-search input {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-family: var(--font-sans);
+      outline: none;
+      box-sizing: border-box;
+    }
+    .src-panel-search input:focus { border-color: var(--border-focus); }
+    .src-panel-actions {
+      display: flex;
+      gap: 6px;
+      padding: 6px 14px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .src-action-btn {
+      padding: 3px 8px;
+      border: 1px solid var(--border-light);
+      background: var(--bg-main);
+      border-radius: 4px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: var(--font-sans);
+    }
+    .src-action-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+    .src-list { flex: 1; overflow-y: auto; padding: 4px 6px; }
+    .src-select-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .src-select-item:hover { background: var(--bg-hover); }
+    .src-select-item input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; accent-color: var(--accent-blue); }
+    .src-select-info { flex: 1; min-width: 0; }
+    .src-select-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-primary);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .src-select-meta { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+  </html:style>
+
+  <vbox flex="1">
+    <html:div id="app">
+      <!-- Header -->
+      <html:div id="header">
+        <html:div class="logo">
+          <html:img src="chrome://claudeassistant/content/icons/icon-48.png" alt=""/>
+          <html:span class="logo-text">Claude Research Assistant</html:span>
+        </html:div>
+        <html:div class="status">
+          <html:span id="status-dot" class="status-dot loading"></html:span>
+          <html:span id="status-text">Loading...</html:span>
+        </html:div>
+        <html:div class="conv-controls">
+          <html:button id="sources-btn" class="sources-panel-btn" onclick="toggleSourcesPanel();">&#128218; <html:span id="sources-count">All papers</html:span></html:button>
+          <html:button id="conv-history-btn" class="conv-history-btn" onclick="toggleConvPanel();">History</html:button>
+          <html:button class="new-chat-btn" onclick="newChat();">+ New</html:button>
+        </html:div>
+      </html:div>
+
+      <!-- Conversation history panel -->
+      <html:div id="conv-panel" class="conv-panel" style="display:none;">
+        <html:div class="conv-panel-header">
+          <html:span class="conv-panel-title">Conversations</html:span>
+          <html:button class="conv-panel-close" onclick="toggleConvPanel();">&#215;</html:button>
+        </html:div>
+        <html:div id="conv-list" class="conv-list"></html:div>
+      </html:div>
+
+      <!-- Source selection panel -->
+      <html:div id="src-panel" class="src-panel" style="display:none;">
+        <html:div class="src-panel-header">
+          <html:span class="src-panel-title">Select Sources</html:span>
+          <html:button class="src-panel-close" onclick="toggleSourcesPanel();">&#215;</html:button>
+        </html:div>
+        <html:div class="src-panel-search">
+          <html:input id="src-search" type="text" placeholder="Search papers..." oninput="filterSrcList(this.value);"/>
+        </html:div>
+        <html:div class="src-panel-actions">
+          <html:button class="src-action-btn" onclick="selectAllSources();">Select all</html:button>
+          <html:button class="src-action-btn" onclick="deselectAllSources();">Clear</html:button>
+        </html:div>
+        <html:div id="src-list" class="src-list"></html:div>
+      </html:div>
+
+      <!-- Index warning banner (hidden by default) -->
+      <html:div id="index-banner" class="index-banner" style="display:none;">
+        No papers indexed. Go to Settings to index your library.
+      </html:div>
+
+      <!-- Messages -->
+      <html:div id="messages">
+        <html:div id="welcome" class="welcome">
+          <html:div class="welcome-icon">📚</html:div>
+          <html:div class="welcome-title">Ask about your research</html:div>
+          <html:div class="welcome-sub">
+            I'll search your indexed papers and answer based on your library.
+          </html:div>
+          <html:div class="suggestions">
+            <html:button class="suggestion" onclick="askQuestion('Summarize the key findings on this topic');">Summarize findings</html:button>
+            <html:button class="suggestion" onclick="askQuestion('What methods are commonly used?');">Methods used</html:button>
+            <html:button class="suggestion" onclick="askQuestion('What are the research gaps?');">Research gaps</html:button>
+            <html:button class="suggestion" onclick="askQuestion('Compare different approaches');">Compare approaches</html:button>
+          </html:div>
+        </html:div>
+      </html:div>
+
+      <!-- Input -->
+      <html:div id="input-area">
+        <html:div class="input-box">
+          <html:textarea id="input"
+                        placeholder="Ask about your papers..."
+                        onkeydown="onKey(event);"
+                        oninput="resize(this);"></html:textarea>
+          <html:button id="send-btn" onclick="send();" disabled="true">
+            <html:svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <html:path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+            </html:svg>
+          </html:button>
+        </html:div>
+        <html:div class="input-hint">
+          <html:span id="hint-text"></html:span>
+          <html:span>
+            <html:span id="research-toggle" class="research-toggle active" onclick="toggleResearch();">Search papers</html:span>
+            · <html:kbd>Enter</html:kbd> send · <html:kbd>Shift+Enter</html:kbd> new line
+          </html:span>
+        </html:div>
+      </html:div>
+    </html:div>
+    <html:div id="citation-tooltip" class="citation-tooltip">
+      <html:div class="tooltip-header">Source excerpt</html:div>
+      <html:div class="tooltip-text" id="tooltip-text"></html:div>
+    </html:div>
+  </vbox>
+
+  <script><![CDATA[
+    // ═══════════════════════════════════════════════════════════════
+    // Zotero Integration
+    // ═══════════════════════════════════════════════════════════════
+    if (!window.Zotero) {
+      window.Zotero = window.opener ? window.opener.Zotero :
+        Components.classes['@zotero.org/Zotero;1'].getService(Components.interfaces.nsISupports).wrappedJSObject;
+    }
+
+    let isLoading = false;
+    let hasMessages = false;
+    let currentSources = []; // Store current sources for citation clicks
+    let forceResearch = true; // Default: always search papers
+    let citationChunkMap = {}; // { "msg-N_src-M": chunkText } for hover previews
+    let msgCounter = 0;
+
+    // ═══════════════════════════════════════════════════════════════
+    // Initialize
+    // ═══════════════════════════════════════════════════════════════
+    function init() {
+      Zotero.debug('Claude Assistant: Chat initialized');
+      checkStatus();
+
+      const input = document.getElementById('input');
+      input.addEventListener('input', () => {
+        document.getElementById('send-btn').disabled = !input.value.trim();
+      });
+
+      setTimeout(() => input.focus(), 100);
+    }
+
+    async function checkStatus() {
+      const dot = document.getElementById('status-dot');
+      const text = document.getElementById('status-text');
+      const banner = document.getElementById('index-banner');
+
+      try {
+        if (Zotero.ClaudeAssistant) {
+          // Wait briefly for RAG init if needed
+          const isReady = Zotero.ClaudeAssistant.isRAGReady();
+          if (!isReady) {
+            dot.className = 'status-dot loading';
+            text.textContent = 'Loading index...';
+            // Retry after 3 seconds
+            setTimeout(checkStatus, 3000);
+            return;
+          }
+
+          const stats = await Zotero.ClaudeAssistant.getStats();
+          dot.className = 'status-dot';
+          if (stats.indexedItems > 0) {
+            text.textContent = `${stats.indexedItems.toLocaleString()} papers indexed`;
+            if (banner) banner.style.display = 'none';
+          } else {
+            text.textContent = 'No papers indexed';
+            if (banner) banner.style.display = 'block';
+          }
+        }
+      } catch (e) {
+        dot.className = 'status-dot';
+        text.textContent = 'Ready';
+        Zotero.debug('Claude Assistant: checkStatus error: ' + e);
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // Input Handling
+    // ═══════════════════════════════════════════════════════════════
+    function onKey(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        send();
+      }
+    }
+
+    function resize(el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 160) + 'px';
+    }
+
+    function askQuestion(q) {
+      document.getElementById('input').value = q;
+      document.getElementById('send-btn').disabled = false;
+      document.getElementById('input').focus();
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // Send Message - Always uses RAG
+    // ═══════════════════════════════════════════════════════════════
+    async function send() {
+      const input = document.getElementById('input');
+      const msg = input.value.trim();
+      if (!msg || isLoading) return;
+
+      // Hide welcome
+      if (!hasMessages) {
+        const welcome = document.getElementById('welcome');
+        if (welcome) welcome.remove();
+        hasMessages = true;
+      }
+
+      // Add user message
+      addMsg('user', msg);
+      input.value = '';
+      input.style.height = 'auto';
+      document.getElementById('send-btn').disabled = true;
+
+      // Show loading
+      isLoading = true;
+      setHint('Searching papers...');
+      const typingId = showTyping();
+
+      try {
+        if (!Zotero.ClaudeAssistant) {
+          throw new Error('Plugin not loaded. Restart Zotero.');
+        }
+
+        // Auto-create conversation on first message
+        if (!currentConversationId && Zotero.ClaudeAssistant.startNewConversation) {
+          currentConversationId = await Zotero.ClaudeAssistant.startNewConversation();
+          var title = msg.substring(0, 60) + (msg.length > 60 ? '...' : '');
+          await Zotero.ClaudeAssistant.renameConversation(currentConversationId, title);
+        }
+
+        // Use forceMode when toggle is active
+        const mode = forceResearch ? 'research' : undefined;
+        const result = await Zotero.ClaudeAssistant.smartChat(msg, mode);
+
+        hideTyping(typingId);
+        addMsg('assistant', result.text, result.sources, result.mode, result.noResults, result.indexStats, result.suggestions);
+
+      } catch (err) {
+        hideTyping(typingId);
+        addMsg('assistant', 'Error: ' + (err.message || 'Something went wrong'));
+      }
+
+      isLoading = false;
+      setHint('');
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // UI Functions
+    // ═══════════════════════════════════════════════════════════════
+    function addMsg(role, text, sources, mode, noResults, indexStats, suggestions) {
+      const container = document.getElementById('messages');
+      const div = document.createElement('div');
+      div.className = 'msg msg-' + role;
+
+      if (role === 'user') {
+        div.innerHTML = `
+          <div class="msg-avatar">You</div>
+          <div class="msg-content">
+            <div class="msg-bubble">${esc(text)}</div>
+          </div>
+        `;
+      } else {
+        // Mode badge
+        let modeBadge = '';
+        if (mode === 'research') {
+          modeBadge = '<span class="mode-badge research">Research</span>';
+        } else if (mode === 'chat') {
+          modeBadge = '<span class="mode-badge chat">Chat</span>';
+        }
+
+        // No-results warning
+        let warningHtml = '';
+        if (noResults) {
+          const statsInfo = indexStats
+            ? (indexStats.indexedItems > 0
+              ? `${indexStats.indexedItems} papers indexed but no matches found.`
+              : 'No papers indexed. Go to Settings to index your library.')
+            : 'No matching papers found in your index.';
+          warningHtml = `<div class="no-results-warning">⚠ ${esc(statsInfo)} Answered without paper context.</div>`;
+        }
+
+        // Sources panel
+        let sourcesHtml = '';
+        if (sources && sources.length > 0) {
+          // Store sources for citation clicks
+          currentSources = sources;
+          sourcesHtml = `
+            <div class="sources">
+              <div class="sources-header open" onclick="this.classList.toggle('open');">
+                <span class="sources-title">📄 ${sources.length} source${sources.length > 1 ? 's' : ''}</span>
+                <span class="sources-toggle">▶</span>
+              </div>
+              <div class="sources-list">
+                ${sources.slice(0, 10).map((s, i) => `
+                  <div class="source" data-item-key="${esc(s.item_key)}">
+                    <div class="source-num">${i + 1}</div>
+                    <div class="source-info">
+                      <div class="source-title">${esc(s.title || 'Untitled')}</div>
+                      <div class="source-meta">
+                        ${s.authors ? `<span>${esc(s.authors)}</span>` : ''}
+                        ${s.year ? `<span>${esc(s.year)}</span>` : ''}
+                        <span class="source-score">${Math.min(Math.round((s.score || 0) * 100), 99)}%</span>
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+
+        // Follow-up suggestion chips
+        let suggestionsHtml = '';
+        if (suggestions && suggestions.length > 0) {
+          suggestionsHtml = `
+            <div class="follow-up-suggestions">
+              ${suggestions.map(function(s) {
+                return '<button class="follow-up-chip" data-q="' + esc(s) + '">' + esc(s) + '</button>';
+              }).join('')}
+            </div>
+          `;
+        }
+
+        div.innerHTML = `
+          <div class="msg-avatar">C</div>
+          <div class="msg-content">
+            ${modeBadge}
+            <div class="msg-bubble">${formatMd(text, sources, msgCounter++)}</div>
+            ${warningHtml}
+            ${sourcesHtml}
+            ${suggestionsHtml}
+          </div>
+        `;
+      }
+
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function showTyping() {
+      const container = document.getElementById('messages');
+      const id = 'typing-' + Date.now();
+      const div = document.createElement('div');
+      div.id = id;
+      div.className = 'msg msg-assistant';
+      div.innerHTML = `
+        <div class="msg-avatar">C</div>
+        <div class="msg-content">
+          <div class="msg-bubble">
+            <div class="typing">
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+            </div>
+          </div>
+        </div>
+      `;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+      return id;
+    }
+
+    function hideTyping(id) {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    }
+
+    function setHint(text) {
+      document.getElementById('hint-text').textContent = text;
+    }
+
+    function newChat() {
+      hasMessages = false;
+      currentConversationId = null;
+      msgCounter = 0;
+      citationChunkMap = {};
+      if (Zotero.ClaudeAssistant && Zotero.ClaudeAssistant.clearConversation) {
+        Zotero.ClaudeAssistant.clearConversation();
+      }
+      const container = document.getElementById('messages');
+      container.innerHTML = `
+        <div id="welcome" class="welcome">
+          <div class="welcome-icon">📚</div>
+          <div class="welcome-title">Ask about your research</div>
+          <div class="welcome-sub">
+            I'll search your indexed papers and answer based on your library.
+          </div>
+          <div class="suggestions">
+            <button class="suggestion" onclick="askQuestion('Summarize the key findings on this topic');">Summarize findings</button>
+            <button class="suggestion" onclick="askQuestion('What methods are commonly used?');">Methods used</button>
+            <button class="suggestion" onclick="askQuestion('What are the research gaps?');">Research gaps</button>
+            <button class="suggestion" onclick="askQuestion('Compare different approaches');">Compare approaches</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('input').focus();
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // Conversation History Management
+    // ═══════════════════════════════════════════════════════════════
+    let currentConversationId = null;
+
+    async function toggleConvPanel() {
+      const panel = document.getElementById('conv-panel');
+      if (panel.style.display === 'none') {
+        panel.style.display = 'flex';
+        await loadConversationList();
+      } else {
+        panel.style.display = 'none';
+      }
+    }
+
+    async function loadConversationList() {
+      const list = document.getElementById('conv-list');
+      if (!Zotero.ClaudeAssistant || !Zotero.ClaudeAssistant.getConversationList) {
+        list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Not available</div>';
+        return;
+      }
+
+      const conversations = await Zotero.ClaudeAssistant.getConversationList(50);
+
+      if (conversations.length === 0) {
+        list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">No conversations yet</div>';
+        return;
+      }
+
+      list.innerHTML = conversations.map(function(conv) {
+        var active = conv.id === currentConversationId ? ' active' : '';
+        return '<div class="conv-item' + active + '" onclick="resumeConversation(\'' + conv.id + '\');">' +
+          '<div class="conv-item-info">' +
+            '<div class="conv-item-title">' + esc(conv.title) + '</div>' +
+            '<div class="conv-item-meta">' + conv.messageCount + ' msgs · ' + formatRelativeDate(conv.updatedAt) + '</div>' +
+          '</div>' +
+          '<button class="conv-item-delete" onclick="event.stopPropagation(); deleteConv(\'' + conv.id + '\');" title="Delete">&#215;</button>' +
+        '</div>';
+      }).join('');
+    }
+
+    async function resumeConversation(id) {
+      if (!Zotero.ClaudeAssistant || !Zotero.ClaudeAssistant.loadConversation) return;
+
+      var data = await Zotero.ClaudeAssistant.loadConversation(id);
+      currentConversationId = id;
+      hasMessages = true;
+      msgCounter = 0;
+      citationChunkMap = {};
+
+      var container = document.getElementById('messages');
+      container.innerHTML = '';
+
+      // Replay messages
+      for (var i = 0; i < data.messages.length; i++) {
+        var msg = data.messages[i];
+        var sources = msg.sources ? JSON.parse(msg.sources) : null;
+        addMsg(msg.role, msg.content, sources, msg.mode);
+      }
+
+      // Close panel
+      document.getElementById('conv-panel').style.display = 'none';
+    }
+
+    async function deleteConv(id) {
+      if (!Zotero.ClaudeAssistant || !Zotero.ClaudeAssistant.deleteConversation) return;
+      await Zotero.ClaudeAssistant.deleteConversation(id);
+      if (id === currentConversationId) {
+        newChat();
+      }
+      await loadConversationList();
+    }
+
+    function formatRelativeDate(isoString) {
+      var d = new Date(isoString);
+      var now = new Date();
+      var diff = now - d;
+      if (diff < 3600000) return Math.floor(diff / 60000) + 'm ago';
+      if (diff < 86400000) return Math.floor(diff / 3600000) + 'h ago';
+      if (diff < 604800000) return Math.floor(diff / 86400000) + 'd ago';
+      return d.toLocaleDateString();
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // Source Selection Panel
+    // ═══════════════════════════════════════════════════════════════
+    var allIndexedPapers = [];
+    var selectedSourceKeys = new Set();
+    var srcPanelLoaded = false;
+
+    async function toggleSourcesPanel() {
+      var panel = document.getElementById('src-panel');
+      if (panel.style.display === 'none') {
+        panel.style.display = 'flex';
+        if (!srcPanelLoaded) {
+          await loadSrcList();
+          srcPanelLoaded = true;
+        }
+      } else {
+        panel.style.display = 'none';
+      }
+    }
+
+    async function loadSrcList() {
+      if (!Zotero.ClaudeAssistant || !Zotero.ClaudeAssistant.getIndexedPaperList) return;
+      allIndexedPapers = Zotero.ClaudeAssistant.getIndexedPaperList();
+      renderSrcList(allIndexedPapers);
+    }
+
+    function renderSrcList(papers) {
+      var container = document.getElementById('src-list');
+      if (papers.length === 0) {
+        container.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">No indexed papers</div>';
+        return;
+      }
+
+      // Limit to 200 for performance
+      var displayPapers = papers.slice(0, 200);
+      container.innerHTML = displayPapers.map(function(p) {
+        var checked = selectedSourceKeys.size === 0 || selectedSourceKeys.has(p.itemKey);
+        return '<label class="src-select-item">' +
+          '<input type="checkbox" value="' + esc(p.itemKey) + '" ' + (checked ? 'checked' : '') + ' onchange="onSrcToggle(this);"/>' +
+          '<div class="src-select-info">' +
+            '<div class="src-select-title">' + esc(p.title) + '</div>' +
+            '<div class="src-select-meta">' + esc(p.authors) + ' · ' + esc(p.year) + ' · ' + p.chunkCount + ' chunks</div>' +
+          '</div>' +
+        '</label>';
+      }).join('');
+    }
+
+    function filterSrcList(query) {
+      var q = query.toLowerCase();
+      var filtered = allIndexedPapers.filter(function(p) {
+        return p.title.toLowerCase().indexOf(q) >= 0 ||
+               p.authors.toLowerCase().indexOf(q) >= 0 ||
+               p.year.indexOf(q) >= 0;
+      });
+      renderSrcList(filtered);
+    }
+
+    function onSrcToggle(checkbox) {
+      if (selectedSourceKeys.size === 0 && !checkbox.checked) {
+        // First deselection: add all EXCEPT this one
+        allIndexedPapers.forEach(function(p) {
+          if (p.itemKey !== checkbox.value) {
+            selectedSourceKeys.add(p.itemKey);
+          }
+        });
+      } else {
+        if (checkbox.checked) {
+          selectedSourceKeys.add(checkbox.value);
+        } else {
+          selectedSourceKeys.delete(checkbox.value);
+        }
+      }
+      // If all are selected, reset to empty set (= all papers)
+      if (selectedSourceKeys.size >= allIndexedPapers.length) {
+        selectedSourceKeys.clear();
+      }
+      updateSrcCount();
+      syncSrcSelection();
+    }
+
+    function selectAllSources() {
+      selectedSourceKeys.clear();
+      updateSrcCount();
+      syncSrcSelection();
+      renderSrcList(allIndexedPapers);
+    }
+
+    function deselectAllSources() {
+      selectedSourceKeys.clear();
+      // Mark as explicit empty selection
+      updateSrcCount();
+      syncSrcSelection();
+      renderSrcList(allIndexedPapers);
+    }
+
+    function updateSrcCount() {
+      var el = document.getElementById('sources-count');
+      if (selectedSourceKeys.size === 0) {
+        el.textContent = 'All papers';
+      } else {
+        el.textContent = selectedSourceKeys.size + ' selected';
+      }
+    }
+
+    function syncSrcSelection() {
+      if (Zotero.ClaudeAssistant && Zotero.ClaudeAssistant.setDialogPaperSelection) {
+        Zotero.ClaudeAssistant.setDialogPaperSelection(
+          selectedSourceKeys.size > 0 ? Array.from(selectedSourceKeys) : []
+        );
+      }
+    }
+
+    function toggleResearch() {
+      forceResearch = !forceResearch;
+      const btn = document.getElementById('research-toggle');
+      if (btn) {
+        btn.className = forceResearch ? 'research-toggle active' : 'research-toggle';
+        btn.textContent = forceResearch ? 'Search papers' : 'Chat only';
+      }
+      const input = document.getElementById('input');
+      if (input) {
+        input.placeholder = forceResearch ? 'Ask about your papers...' : 'Chat with Claude...';
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // Utilities
+    // ═══════════════════════════════════════════════════════════════
+    function esc(text) {
+      // Must escape quotes too: escaped strings are interpolated into
+      // double-quoted HTML attributes (e.g. citation title tooltips).
+      if (!text) return '';
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function formatMd(text, sources, msgId) {
+      if (!text) return '';
+
+      // Process line-by-line for block elements, then apply inline formatting
+      var lines = text.split('\n');
+      var html = [];
+      var inList = false;    // currently inside a <ul>
+      var inOList = false;   // currently inside an <ol>
+
+      for (var li = 0; li < lines.length; li++) {
+        var line = lines[li];
+        var escaped = esc(line);
+
+        // Headings: ### h3, ## h2, # h1
+        var headingMatch = line.match(/^(#{1,3})\s+(.+)$/);
+        if (headingMatch) {
+          if (inList) { html.push('</ul>'); inList = false; }
+          if (inOList) { html.push('</ol>'); inOList = false; }
+          var level = headingMatch[1].length;
+          var hTag = 'h' + (level + 1); // # → h2, ## → h3, ### → h4 (inside msg-bubble)
+          html.push('<' + hTag + ' style="margin:12px 0 6px;font-size:' + (level === 1 ? '16' : level === 2 ? '14' : '13') + 'px;font-weight:600;">' + esc(headingMatch[2]) + '</' + hTag + '>');
+          continue;
+        }
+
+        // Unordered list: - item or * item (but not ** bold)
+        var ulMatch = line.match(/^[\s]*[-*]\s+(.+)$/);
+        if (ulMatch && !/^\*\*/.test(line.trim())) {
+          if (inOList) { html.push('</ol>'); inOList = false; }
+          if (!inList) { html.push('<ul>'); inList = true; }
+          html.push('<li>' + esc(ulMatch[1]) + '</li>');
+          continue;
+        }
+
+        // Ordered list: 1. item
+        var olMatch = line.match(/^[\s]*\d+\.\s+(.+)$/);
+        if (olMatch) {
+          if (inList) { html.push('</ul>'); inList = false; }
+          if (!inOList) { html.push('<ol>'); inOList = true; }
+          html.push('<li>' + esc(olMatch[1]) + '</li>');
+          continue;
+        }
+
+        // Close any open list if this line isn't a list item
+        if (inList) { html.push('</ul>'); inList = false; }
+        if (inOList) { html.push('</ol>'); inOList = false; }
+
+        // Empty line → paragraph break
+        if (line.trim() === '') {
+          html.push('<br/>');
+          continue;
+        }
+
+        // Regular text line
+        html.push(escaped);
+        // Add <br/> unless next line is a heading, list, or empty (which handles its own spacing)
+        if (li < lines.length - 1) {
+          var nextLine = lines[li + 1].trim();
+          if (nextLine !== '' && !/^#{1,3}\s/.test(nextLine) && !/^[-*]\s/.test(nextLine) && !/^\d+\.\s/.test(nextLine)) {
+            html.push('<br/>');
+          }
+        }
+      }
+
+      // Close any trailing open list
+      if (inList) html.push('</ul>');
+      if (inOList) html.push('</ol>');
+
+      var result = html.join('\n');
+
+      // Inline formatting (applied after block structure is in place)
+      result = result
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>');
+
+      // Make [Source N] citations clickable with hover preview data
+      result = result.replace(/\[Source (\d+)\]/g, (match, num) => {
+        const idx = parseInt(num) - 1;
+        if (sources && sources[idx]) {
+          const chunkId = `msg-${msgId}_src-${idx}`;
+          citationChunkMap[chunkId] = sources[idx].chunk_text || sources[idx].text || '';
+          return `<span class="citation clickable" data-item-key="${esc(sources[idx].item_key)}" data-chunk-id="${chunkId}" title="Click to open: ${esc(sources[idx].title || '')}">${num}</span>`;
+        }
+        return `<span class="citation">${num}</span>`;
+      });
+
+      // Make Unicode circled numbers ①②③④⑤⑥⑦⑧⑨⑩ clickable
+      const circledNums = '①②③④⑤⑥⑦⑧⑨⑩';
+      for (let i = 0; i < circledNums.length; i++) {
+        const circled = circledNums[i];
+        if (result.includes(circled) && sources && sources[i]) {
+          const chunkId = `msg-${msgId}_src-${i}`;
+          citationChunkMap[chunkId] = sources[i].chunk_text || sources[i].text || '';
+          result = result.split(circled).join(
+            `<span class="citation clickable" data-item-key="${esc(sources[i].item_key)}" data-chunk-id="${chunkId}" title="Click to open: ${esc(sources[i].title || '')}">${i + 1}</span>`
+          );
+        }
+      }
+
+      return result;
+    }
+
+    // Open item in Zotero main window
+    function openItemByKey(key) {
+      try {
+        Zotero.debug('Claude Assistant: Opening item with key: ' + key);
+        const item = Zotero.Items.getByLibraryAndKey(Zotero.Libraries.userLibraryID, key);
+        if (item) {
+          const win = Zotero.getMainWindow();
+          if (win && win.ZoteroPane) {
+            win.ZoteroPane.selectItem(item.id);
+            win.focus();
+          }
+        } else {
+          Zotero.debug('Claude Assistant: Item not found for key: ' + key);
+        }
+      } catch (e) {
+        Zotero.debug('Claude Assistant: Error opening item: ' + e);
+      }
+    }
+
+    // Also expose as window.openItem for source card onclick
+    window.openItem = openItemByKey;
+
+    // Event delegation for citation clicks
+    document.addEventListener('click', function(e) {
+      const citation = e.target.closest('.citation.clickable');
+      if (citation) {
+        const key = citation.getAttribute('data-item-key');
+        if (key) {
+          openItemByKey(key);
+        }
+      }
+      // Also handle source card clicks
+      const source = e.target.closest('.source');
+      if (source && source.hasAttribute('data-item-key')) {
+        openItemByKey(source.getAttribute('data-item-key'));
+      }
+      // Follow-up suggestion chips carry their question in data-q so that
+      // model-generated text never lands inside an inline event handler
+      const chip = e.target.closest('.follow-up-chip');
+      if (chip && chip.hasAttribute('data-q')) {
+        askQuestion(chip.getAttribute('data-q'));
+      }
+    });
+
+    // Citation hover preview tooltip
+    let tooltipTimeout = null;
+    document.addEventListener('mouseover', function(e) {
+      const citation = e.target.closest('.citation.clickable');
+      if (!citation) return;
+
+      const chunkId = citation.getAttribute('data-chunk-id');
+      if (!chunkId || !citationChunkMap[chunkId]) return;
+
+      const tooltip = document.getElementById('citation-tooltip');
+      const tooltipText = document.getElementById('tooltip-text');
+      if (!tooltip || !tooltipText) return;
+
+      let displayText = citationChunkMap[chunkId];
+      if (displayText.length > 300) {
+        displayText = displayText.substring(0, 297) + '...';
+      }
+      tooltipText.textContent = displayText;
+
+      const rect = citation.getBoundingClientRect();
+      let top = rect.bottom + 8;
+      let left = rect.left;
+
+      // Prevent overflow below viewport
+      if (top + 200 > window.innerHeight) {
+        top = rect.top - 208;
+      }
+      // Prevent overflow right
+      if (left + 380 > window.innerWidth) {
+        left = window.innerWidth - 390;
+      }
+
+      tooltip.style.top = Math.max(4, top) + 'px';
+      tooltip.style.left = Math.max(10, left) + 'px';
+
+      clearTimeout(tooltipTimeout);
+      tooltipTimeout = setTimeout(function() {
+        tooltip.classList.add('visible');
+      }, 200);
+    });
+
+    document.addEventListener('mouseout', function(e) {
+      const citation = e.target.closest('.citation.clickable');
+      if (!citation) return;
+      clearTimeout(tooltipTimeout);
+      const tooltip = document.getElementById('citation-tooltip');
+      if (tooltip) tooltip.classList.remove('visible');
+    });
+
+    setTimeout(init, 100);
+  ]]></script>
+</window>

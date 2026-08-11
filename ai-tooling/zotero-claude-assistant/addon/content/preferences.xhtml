@@ -1,0 +1,243 @@
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      xmlns:html="http://www.w3.org/1999/xhtml"
+      id="claude-assistant-prefs">
+
+  <html:style>
+    /* Modern styling for preferences panel */
+    #claude-assistant-prefs {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    #claude-assistant-prefs groupbox {
+      border-radius: 8px;
+      padding: 12px;
+    }
+    #claude-assistant-prefs caption {
+      font-weight: 600;
+      color: #1e293b;
+    }
+    #claude-assistant-prefs button {
+      border-radius: 6px;
+      padding: 4px 12px;
+    }
+    #claude-assistant-prefs html|input {
+      border-radius: 6px;
+      padding: 6px 10px;
+      border: 1px solid #cbd5e1;
+    }
+    #claude-assistant-prefs html|input:focus {
+      border-color: #3b82f6;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+    }
+    #claude-assistant-prefs description {
+      color: #64748b;
+    }
+  </html:style>
+
+  <groupbox>
+    <caption label="Status"/>
+
+    <hbox align="center">
+      <label value="Local RAG Engine:" style="font-weight: bold;"/>
+      <label id="activity-status" value="Ready" style="margin-left: 10px; color: green;"/>
+    </hbox>
+
+    <description id="activity-details" style="margin-top: 5px; font-style: italic;">
+      Pure JavaScript BM25 search - no external server needed
+    </description>
+  </groupbox>
+
+  <groupbox style="margin-top: 15px;">
+    <caption label="Claude API Configuration"/>
+
+    <hbox align="center">
+      <label value="API Key:" control="claude-api-key"/>
+      <html:input id="claude-api-key"
+                  type="password"
+                  style="flex: 1; margin-left: 10px;"
+                  onchange="saveClaudeApiKey();"/>
+      <button id="save-claude-api"
+              label="Save"
+              oncommand="saveClaudeApiKey();"
+              style="margin-left: 10px;"/>
+      <button id="test-claude-api"
+              label="Test Connection"
+              oncommand="testClaudeConnection();"
+              style="margin-left: 10px;"/>
+    </hbox>
+
+    <hbox align="center" style="margin-top: 5px;">
+      <label value="Status:" style="margin-left: 60px;"/>
+      <label id="claude-api-status" value="Not tested" style="margin-left: 10px; color: gray;"/>
+    </hbox>
+
+    <hbox align="center" style="margin-top: 10px;">
+      <label value="Model:" control="claude-model"/>
+      <menulist id="claude-model"
+                style="margin-left: 10px;">
+        <menupopup>
+          <menuitem label="Sonnet 4.6 (Recommended - Best cost/performance)" value="claude-sonnet-4-6"/>
+          <menuitem label="Opus 4.8 (Most capable - Higher cost)" value="claude-opus-4-8"/>
+          <menuitem label="Haiku 4.5 (Fastest - Lowest cost)" value="claude-haiku-4-5"/>
+          <menuitem label="Fable 5 (Frontier - Premium pricing)" value="claude-fable-5"/>
+          <menuseparator/>
+          <menuitem label="Opus 4.7" value="claude-opus-4-7"/>
+          <menuitem label="Opus 4.6" value="claude-opus-4-6"/>
+          <menuitem label="Sonnet 4.5 (Legacy)" value="claude-sonnet-4-5"/>
+        </menupopup>
+      </menulist>
+    </hbox>
+
+    <description style="margin-top: 10px;">
+      Get your API key from: https://console.anthropic.com/
+    </description>
+  </groupbox>
+
+  <groupbox style="margin-top: 15px;">
+    <caption label="Search Configuration"/>
+
+    <hbox align="center">
+      <label value="Max Search Results:" control="max-results"/>
+      <html:input id="max-results"
+                  type="number"
+                  min="1"
+                  max="50"
+                  value="25"
+                  style="width: 100px; margin-left: 10px;"/>
+      <description style="margin-left: 10px; color: gray;">
+        (default: 25 chunks)
+      </description>
+    </hbox>
+
+    <description style="margin-top: 10px;">
+      More results = broader context for Claude, but uses more tokens
+    </description>
+
+    <checkbox id="query-rewriting"
+              label="Rewrite queries with Claude before retrieval (better recall)"
+              style="margin-top: 10px;"/>
+    <description style="margin-top: 5px;">
+      Adds one extra Claude API call per research question
+    </description>
+  </groupbox>
+
+  <groupbox style="margin-top: 15px;">
+    <caption label="Indexing Configuration"/>
+
+    <hbox align="center">
+      <label value="Chunk Size (characters):" control="chunk-size"/>
+      <html:input id="chunk-size"
+                  type="number"
+                  min="500"
+                  max="5000"
+                  value="2000"
+                  style="width: 100px; margin-left: 10px;"/>
+    </hbox>
+
+    <hbox align="center" style="margin-top: 10px;">
+      <label value="Chunk Overlap (characters):" control="chunk-overlap"/>
+      <html:input id="chunk-overlap"
+                  type="number"
+                  min="0"
+                  max="1000"
+                  value="400"
+                  style="width: 100px; margin-left: 10px;"/>
+    </hbox>
+
+    <description style="margin-top: 10px;">
+      Changes apply to newly indexed items; use Re-index Everything to apply to the whole library
+    </description>
+  </groupbox>
+
+  <groupbox style="margin-top: 15px;">
+    <caption label="Index Management"/>
+
+    <hbox>
+      <button id="index-library"
+              label="Index Library (Incremental)"
+              oncommand="indexLibrary();"/>
+
+      <button id="index-random-10"
+              label="Test: Index 10 Random Papers"
+              oncommand="indexRandom10();"
+              style="margin-left: 10px;"/>
+    </hbox>
+
+    <hbox style="margin-top: 10px;">
+      <button id="reindex-library"
+              label="Re-index Everything"
+              oncommand="reindexLibrary();"/>
+
+      <button id="clear-index"
+              label="Clear Index"
+              oncommand="clearIndex();"
+              style="margin-left: 10px;"/>
+
+      <button id="verify-index"
+              label="Verify Index"
+              oncommand="verifyIndex();"
+              style="margin-left: 10px;"/>
+    </hbox>
+
+    <hbox style="margin-top: 10px;">
+      <button id="generate-embeddings"
+              label="Generate Embeddings (Semantic Search)"
+              oncommand="generateEmbeddings();"/>
+    </hbox>
+
+    <description style="margin-top: 10px;">
+      <html:b>Index Library:</html:b> Index all papers (skips already-indexed ones)
+    </description>
+    <description style="margin-top: 5px;">
+      <html:b>Re-index:</html:b> Re-process everything from scratch
+    </description>
+    <description style="margin-top: 5px;">
+      <html:b>Test:</html:b> Index 10 random papers to verify everything works
+    </description>
+    <description style="margin-top: 5px;">
+      <html:b>Generate Embeddings:</html:b> Create semantic embeddings for hybrid search (one-time, ~50ms/chunk)
+    </description>
+
+    <hbox id="index-stats" style="margin-top: 15px; padding: 10px; background: #f5f5f5; border-radius: 5px;">
+      <vbox flex="1">
+        <hbox>
+          <label value="Indexed items:" style="font-weight: bold;"/>
+          <label id="indexed-count" value="0" style="margin-left: 10px;"/>
+        </hbox>
+        <hbox style="margin-top: 5px;">
+          <label value="Total chunks:" style="font-weight: bold;"/>
+          <label id="chunk-count" value="0" style="margin-left: 10px;"/>
+        </hbox>
+        <hbox style="margin-top: 5px;">
+          <label value="Last indexed:" style="font-weight: bold;"/>
+          <label id="last-indexed" value="Never" style="margin-left: 10px; color: #666;"/>
+        </hbox>
+        <hbox style="margin-top: 5px;">
+          <label value="Embeddings:" style="font-weight: bold;"/>
+          <label id="embedding-count" value="0" style="margin-left: 10px;"/>
+        </hbox>
+      </vbox>
+    </hbox>
+  </groupbox>
+
+  <groupbox style="margin-top: 15px;">
+    <caption label="About"/>
+
+    <description style="font-weight: 600; color: #1e293b;">
+      Claude Research Assistant v2.2.0
+    </description>
+    <description style="margin-top: 5px;">
+      Dual-mode AI assistant: Chat with Claude or search your papers with RAG
+    </description>
+    <description style="margin-top: 5px;">
+      Hybrid search: BM25 keyword + semantic embedding (bge-small-en-v1.5)
+    </description>
+    <description style="margin-top: 5px;">
+      Author: chojay
+    </description>
+    <description style="margin-top: 5px;">
+      Powered by Claude AI from Anthropic
+    </description>
+  </groupbox>
+
+</vbox>

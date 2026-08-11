@@ -1,0 +1,45 @@
+{
+  "name": "zotero-claude-assistant",
+  "version": "2.2.0",
+  "description": "Dual-mode AI research assistant: chat with Claude or search your Zotero library with RAG",
+  "author": "chojay",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chojay/zotero-claude-assistant.git"
+  },
+  "keywords": [
+    "zotero",
+    "zotero-plugin",
+    "claude",
+    "anthropic",
+    "rag",
+    "bm25",
+    "semantic-search",
+    "research",
+    "llm"
+  ],
+  "scripts": {
+    "build": "npm run build:ts && npm run build:addon",
+    "build:ts": "tsc",
+    "build:addon": "node scripts/build.js",
+    "watch": "tsc --watch",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "package": "npm run build && node scripts/package.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "archiver": "^6.0.1",
+    "esbuild": "^0.19.8",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^3.8.1"
+  }
+}

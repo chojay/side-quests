@@ -1,0 +1,17 @@
+<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <circle cx="24" cy="24" r="22" fill="#CC785C" opacity="0.2"/>
+  <circle cx="24" cy="24" r="20" fill="none" stroke="#CC785C" stroke-width="2"/>
+  
+  <!-- Z for Zotero -->
+  <g transform="translate(12, 12)">
+    <path d="M 4 4 L 20 4 L 20 8 L 9 20 L 20 20 L 20 24 L 4 24 L 4 20 L 15 8 L 4 8 Z" 
+          fill="#CC785C" 
+          stroke="#8B4513" 
+          stroke-width="0.5"/>
+  </g>
+  
+  <!-- AI sparkle -->
+  <circle cx="36" cy="12" r="2" fill="#FFD700"/>
+  <path d="M 33 12 L 39 12 M 36 9 L 36 15" stroke="#FFD700" stroke-width="1"/>
+</svg>

@@ -1,0 +1,18 @@
+{
+  "addons": {
+    "claude-assistant@chojay.github.io": {
+      "updates": [
+        {
+          "version": "2.2.0",
+          "update_link": "https://github.com/chojay/zotero-claude-assistant/releases/download/v2.2.0/claude-assistant.xpi",
+          "applications": {
+            "zotero": {
+              "strict_min_version": "6.999",
+              "strict_max_version": "9.*"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

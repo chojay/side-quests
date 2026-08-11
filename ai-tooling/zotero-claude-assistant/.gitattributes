@@ -1,0 +1,7 @@
+# Normalize line endings: LF in the repository for all text files
+* text=auto eol=lf
+
+# Binary files
+*.png binary
+*.onnx binary
+*.xpi binary

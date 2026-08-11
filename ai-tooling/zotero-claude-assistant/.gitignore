@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Build output
+build/
+dist/
+*.xpi
+
+# TypeScript
+*.tsbuildinfo
+
+# Embedding model weights (fetched at setup via scripts/fetch-model.sh)
+# Kept out of git: the bge-small-en-v1.5 ONNX file is ~32 MB.
+addon/content/models/**/*.onnx
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+coverage/
+
+# Environment / secrets
+.env
+.env.local
+*.key
+
+# Zotero runtime databases
+*.sqlite
+*.sqlite-journal
