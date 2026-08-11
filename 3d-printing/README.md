@@ -81,3 +81,5 @@ The stable division of labor: the AI writes geometry and checks, the human owns 
 ## Attribution
 
 One project adapts a community concept and says so in its README (sebtobar's Ring doorbell sign idea; the geometry here was authored independently). Third-party STLs, fonts, and vendor photos are not redistributed. Designs that would be derivative of protected commercial products or of third-party models with restrictive or unverified licenses are deliberately not published, even where a private version exists.
+
+A concrete example of that last rule: the most-liked sign on our front door is a text remix of Ahrar Monsur's ["Peeking Cat" No Soliciting Sign](https://makerworld.com/en/models/2626138-peeking-cat-no-soliciting-sign) (text swapped in the slicer to cover flyers and surveys too). It is not in this repo because the model's MakerWorld Exclusive License permits derivatives only on MakerWorld itself. Licenses get checked before publication, not after; the remix lives on the door, not in git.
