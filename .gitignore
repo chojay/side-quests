@@ -1,0 +1,37 @@
+# Local working notes
+CURATION-DECISIONS.md
+
+# macOS / editor noise
+.DS_Store
+.claude/
+.playwright-mcp/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+
+# Never commit data or model weights (scoped: the Zotero plugin's
+# addon/content/models/ configs MUST be committed)
+medical-imaging/**/inputs/
+medical-imaging/**/outputs/
+medical-imaging/**/models/
+*.mov
+*.mp4
+*.MOV
+*.pt
+*.tflite
+*.task
+*.parquet
+DICOMDIR
+dicom/
+
+# Large generated artifacts (regenerate from the scripts)
+*.stl
+*.3mf
+
+# Niimbot runtime outputs (BLE traces carry device addresses)
+hardware-tools/niimbot-labelmaker/debug.log
