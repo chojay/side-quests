@@ -2,6 +2,8 @@
 
 Things I build outside work. By day I am a semiconductor process and materials engineer; evenings and weekends produce what's in this repo: thermodynamic screening on open materials data, local-first AI tooling, parametric CAD written as Python, medical-imaging pipelines, and an espresso machine that files telemetry reports.
 
+![Three-stage illustration: a terminal for code over artifacts, a checklist for validation as a first-class step, and a plus-and-minus note for calibrated AI-assist notes](docs/three-habits.png)
+
 Everything here shares three habits:
 
 1. **Code over artifacts.** Parts, pipelines, and reports are all regenerable from scripts. No orphaned binaries; no personal data ships with this repo, ever.
