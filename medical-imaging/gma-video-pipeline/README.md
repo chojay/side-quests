@@ -83,7 +83,7 @@ Supporting modules: `config.py` (run config + hash), `body_parts.py` (SAM 3 per-
 
 ### Running CUDA-only SAM 3 on Apple Silicon
 
-Meta's SAM 3 assumes CUDA. `sam3_compat.py` makes it run on MPS with five compounding patches:
+Meta's SAM 3 assumes CUDA. Running it on a Mac anyway was a deliberate experiment, not a fallback: PyTorch's `mps` backend dispatches tensor ops to Apple's Metal Performance Shaders framework on the M-series GPU, and the question was whether a bleeding-edge segmentation stack could run fully on-device on consumer Apple Silicon. `sam3_compat.py` is the measured distance between "MPS-supported" and "actually works": `sam3_compat.py` makes it run on MPS with five compounding patches:
 
 1. A meta-path-finder that synthesizes a fake module for any `triton.*` import (triton has no macOS arm64 wheels).
 2. A `cv2.distanceTransform` replacement for the triton Euclidean-distance-transform kernel. The SAM 3 codebase documents the two as equivalent.
