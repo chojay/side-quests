@@ -20,6 +20,8 @@ Materials Project energies are **0 K DFT ground-state formation enthalpies**: no
 
 [etch-gas-screening-0K-vs-300K.md](etch-gas-screening-0K-vs-300K.md) runs silicon against 18 fab gases - Bosch etch and passivation (SF6, C4F8), poly/oxide etch (Cl2, HBr, CF4, CHF3, C2F6, BCl3), chamber cleans (NF3, ClF3, F2), MEMS release (XeF2), WF6, vapor HF, elemental halogens, and the SiF4/SiCl4 byproducts - at both settings ([compare_0K_vs_300K.py](compare_0K_vs_300K.py) builds the comparison):
 
+![Scatter of 0 K vs 300 K reaction energies for 18 etch gases - points off the diagonal are where temperature changes the answer](Comparison_scatter_0K_vs_300K.png)
+
 - The 0 K ranking alone reads like an etch-chemistry cheat sheet: F2 (-3.47 eV/atom) > NF3 > ClF3 at the top, XeF2 at -1.81 (`Si + 2 XeF2 -> 2 Xe + SiF4`, the spontaneous no-plasma etch used in MEMS release), and SiF4/SiCl4 at exactly 0.000: silicon is stable against its own etch byproducts.
 - Temperature matters far more here than for condensed-phase screenings: average shift **+0.14 eV/atom** (gas-consuming reactions live or die by entropy), with four materials moving three or more rank positions.
 - And the flagged artifact: at 300 K the Gibbs entry set injects a spurious "Si3F" phase that collapses the XeF2 answer from -1.81 to -0.14 eV/atom, an 11-place rank change that is chemistry-free. The study documents it as the "SISSO is approximate for gases" caveat made concrete: the finite-temperature mode deserves the same skepticism it enables.
@@ -36,6 +38,11 @@ The first foundry-chemistry runs of this export produced two anomalies: Si | HfO
 - Convex hull plot of the combined chemical system
 - Per-pair markdown with the full kink table in both eV/atom and kJ/mol
 - A combined overlay plot and a run-level summary markdown
+
+The per-pair pair of plots for Si | Ta2O5, as emitted by the tool:
+
+![Si-Ta2O5 reaction energy vs mixing fraction with kinks annotated](Si_Ta2O5_interface_rxn.png)
+![Convex hull of the combined Si-Ta-O chemical system](Si_Ta2O5_convex_hull.png)
 
 ## AI-assisted build notes
 
