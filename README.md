@@ -31,7 +31,7 @@ Everything here shares three habits:
 <td align="center" valign="middle" width="25%"><a href="3d-printing/projects/kumiko-vent-covers/"><img src="docs/gallery/kumiko.png" alt="Kumiko asanoha lattice vent cover, code-generated"></a></td>
 <td align="center" valign="middle" width="25%"><a href="medical-imaging/dicom-mri-toolkit/"><img src="docs/gallery/mri-axial-putamen.png" alt="Axial slice of the public MNI152 template with the putamen circled and a basal ganglia example annotation, labeled EXAMPLE - not patient data"></a></td>
 <td align="center" valign="middle" width="25%"><a href="medical-imaging/gma-video-pipeline/"><img src="docs/gallery/limb-screen-4x3.png" alt="Scatter plot of the synthetic example run: each keypoint (left/right wrist, elbow, knee, ankle, hip, shoulder) plotted by symmetry index vs movement variety, unflagged keypoints in blue, pipeline-flagged left hip and right shoulder in red"></a></td>
-<td align="center" valign="middle" width="25%"><a href="computational-materials/mp-interface-reactions/"><img src="docs/gallery/convex-hull-4x3.png" alt="Ternary convex hull of the O-Si-Ta system: stable phases as red nodes joined by tie-lines, including Ta2O5, SiO2, and TaSi2"></a></td>
+<td align="center" valign="middle" width="25%"><a href="computational-materials/mp-interface-reactions/"><img src="docs/gallery/hull-o-si-ta.png" alt="Ternary convex hull of the O-Si-Ta system: stable phases as red nodes joined by tie-lines, including Ta2O5, SiO2, and TaSi2"></a></td>
 </tr>
 <tr>
 <td align="center" valign="top"><sub><b>Kumiko lattice vent cover</b><br>parametric asanoha pattern<br>bed-split with real joinery</sub></td>
@@ -61,7 +61,7 @@ Every part is a Python or OpenSCAD program; every STL is reproducible by running
 
 ### [Hardware Tools](hardware-tools/)
 
-[Batch label printing](hardware-tools/niimbot-labelmaker/) for the [NIIMBOT D110](https://www.niimbot.com/), which ships with no computer software at all - phone app only, one label at a time. I liked the printer itself, but tapping labels out one at a time on a phone was never going to knock out the good-husband weekend chores: a week of baby-food containers, a whole-pantry reorganization. This CLI takes a text file and prints the entire stack over one BLE connection. Under it sits a reverse-engineered protocol driver whose best story is in its GOTCHAS file: visually identical printers ship with different firmware dialects, and the `_M` variant returns byte-perfect success traces while printing blanks. Folder-licensed GPL-3.0 because one upstream protocol source is GPL - the one non-MIT corner of the repo, labeled as such.
+[Batch label printing](hardware-tools/niimbot-labelmaker/) for the [NIIMBOT D110](https://www.niimbot.com/us/hardware/detail?productCode=HPC250801095736000004), which ships with no computer software at all - phone app only, one label at a time. I liked the printer itself, but tapping labels out one at a time on a phone was never going to knock out the good-husband weekend chores: a week of baby-food containers, a whole-pantry reorganization. This CLI takes a text file and prints the entire stack over one BLE connection. Under it sits a reverse-engineered protocol driver whose best story is in its GOTCHAS file: visually identical printers ship with different firmware dialects, and the `_M` variant returns byte-perfect success traces while printing blanks. Folder-licensed GPL-3.0 because one upstream protocol source is GPL - the one non-MIT corner of the repo, labeled as such.
 
 ### [Medical Imaging](medical-imaging/)
 
