@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="'SF Mono', 'Fira Code', 'Consolas', monospace">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" fill="url(#bg)" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" fill="#e0e0e0" font-size="16" font-weight="bold">Gaggiuino Default Profiles - Pressure vs Time Comparison</text>
+  <text x="450" y="52" text-anchor="middle" fill="#888" font-size="10">Approximate curves from community branch JSON definitions</text>
+
+  <!-- Chart area: x=80..850, y=75..420 -->
+  <!-- Grid lines -->
+  <g stroke="#333" stroke-width="0.5">
+    <!-- Horizontal (pressure) -->
+    <line x1="80" y1="420" x2="850" y2="420"/><!-- 0 bar -->
+    <line x1="80" y1="381.7" x2="850" y2="381.7" stroke-dasharray="3,6"/><!-- 1 bar -->
+    <line x1="80" y1="343.3" x2="850" y2="343.3" stroke-dasharray="3,6"/><!-- 2 bar -->
+    <line x1="80" y1="305" x2="850" y2="305" stroke-dasharray="3,6"/><!-- 3 bar -->
+    <line x1="80" y1="266.7" x2="850" y2="266.7" stroke-dasharray="3,6"/><!-- 4 bar -->
+    <line x1="80" y1="228.3" x2="850" y2="228.3" stroke-dasharray="3,6"/><!-- 5 bar -->
+    <line x1="80" y1="190" x2="850" y2="190" stroke-dasharray="3,6"/><!-- 6 bar -->
+    <line x1="80" y1="151.7" x2="850" y2="151.7" stroke-dasharray="3,6"/><!-- 7 bar -->
+    <line x1="80" y1="113.3" x2="850" y2="113.3" stroke-dasharray="3,6"/><!-- 8 bar -->
+    <line x1="80" y1="75" x2="850" y2="75" stroke-dasharray="3,6"/><!-- 9 bar -->
+    <!-- Vertical (time) -->
+    <line x1="80" y1="75" x2="80" y2="420"/><!-- 0s -->
+    <line x1="195.7" y1="75" x2="195.7" y2="420" stroke-dasharray="3,6"/><!-- 10s -->
+    <line x1="311.4" y1="75" x2="311.4" y2="420" stroke-dasharray="3,6"/><!-- 20s -->
+    <line x1="427.1" y1="75" x2="427.1" y2="420" stroke-dasharray="3,6"/><!-- 30s -->
+    <line x1="542.9" y1="75" x2="542.9" y2="420" stroke-dasharray="3,6"/><!-- 40s -->
+    <line x1="658.6" y1="75" x2="658.6" y2="420" stroke-dasharray="3,6"/><!-- 50s -->
+    <line x1="774.3" y1="75" x2="774.3" y2="420" stroke-dasharray="3,6"/><!-- 60s -->
+  </g>
+
+  <!-- Axis labels -->
+  <text x="40" y="80" text-anchor="middle" fill="#aaa" font-size="10">9</text>
+  <text x="40" y="118" text-anchor="middle" fill="#aaa" font-size="10">8</text>
+  <text x="40" y="156" text-anchor="middle" fill="#aaa" font-size="10">7</text>
+  <text x="40" y="195" text-anchor="middle" fill="#aaa" font-size="10">6</text>
+  <text x="40" y="233" text-anchor="middle" fill="#aaa" font-size="10">5</text>
+  <text x="40" y="271" text-anchor="middle" fill="#aaa" font-size="10">4</text>
+  <text x="40" y="309" text-anchor="middle" fill="#aaa" font-size="10">3</text>
+  <text x="40" y="348" text-anchor="middle" fill="#aaa" font-size="10">2</text>
+  <text x="40" y="386" text-anchor="middle" fill="#aaa" font-size="10">1</text>
+  <text x="40" y="424" text-anchor="middle" fill="#aaa" font-size="10">0</text>
+
+  <text x="80" y="440" text-anchor="middle" fill="#aaa" font-size="10">0s</text>
+  <text x="195.7" y="440" text-anchor="middle" fill="#aaa" font-size="10">10s</text>
+  <text x="311.4" y="440" text-anchor="middle" fill="#aaa" font-size="10">20s</text>
+  <text x="427.1" y="440" text-anchor="middle" fill="#aaa" font-size="10">30s</text>
+  <text x="542.9" y="440" text-anchor="middle" fill="#aaa" font-size="10">40s</text>
+  <text x="658.6" y="440" text-anchor="middle" fill="#aaa" font-size="10">50s</text>
+  <text x="774.3" y="440" text-anchor="middle" fill="#aaa" font-size="10">60s</text>
+
+  <!-- Axis titles -->
+  <text x="20" y="250" text-anchor="middle" fill="#ccc" font-size="11" transform="rotate(-90,20,250)">Pressure (bar)</text>
+  <text x="465" y="460" text-anchor="middle" fill="#ccc" font-size="11">Time (seconds)</text>
+
+  <!-- 1 second = 11.57px, 1 bar = 38.33px -->
+  <!-- x(t) = 80 + t * 11.57 -->
+  <!-- y(p) = 420 - p * 38.33 -->
+
+  <!-- Stock 9-Bar: flat line at 9 bar -->
+  <polyline points="80,75 850,75" fill="none" stroke="#666" stroke-width="2" stroke-dasharray="8,4" opacity="0.6"/>
+
+  <!-- Londinium (Gold): PI 0→4bar(3s), soak 4→0.7bar(8s), ramp 0→9bar(9s), hold 9bar(13s), decline 9→3bar(33s) -->
+  <polyline points="80,420 114.7,266.7 172.6,393.2 183.8,393.2 195.4,75 241,75 472.5,305"
+    fill="none" stroke="#f0c040" stroke-width="2.5" opacity="0.9"/>
+
+  <!-- Blooming (Cyan): PI 0→7bar(8s), bloom 7→0.5bar(38s), ramp 0→7bar(43s), extraction ~7-8bar(65s) -->
+  <polyline points="80,420 172.6,151.7 219,170 311.4,400.8 369.3,400.8 427.1,151.7 543,113 774.3,130"
+    fill="none" stroke="#00d4ff" stroke-width="2.5" opacity="0.9"/>
+
+  <!-- IUIUIU (Green): PI 0→4bar(10s), soak 4→2bar(~18s), ramp 0→7.5bar(23s), extract 7.5→6bar(45s) -->
+  <polyline points="80,420 195.7,266.7 288,343.3 346,132.5 600,190"
+    fill="none" stroke="#4cef50" stroke-width="2.5" opacity="0.9"/>
+
+  <!-- Zer0 (Purple): Flow-driven. ~0→6bar(15s), taper to ~2.5bar(25s), ramp to ~7-8bar(35s→end) -->
+  <polyline points="80,420 253.6,190 369.3,324.2 485,132 658.6,113"
+    fill="none" stroke="#bb86fc" stroke-width="2.5" opacity="0.9"/>
+
+  <!-- Adaptive (Orange): PI 0→3bar(5s), hold 3bar(11s), ramp 3→9bar(16s), ~9bar flow-limited -->
+  <polyline points="80,420 137.9,305 207.3,305 265.1,75 600,90"
+    fill="none" stroke="#ff7043" stroke-width="2.5" opacity="0.9"/>
+
+  <!-- Legend -->
+  <rect x="82" y="472" width="816" height="40" rx="6" fill="#111" opacity="0.6"/>
+
+  <line x1="95" y1="492" x2="120" y2="492" stroke="#666" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="125" y="496" fill="#999" font-size="10">Stock 9-Bar</text>
+
+  <line x1="210" y1="492" x2="235" y2="492" stroke="#f0c040" stroke-width="2.5"/>
+  <text x="240" y="496" fill="#f0c040" font-size="10">Londinium</text>
+
+  <line x1="325" y1="492" x2="350" y2="492" stroke="#00d4ff" stroke-width="2.5"/>
+  <text x="355" y="496" fill="#00d4ff" font-size="10">Blooming</text>
+
+  <line x1="435" y1="492" x2="460" y2="492" stroke="#4cef50" stroke-width="2.5"/>
+  <text x="465" y="496" fill="#4cef50" font-size="10">IUIUIU</text>
+
+  <line x1="530" y1="492" x2="555" y2="492" stroke="#bb86fc" stroke-width="2.5"/>
+  <text x="560" y="496" fill="#bb86fc" font-size="10">Zer0</text>
+
+  <line x1="610" y1="492" x2="635" y2="492" stroke="#ff7043" stroke-width="2.5"/>
+  <text x="640" y="496" fill="#ff7043" font-size="10">Adaptive</text>
+
+  <!-- Phase annotations -->
+  <text x="130" y="465" text-anchor="middle" fill="#555" font-size="9">← PI →</text>
+  <text x="250" y="465" text-anchor="middle" fill="#555" font-size="9">← Soak / Bloom →</text>
+  <text x="500" y="465" text-anchor="middle" fill="#555" font-size="9">← Extraction →</text>
+</svg>

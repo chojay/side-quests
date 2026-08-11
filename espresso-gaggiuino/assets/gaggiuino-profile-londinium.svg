@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" font-family="'SF Mono', 'Fira Code', 'Consolas', monospace">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+    <linearGradient id="pressureFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0c040" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#f0c040" stop-opacity="0.02"/>
+    </linearGradient>
+    <linearGradient id="flowFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#00d4ff" stop-opacity="0.02"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="400" fill="url(#bg)" rx="12"/>
+
+  <text x="400" y="30" text-anchor="middle" fill="#f0c040" font-size="15" font-weight="bold">Londinium (Lever) Profile</text>
+  <text x="400" y="46" text-anchor="middle" fill="#888" font-size="10">92°C · 20g in → 40g out · 5 phases · Declining pressure lever simulation</text>
+
+  <!-- Chart: x=70..760, y=65..310 -->
+  <!-- Time axis: 0-35s, 1s = 19.7px, x(t) = 70 + t*19.7 -->
+  <!-- Pressure: 0-10 bar, 1bar = 24.5px, y(p) = 310 - p*24.5 -->
+
+  <!-- Grid -->
+  <g stroke="#333" stroke-width="0.5" stroke-dasharray="3,6">
+    <line x1="70" y1="285.5" x2="760" y2="285.5"/><!-- 1 -->
+    <line x1="70" y1="261" x2="760" y2="261"/><!-- 2 -->
+    <line x1="70" y1="236.5" x2="760" y2="236.5"/><!-- 3 -->
+    <line x1="70" y1="212" x2="760" y2="212"/><!-- 4 -->
+    <line x1="70" y1="187.5" x2="760" y2="187.5"/><!-- 5 -->
+    <line x1="70" y1="163" x2="760" y2="163"/><!-- 6 -->
+    <line x1="70" y1="138.5" x2="760" y2="138.5"/><!-- 7 -->
+    <line x1="70" y1="114" x2="760" y2="114"/><!-- 8 -->
+    <line x1="70" y1="89.5" x2="760" y2="89.5"/><!-- 9 -->
+    <line x1="70" y1="65" x2="760" y2="65"/><!-- 10 -->
+    <!-- Vertical -->
+    <line x1="167" y1="65" x2="167" y2="310"/><!-- 5s -->
+    <line x1="267" y1="65" x2="267" y2="310"/><!-- 10s -->
+    <line x1="366" y1="65" x2="366" y2="310"/><!-- 15s -->
+    <line x1="465" y1="65" x2="465" y2="310"/><!-- 20s -->
+    <line x1="563" y1="65" x2="563" y2="310"/><!-- 25s -->
+    <line x1="662" y1="65" x2="662" y2="310"/><!-- 30s -->
+    <line x1="760" y1="65" x2="760" y2="310"/><!-- 35s -->
+  </g>
+  <line x1="70" y1="310" x2="760" y2="310" stroke="#555" stroke-width="1"/>
+  <line x1="70" y1="65" x2="70" y2="310" stroke="#555" stroke-width="1"/>
+
+  <!-- Axis labels -->
+  <text x="35" y="93" text-anchor="middle" fill="#aaa" font-size="9">9</text>
+  <text x="35" y="167" text-anchor="middle" fill="#aaa" font-size="9">6</text>
+  <text x="35" y="240" text-anchor="middle" fill="#aaa" font-size="9">3</text>
+  <text x="35" y="314" text-anchor="middle" fill="#aaa" font-size="9">0</text>
+  <text x="70" y="328" text-anchor="middle" fill="#aaa" font-size="9">0s</text>
+  <text x="167" y="328" text-anchor="middle" fill="#aaa" font-size="9">5</text>
+  <text x="267" y="328" text-anchor="middle" fill="#aaa" font-size="9">10</text>
+  <text x="366" y="328" text-anchor="middle" fill="#aaa" font-size="9">15</text>
+  <text x="465" y="328" text-anchor="middle" fill="#aaa" font-size="9">20</text>
+  <text x="563" y="328" text-anchor="middle" fill="#aaa" font-size="9">25</text>
+  <text x="662" y="328" text-anchor="middle" fill="#aaa" font-size="9">30</text>
+  <text x="760" y="328" text-anchor="middle" fill="#aaa" font-size="9">35</text>
+
+  <text x="15" y="190" text-anchor="middle" fill="#ccc" font-size="10" transform="rotate(-90,15,190)">Pressure (bar)</text>
+  <text x="415" y="345" text-anchor="middle" fill="#ccc" font-size="10">Time (seconds)</text>
+
+  <!-- Phase dividers -->
+  <line x1="129" y1="65" x2="129" y2="310" stroke="#f0c040" stroke-width="0.5" stroke-dasharray="4,4" opacity="0.4"/>
+  <line x1="208" y1="65" x2="208" y2="310" stroke="#f0c040" stroke-width="0.5" stroke-dasharray="4,4" opacity="0.4"/>
+  <line x1="228" y1="65" x2="228" y2="310" stroke="#f0c040" stroke-width="0.5" stroke-dasharray="4,4" opacity="0.4"/>
+  <line x1="307" y1="65" x2="307" y2="310" stroke="#f0c040" stroke-width="0.5" stroke-dasharray="4,4" opacity="0.4"/>
+
+  <!-- Phase labels -->
+  <text x="99" y="80" text-anchor="middle" fill="#f0c040" font-size="8" opacity="0.7">Fill</text>
+  <text x="168" y="80" text-anchor="middle" fill="#f0c040" font-size="8" opacity="0.7">Soak</text>
+  <text x="218" y="80" text-anchor="middle" fill="#f0c040" font-size="8" opacity="0.7">Ramp</text>
+  <text x="268" y="80" text-anchor="middle" fill="#f0c040" font-size="8" opacity="0.7">Hold</text>
+  <text x="534" y="80" text-anchor="middle" fill="#f0c040" font-size="8" opacity="0.7">Lever Decline</text>
+
+  <!-- Pressure fill area -->
+  <polygon points="70,310 129,212 208,293 228,293 228,89.5 307,89.5 700,236.5 700,310"
+    fill="url(#pressureFill)"/>
+
+  <!-- Pressure curve (gold) -->
+  <!-- Ph1: 0→4bar in 3s (fast fill, 9ml/s flow, INSTANT) -->
+  <!-- Ph2: 4→0.7bar soak (pump off, ~7s) -->
+  <!-- Ph3: 0→9bar in 1s (fast ramp) -->
+  <!-- Ph4: hold 9bar for 4s -->
+  <!-- Ph5: 9→3bar decline over 20s (EASE_IN_OUT) -->
+  <polyline points="70,310 129,212 168,293 208,293 228,89.5 307,89.5 400,110 500,155 600,210 700,236.5"
+    fill="none" stroke="#f0c040" stroke-width="2.5"/>
+
+  <!-- Key value annotations -->
+  <text x="129" y="205" text-anchor="middle" fill="#f0c040" font-size="9" font-weight="bold">4 bar</text>
+  <text x="208" y="300" text-anchor="end" fill="#888" font-size="8">0.7 bar</text>
+  <text x="268" y="83" text-anchor="middle" fill="#f0c040" font-size="9" font-weight="bold">9 bar</text>
+  <text x="710" y="230" text-anchor="start" fill="#f0c040" font-size="9" font-weight="bold">3 bar</text>
+
+  <!-- Phase detail boxes -->
+  <rect x="70" y="352" width="130" height="38" rx="4" fill="#222" stroke="#444" stroke-width="0.5"/>
+  <text x="135" y="366" text-anchor="middle" fill="#f0c040" font-size="9" font-weight="bold">Fill: 9 ml/s flow</text>
+  <text x="135" y="380" text-anchor="middle" fill="#888" font-size="8">4 bar cap · ≤3s</text>
+
+  <rect x="210" y="352" width="130" height="38" rx="4" fill="#222" stroke="#444" stroke-width="0.5"/>
+  <text x="275" y="366" text-anchor="middle" fill="#f0c040" font-size="9" font-weight="bold">Soak: pump off</text>
+  <text x="275" y="380" text-anchor="middle" fill="#888" font-size="8">until ≤0.7 bar</text>
+
+  <rect x="350" y="352" width="160" height="38" rx="4" fill="#222" stroke="#444" stroke-width="0.5"/>
+  <text x="430" y="366" text-anchor="middle" fill="#f0c040" font-size="9" font-weight="bold">Ramp + Hold: 9 bar</text>
+  <text x="430" y="380" text-anchor="middle" fill="#888" font-size="8">1s ramp + 4s hold · 3 ml/s cap</text>
+
+  <rect x="520" y="352" width="220" height="38" rx="4" fill="#222" stroke="#444" stroke-width="0.5"/>
+  <text x="630" y="366" text-anchor="middle" fill="#f0c040" font-size="9" font-weight="bold">Lever Decline: 9 → 3 bar</text>
+  <text x="630" y="380" text-anchor="middle" fill="#888" font-size="8">EASE_IN_OUT · 20s · 3 ml/s cap → 40g stop</text>
+</svg>

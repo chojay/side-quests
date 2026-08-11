@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" font-family="'SF Mono', 'Fira Code', 'Consolas', monospace">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+    <linearGradient id="flowFillZ" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bb86fc" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#bb86fc" stop-opacity="0.02"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="400" fill="url(#bg)" rx="12"/>
+
+  <text x="400" y="30" text-anchor="middle" fill="#bb86fc" font-size="15" font-weight="bold">Zer0 Profile (Signature / Default)</text>
+  <text x="400" y="46" text-anchor="middle" fill="#888" font-size="10">95°C · ~16g in → 49g out (~1:3) · 3 phases · All flow-controlled · Medium-light roasts</text>
+
+  <!-- Chart: x=70..760, y=65..310 -->
+  <!-- Time axis: 0-45s, 1s = 15.3px -->
+  <!-- Dual axis: Pressure 0-9bar left, Flow 0-6 ml/s right -->
+  <!-- Pressure: y(p) = 310 - p*27.2 -->
+  <!-- Flow: y(f) = 310 - f*40.8 -->
+
+  <!-- Grid -->
+  <g stroke="#333" stroke-width="0.5" stroke-dasharray="3,6">
+    <line x1="70" y1="282.8" x2="730" y2="282.8"/>
+    <line x1="70" y1="255.6" x2="730" y2="255.6"/>
+    <line x1="70" y1="228.4" x2="730" y2="228.4"/>
+    <line x1="70" y1="201.2" x2="730" y2="201.2"/>
+    <line x1="70" y1="174" x2="730" y2="174"/>
+    <line x1="70" y1="146.8" x2="730" y2="146.8"/>
+    <line x1="70" y1="119.6" x2="730" y2="119.6"/>
+    <line x1="70" y1="92.4" x2="730" y2="92.4"/>
+    <line x1="70" y1="65" x2="730" y2="65"/>
+    <!-- Vertical -->
+    <line x1="147" y1="65" x2="147" y2="310"/>
+    <line x1="223" y1="65" x2="223" y2="310"/>
+    <line x1="300" y1="65" x2="300" y2="310"/>
+    <line x1="376" y1="65" x2="376" y2="310"/>
+    <line x1="453" y1="65" x2="453" y2="310"/>
+    <line x1="529" y1="65" x2="529" y2="310"/>
+    <line x1="606" y1="65" x2="606" y2="310"/>
+    <line x1="682" y1="65" x2="682" y2="310"/>
+  </g>
+  <line x1="70" y1="310" x2="730" y2="310" stroke="#555" stroke-width="1"/>
+  <line x1="70" y1="65" x2="70" y2="310" stroke="#555" stroke-width="1"/>
+  <line x1="730" y1="65" x2="730" y2="310" stroke="#555" stroke-width="1"/>
+
+  <!-- Left axis (Pressure) -->
+  <text x="35" y="69" text-anchor="middle" fill="#bb86fc" font-size="9">9</text>
+  <text x="35" y="150" text-anchor="middle" fill="#bb86fc" font-size="9">6</text>
+  <text x="35" y="232" text-anchor="middle" fill="#bb86fc" font-size="9">3</text>
+  <text x="35" y="314" text-anchor="middle" fill="#bb86fc" font-size="9">0</text>
+  <text x="15" y="190" text-anchor="middle" fill="#bb86fc" font-size="10" transform="rotate(-90,15,190)">Pressure (bar)</text>
+
+  <!-- Right axis (Flow) -->
+  <text x="748" y="314" text-anchor="middle" fill="#ff7043" font-size="9">0</text>
+  <text x="748" y="273" text-anchor="middle" fill="#ff7043" font-size="9">1</text>
+  <text x="748" y="232" text-anchor="middle" fill="#ff7043" font-size="9">2</text>
+  <text x="748" y="191" text-anchor="middle" fill="#ff7043" font-size="9">3</text>
+  <text x="748" y="150" text-anchor="middle" fill="#ff7043" font-size="9">4</text>
+  <text x="748" y="109" text-anchor="middle" fill="#ff7043" font-size="9">5</text>
+  <text x="780" y="190" text-anchor="middle" fill="#ff7043" font-size="10" transform="rotate(90,780,190)">Flow (ml/s)</text>
+
+  <!-- Time axis -->
+  <text x="70" y="328" text-anchor="middle" fill="#aaa" font-size="9">0s</text>
+  <text x="147" y="328" text-anchor="middle" fill="#aaa" font-size="9">5</text>
+  <text x="223" y="328" text-anchor="middle" fill="#aaa" font-size="9">10</text>
+  <text x="300" y="328" text-anchor="middle" fill="#aaa" font-size="9">15</text>
+  <text x="376" y="328" text-anchor="middle" fill="#aaa" font-size="9">20</text>
+  <text x="453" y="328" text-anchor="middle" fill="#aaa" font-size="9">25</text>
+  <text x="529" y="328" text-anchor="middle" fill="#aaa" font-size="9">30</text>
+  <text x="606" y="328" text-anchor="middle" fill="#aaa" font-size="9">35</text>
+  <text x="682" y="328" text-anchor="middle" fill="#aaa" font-size="9">40</text>
+  <text x="415" y="345" text-anchor="middle" fill="#ccc" font-size="10">Time (seconds)</text>
+
+  <!-- Phase dividers -->
+  <line x1="300" y1="65" x2="300" y2="310" stroke="#bb86fc" stroke-width="0.5" stroke-dasharray="4,4" opacity="0.4"/>
+  <line x1="453" y1="65" x2="453" y2="310" stroke="#bb86fc" stroke-width="0.5" stroke-dasharray="4,4" opacity="0.4"/>
+
+  <!-- Phase labels -->
+  <text x="185" y="80" text-anchor="middle" fill="#bb86fc" font-size="8" opacity="0.7">Ramp Up (15s)</text>
+  <text x="376" y="80" text-anchor="middle" fill="#bb86fc" font-size="8" opacity="0.7">Soak / Taper (10s)</text>
+  <text x="575" y="80" text-anchor="middle" fill="#bb86fc" font-size="8" opacity="0.7">Extraction</text>
+
+  <!-- Restriction lines -->
+  <line x1="70" y1="146.8" x2="300" y2="146.8" stroke="#bb86fc" stroke-width="0.5" stroke-dasharray="2,4" opacity="0.3"/>
+  <text x="160" y="140" text-anchor="middle" fill="#bb86fc" font-size="8" opacity="0.5">6 bar cap</text>
+
+  <line x1="300" y1="242" x2="453" y2="242" stroke="#bb86fc" stroke-width="0.5" stroke-dasharray="2,4" opacity="0.3"/>
+  <text x="376" y="236" text-anchor="middle" fill="#bb86fc" font-size="8" opacity="0.5">2.5 bar cap</text>
+
+  <!-- Approximate PRESSURE curve (purple, solid) -->
+  <!-- All flow-controlled, so pressure rises to restriction limits -->
+  <!-- Ph1: pressure rises to ~6bar over 15s (EASE_OUT to 5ml/s, 6bar cap) -->
+  <!-- Ph2: pressure drops to ~2.5bar over 10s (taper to 1ml/s, 2.5bar cap) -->
+  <!-- Ph3: pressure rises to ~7-8bar (EASE_OUT to 3.5ml/s, 9bar cap) -->
+  <polyline points="70,310 120,250 185,190 250,155 300,146.8 340,200 400,242 453,242 500,170 560,130 620,119.6 682,115"
+    fill="none" stroke="#bb86fc" stroke-width="2.5"/>
+
+  <!-- FLOW curve (orange, dashed) -->
+  <!-- Flow y: y(f) = 310 - f*40.8 -->
+  <!-- Ph1: 0→5ml/s over 15s (EASE_OUT) -->
+  <!-- Ph2: taper to 1ml/s over 10s (EASE_IN_OUT) -->
+  <!-- Ph3: 0→3.5ml/s over 10s (EASE_OUT) then steady -->
+  <polyline points="70,310 120,230 185,160 250,120 300,106 340,200 400,260 453,269 500,220 560,180 620,167 682,167"
+    fill="none" stroke="#ff7043" stroke-width="2" stroke-dasharray="6,3" opacity="0.8"/>
+
+  <!-- Annotations -->
+  <text x="300" y="99" text-anchor="middle" fill="#ff7043" font-size="9" font-weight="bold">5 ml/s</text>
+  <text x="453" y="277" text-anchor="middle" fill="#ff7043" font-size="8">1 ml/s</text>
+  <text x="682" y="160" text-anchor="middle" fill="#ff7043" font-size="9" font-weight="bold">3.5 ml/s</text>
+
+  <!-- Phase detail boxes -->
+  <rect x="70" y="352" width="200" height="38" rx="4" fill="#222" stroke="#444" stroke-width="0.5"/>
+  <text x="170" y="366" text-anchor="middle" fill="#bb86fc" font-size="9" font-weight="bold">Ramp: 0→5 ml/s EASE_OUT</text>
+  <text x="170" y="380" text-anchor="middle" fill="#888" font-size="8">6 bar pressure cap · 15s max</text>
+
+  <rect x="280" y="352" width="200" height="38" rx="4" fill="#222" stroke="#444" stroke-width="0.5"/>
+  <text x="380" y="366" text-anchor="middle" fill="#bb86fc" font-size="9" font-weight="bold">Taper: 0→1 ml/s EASE_IN_OUT</text>
+  <text x="380" y="380" text-anchor="middle" fill="#888" font-size="8">2.5 bar cap · 10s soak</text>
+
+  <rect x="490" y="352" width="230" height="38" rx="4" fill="#222" stroke="#444" stroke-width="0.5"/>
+  <text x="605" y="366" text-anchor="middle" fill="#bb86fc" font-size="9" font-weight="bold">Extract: 0→3.5 ml/s EASE_OUT</text>
+  <text x="605" y="380" text-anchor="middle" fill="#888" font-size="8">9 bar cap · runs to 49g stop-on-weight</text>
+
+  <!-- Legend -->
+  <line x1="85" y1="395" x2="110" y2="395" stroke="#bb86fc" stroke-width="2.5"/>
+  <text x="115" y="399" fill="#bb86fc" font-size="9">Pressure (actual)</text>
+  <line x1="230" y1="395" x2="255" y2="395" stroke="#ff7043" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="260" y="399" fill="#ff7043" font-size="9">Flow (target)</text>
+</svg>
