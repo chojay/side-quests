@@ -14,7 +14,7 @@ an Obsidian folder. Then an Obsidian similarity plugin -
 embeds those summaries and surfaces the relevant ones next to whatever you are
 writing, so the library augments the draft instead of sitting unread.
 
-![Workflow: a library of PDFs from a Zotero storage tree is read by pdfplumber across a process pool, summarized by a local model running on the Apple Silicon GPU through Ollama, written as one structured Markdown file per paper, and surfaced by an Obsidian similarity plugin while writing; about 3,900 papers summarized locally with no cloud and no API key](workflow.png)
+![Workflow: a library of PDFs from a Zotero storage tree is read by pdfplumber across a process pool, summarized by a local model running on the Apple Silicon GPU through Ollama (shown as its llama mark), written as one structured Markdown file per paper, and surfaced by an Obsidian similarity plugin while writing; about 3,900 papers summarized locally with no cloud and no API key](pipeline.png)
 
 > **Scale so far: ~3,900 papers summarized, entirely offline.** Across
 > incremental runs between mid-2024 and early 2025 it produced ~3,900
