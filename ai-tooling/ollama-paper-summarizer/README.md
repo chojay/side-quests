@@ -14,7 +14,7 @@ an Obsidian folder. Then an Obsidian similarity plugin -
 embeds those summaries and surfaces the relevant ones next to whatever you are
 writing, so the library augments the draft instead of sitting unread.
 
-![Workflow: a library of PDFs from a Zotero storage tree is read by pdfplumber across a process pool, summarized by a local model running on the Apple Silicon GPU through Ollama (shown as its llama mark), written as one structured Markdown file per paper, and surfaced by an Obsidian similarity plugin while writing; about 3,900 papers summarized locally with no cloud and no API key](pipeline.png)
+![Workflow: a library of PDFs from a Zotero storage tree is read by pdfplumber across a process pool, summarized by a local model running on the Apple Silicon GPU through Ollama (shown as its llama mark), written as one structured Markdown file per paper, and surfaced by an Obsidian similarity plugin while writing; about 3,900 papers summarized locally with no cloud and no API key](pipeline-ollama.png)
 
 > **Scale so far: ~3,900 papers summarized, entirely offline.** Across
 > incremental runs between mid-2024 and early 2025 it produced ~3,900
@@ -129,7 +129,7 @@ structural constraints.
 - **Cost is time, not tokens.** Summarizing a few hundred PDFs on a cloud API
   adds up; locally it is just an overnight run.
 - This is the offline sibling of the [Zotero plugin](../zotero-claude-assistant/)
-  in this section: that one keeps *retrieval* local and sends only the winning
+  in this section: that one keeps *retrieval* local and sends only the most relevant
   passages to Claude for an interactive answer; this one keeps *everything*
   local and produces a durable, greppable summary layer.
 
@@ -173,3 +173,7 @@ mush; an interrupted run that left zero-byte files the next pass had to be taugh
 to retry). The output quality is only as good as the local model of the day,
 which is the honest reason this is worth re-running now rather than trusting a
 2024 summary.
+
+---
+
+<sub>The llama in the diagram is the [Ollama](https://ollama.com/) logo, used only to identify the tool; Ollama and its logo are trademarks of their owner.</sub>

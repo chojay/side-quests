@@ -17,7 +17,7 @@ flowchart TD
         SEM --> RRF
     end
 
-    RRF --> CTX[winning passages only]
+    RRF --> CTX[most relevant passages only]
     CTX --> API[Claude API <br/>api.anthropic.com]
     CHAT --> API
     API --> ANS["answer with [Source N] citations <br/>that click through to Zotero items"]

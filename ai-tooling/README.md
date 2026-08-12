@@ -4,10 +4,10 @@ Two tools that put local AI next to the papers I actually work with, built so th
 
 | Project | What it does | Docs |
 |---|---|---|
-| [zotero-claude-assistant/](zotero-claude-assistant/) | Zotero 7 plugin: one chat box that auto-routes between direct Claude chat and RAG over your own paper library, with retrieval and embeddings running 100% on-device; only the winning passages go to the Claude API. | [README](zotero-claude-assistant/README.md) (install, usage, build) |
+| [zotero-claude-assistant/](zotero-claude-assistant/) | Zotero 7 plugin: one chat box that auto-routes between direct Claude chat and RAG over your own paper library, with retrieval and embeddings running 100% on-device; only the most relevant passages go to the Claude API. | [README](zotero-claude-assistant/README.md) (install, usage, build) |
 | [ollama-paper-summarizer/](ollama-paper-summarizer/) | Batch-summarizes a folder of PDFs into Markdown with a local Ollama model - fully offline, nothing sent anywhere - so the summaries become a searchable idea bank that an Obsidian similarity plugin surfaces while you write. | [README](ollama-paper-summarizer/README.md) |
 
-The contrast is the point: the plugin keeps *retrieval* local and sends only the winning snippets to Claude for an interactive answer; the summarizer keeps *everything* local and leaves behind a greppable summary layer. Same corpus, two ends of the local/cloud tradeoff.
+The contrast is the point: the plugin keeps *retrieval* local and sends only the most relevant snippets to Claude for an interactive answer; the summarizer keeps *everything* local and leaves behind a greppable summary layer. Same corpus, two ends of the local/cloud tradeoff.
 
 ## Ollama Paper Summarizer
 
@@ -21,7 +21,7 @@ I wanted to ask questions of my own paper library, in the app where the library 
 
 ### Architecture in one paragraph
 
-It is a Zotero 7 bootstrapped plugin: `bootstrap.js` registers chrome content programmatically and loads an esbuild IIFE bundle that becomes `Zotero.ClaudeAssistant`. Each query hits an intent router (heuristics plus whether papers are selected) that picks direct chat or research mode. Research mode retrieves from two local engines: a section-aware BM25 index (title weighted 3.0x, abstract 2.0x, references skipped, a materials-science synonym map at half weight, and a stopword tokenizer that deliberately preserves short scientific tokens like Hf, Cu, eV, 2D) and a semantic index built from `bge-small-en-v1.5`, a quantized ~32 MB ONNX model producing 384-dim vectors via Transformers.js inside a ChromeWorker. Vectors persist as Float32 BLOBs in a local SQLite database next to the Zotero data; the BM25 index serializes to JSON. The two rankings merge with Reciprocal Rank Fusion (k=60), and only the winning passages are sent to the Claude API as context for the answer, which cites `[Source N]` links that click through to the actual items in Zotero.
+It is a Zotero 7 bootstrapped plugin: `bootstrap.js` registers chrome content programmatically and loads an esbuild IIFE bundle that becomes `Zotero.ClaudeAssistant`. Each query hits an intent router (heuristics plus whether papers are selected) that picks direct chat or research mode. Research mode retrieves from two local engines: a section-aware BM25 index (title weighted 3.0x, abstract 2.0x, references skipped, a materials-science synonym map at half weight, and a stopword tokenizer that deliberately preserves short scientific tokens like Hf, Cu, eV, 2D) and a semantic index built from `bge-small-en-v1.5`, a quantized ~32 MB ONNX model producing 384-dim vectors via Transformers.js inside a ChromeWorker. Vectors persist as Float32 BLOBs in a local SQLite database next to the Zotero data; the BM25 index serializes to JSON. The two rankings merge with Reciprocal Rank Fusion (k=60), and only the most relevant passages are sent to the Claude API as context for the answer, which cites `[Source N]` links that click through to the actual items in Zotero.
 
 ### Privacy stance
 

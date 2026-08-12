@@ -18,7 +18,7 @@ Claude Research Assistant is a [Zotero 7](https://www.zotero.org/) plugin that p
 
 Retrieval runs **entirely on your machine**. There is no Python server, no external vector database, and no cloud indexing service. Your papers are only sent to Anthropic when you actually ask a question that needs them.
 
-![Workflow: the Zotero library is indexed locally by BM25 and ONNX embeddings, rank-fused on device, and only the winning passages reach the Claude API over one hostname](workflow.png)
+![Workflow: the Zotero library is indexed locally by BM25 and ONNX embeddings, rank-fused on device, and only the most relevant passages reach the Claude API over one hostname](retrieval-flow.png)
 
 ## Highlights
 
