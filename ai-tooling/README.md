@@ -1,10 +1,17 @@
 # AI Tooling
 
-Tools that put Claude next to the data I actually work with, built so the data itself never has to leave the machine.
+Two tools that put local AI next to the papers I actually work with, built so the library never has to leave the machine. One is interactive (ask questions, get a cited answer); one is batch (turn the whole library into a durable summary layer). They sit at opposite ends of the local/cloud tradeoff.
 
 | Project | What it does | Docs |
 |---|---|---|
-| [zotero-claude-assistant/](zotero-claude-assistant/) | Zotero 7 plugin: one chat box that auto-routes between direct Claude chat and RAG over your own paper library, with retrieval and embeddings running 100% on-device. | [README](zotero-claude-assistant/README.md) (install, usage, build) |
+| [zotero-claude-assistant/](zotero-claude-assistant/) | Zotero 7 plugin: one chat box that auto-routes between direct Claude chat and RAG over your own paper library, with retrieval and embeddings running 100% on-device; only the winning passages go to the Claude API. | [README](zotero-claude-assistant/README.md) (install, usage, build) |
+| [ollama-paper-summarizer/](ollama-paper-summarizer/) | Batch-summarizes a folder of PDFs into Markdown with a local Ollama model - fully offline, nothing sent anywhere - so the summaries become a searchable idea bank that an Obsidian similarity plugin surfaces while you write. | [README](ollama-paper-summarizer/README.md) |
+
+The contrast is the point: the plugin keeps *retrieval* local and sends only the winning snippets to Claude for an interactive answer; the summarizer keeps *everything* local and leaves behind a greppable summary layer. Same corpus, two ends of the local/cloud tradeoff.
+
+## Ollama Paper Summarizer
+
+A batch pipeline: walk a Zotero storage tree, extract each PDF's text with pdfplumber (parallelized across a process pool), and ask a local [Ollama](https://ollama.com/) model for a structured technical summary (key findings + quantitative results) written as one `<paper>_summary.md` per PDF into an Obsidian folder. An Obsidian similarity plugin ([Smart Connections](https://github.com/brianpetro/obsidian-smart-connections)) then embeds those summaries and surfaces the relevant ones next to a fresh note, so the library augments the draft. Fully local (no API key, no upload), idempotent (existing summaries skipped), and steered by one carefully constrained prompt so every note has the same greppable shape rather than a random abstract. In practice it has summarized ~3,900 papers from my Zotero library entirely offline (no tokens billed, nothing uploaded), across incremental runs between mid-2024 and early 2025. A bit old now (llama3 -> qwen2 -> phi4) and due for a re-run on a current model, which is a one-line model-tag change. Full writeup, prompt, and an example in its [README](ollama-paper-summarizer/README.md).
 
 ## Claude Research Assistant for Zotero
 

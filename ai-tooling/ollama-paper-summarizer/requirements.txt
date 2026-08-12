@@ -1,0 +1,4 @@
+# Local, offline pipeline - no API keys, no cloud services.
+pdfplumber        # PDF text extraction
+mdutils           # write the summary Markdown files
+ollama            # client for the local Ollama model server (run `ollama serve`)
