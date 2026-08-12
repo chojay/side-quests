@@ -17,7 +17,7 @@ Everything here shares three habits:
 | Section | What's inside |
 |---|---|
 | [computational-materials/](computational-materials/) | Materials Project interface-reaction screening: gate-dielectric stability, an 18-gas etch-chemistry study at 0 K vs 300 K, and a caught-and-fixed API data bug |
-| [ai-tooling/](ai-tooling/) | A Zotero 7 plugin doing fully on-device retrieval (BM25 + ONNX embeddings, rank-fused) with only winning passages sent to the Claude API |
+| [ai-tooling/](ai-tooling/) | Two local-first tools over your own paper library: a Zotero 7 plugin doing on-device retrieval (BM25 + ONNX embeddings) with only winning passages sent to Claude, and a fully offline Ollama batch summarizer that turned ~3,900 PDFs into a searchable Obsidian idea bank |
 | [claude-skills/](claude-skills/) | Nine working Claude Code skills: parametric CAD, academic figures, arXiv PDFs, hybrid retrieval, research orchestration, transcript tooling |
 | [3d-printing/](3d-printing/) | Seventeen parametric builds plus two design playbooks; every part is a Python or OpenSCAD program |
 | [hardware-tools/](hardware-tools/) | Batch label printing for a phone-app-only NIIMBOT printer: reverse-engineered BLE protocol, firmware-dialect detection, dry-run byte tracing |
@@ -51,6 +51,8 @@ A [Materials Project interface-reaction tool](computational-materials/mp-interfa
 ### [AI Tooling](ai-tooling/)
 
 A [Zotero 7 plugin](ai-tooling/zotero-claude-assistant/) that answers questions about your own paper library from inside [Zotero](https://www.zotero.org/): a section-aware BM25 index and a quantized ONNX embedding model (bge-small-en-v1.5, running in a ChromeWorker via Transformers.js) retrieve on-device, Reciprocal Rank Fusion merges the rankings, and only the winning passages go to the Claude API. Papers never leave the machine at index time; the network surface is one hostname. TypeScript, esbuild, CI that deliberately builds without the model weights to keep the degraded path tested. Has an [ARCHITECTURE.md](ai-tooling/zotero-claude-assistant/ARCHITECTURE.md) with dataflow diagrams.
+
+The offline sibling in this section, an [Ollama paper summarizer](ai-tooling/ollama-paper-summarizer/), takes the opposite tradeoff: it batch-summarizes a whole PDF library into structured Markdown with a local model - nothing sent anywhere, no API key - so the summaries become a greppable idea bank an Obsidian similarity plugin surfaces while you write. It has summarized about 3,900 papers entirely offline; a carefully constrained prompt keeps every note the same shape instead of a random abstract.
 
 ### [Claude Code Skills](claude-skills/)
 
