@@ -4,11 +4,13 @@ A personal toolkit for reading, comparing, and 3D-reconstructing brain MRI studi
 
 This folder contains no patient imaging, no DICOM files, and no generated reports. The one image here is an [explicitly labeled example](examples/example-annotated-slices.png) rendered on the public MNI152 reference template.
 
+![Workflow: brain MRI from a hospital CD is classified and matched by sequence from headers only, ventricles are segmented and wall curvature is measured to find candidates, each is checked across five sequences, and everything lands in an interactive 3D report where every candidate is human-reviewed](workflow.png)
+
 ## Why I built this
 
-The starting point was a pair of brain MRI studies on a hospital CD, whose bundled viewer could scroll through slices and not much else. I wanted to genuinely understand what was on that disc: what the sequences were, how the two scans compared, and whether I could reproduce the kind of structured looking a radiologist does. Not to second-guess radiologists, whose reads are the ground truth here, but to be able to ask better questions.
+The starting point was a pair of brain MRI studies on a hospital CD, whose bundled viewer could scroll through slices and not much else. Each study held several sequences with different slice counts and different through-plane spacing, and the two studies were not acquired on the same grid, so the viewer could not line the two timepoints up at the same anatomical level. Even getting to "the same slice" in both meant counting landmarks by eye. That misalignment - different voxel sizes, fields of view, and slice counts between the two studies - turned out to be the core technical problem the whole toolkit exists to solve. I wanted to genuinely understand what was on that disc: what the sequences were, how the two scans compared, and whether I could reproduce the kind of structured looking a radiologist does. Not to second-guess radiologists, whose reads are the ground truth here, but to be able to ask better questions.
 
-So this became a side quest: start from raw DICOM, end at an interactive 3D reconstruction I could rotate in a browser, with every intermediate step inspectable. The full project grew to about 7,300 lines across 17 scripts over a couple of weeks in early 2026. What is published here is the curated core: 7 scripts covering the whole pipeline, with the dead-end iterations removed (but described below, because they were the most instructive part).
+So this became a side quest: start from raw [DICOM](https://en.wikipedia.org/wiki/DICOM), end at an interactive 3D reconstruction I could rotate in a browser, with every intermediate step inspectable. The full project grew to about 7,300 lines across 17 scripts over a couple of weeks in early 2026. What is published here is the curated core: 7 scripts covering the whole pipeline, with the dead-end iterations removed (but described below, because they were the most instructive part).
 
 ## Example output (public template, not patient data)
 
