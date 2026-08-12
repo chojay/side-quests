@@ -23,7 +23,7 @@ Everything here shares three habits:
 | [hardware-tools/](hardware-tools/) | Batch label printing for a phone-app-only NIIMBOT printer: reverse-engineered BLE protocol, firmware-dialect detection, dry-run byte tracing |
 | [medical-imaging/](medical-imaging/) | An infant-movement video pipeline (SAM 3 on Apple Silicon) and a DICOM MRI toolkit, both de-identified and code-only, with caveats and shortcomings documented |
 | [espresso-gaggiuino/](espresso-gaggiuino/) | An open-source machine mod run as a data project: 639-shot telemetry corpus, drift detection, troubleshooting as differential diagnosis |
-| [audio/](audio/) | A construction-noise monitor: camera clips to a fully local dBFS timeline, noise-event detection, and an hour-bucketed report of loud minutes outside permitted hours (no speech, ever) |
+| [audio/](audio/) | A construction-noise monitor born of a napping baby vs. the jackhammers next door: camera clips to a fully local dBFS timeline, noise-event detection, and an hour-bucketed report of loud minutes outside permitted hours (levels only, no speech, ever) |
 
 ## Highlights
 
