@@ -79,6 +79,44 @@ Create or identify the `.md` file with proper YAML frontmatter. Ensure:
 - Bibliography `.bib` file exists if citations are used
 - Paths are relative to the markdown file's location
 
+### Step 1b: Verify every citation exists (anti-hallucination)
+
+An AI-drafted paper can invent a DOI, or pair a **real** DOI with a fabricated
+title. Both pass a casual eye and a plain 200-OK check. Before building, resolve
+every citation and confirm the DOI maps to the paper you actually cited:
+
+```bash
+SCRIPTS="$HOME/.claude/skills/arxiv-pdf/scripts"
+python3 "$SCRIPTS/verify_citations.py" refs.bib        # or the .md itself
+python3 "$SCRIPTS/verify_citations.py" --doi 10.1038/nature14539   # spot-check one
+```
+
+The script (standard library only) queries **Crossref**, falls back to
+**DataCite**, resolves **arXiv** IDs, and - when a `.bib` gives a title - checks
+that the resolved title matches, catching the "real DOI, wrong paper" case.
+Statuses:
+
+- **VERIFIED** - DOI resolves and the title matches. Good.
+- **MISMATCH** - the DOI resolves to a *different* paper than cited. Fix the DOI
+  or the title; do not ship it.
+- **NOT FOUND** - the DOI does not exist anywhere. It was almost certainly
+  hallucinated; remove or replace the citation.
+- **API-BLOCKED** - the API could not be reached (403, rate limit, offline).
+  Not a pass. Verify it in the browser (below).
+
+The script exits nonzero if anything is NOT FOUND / MISMATCH / API-BLOCKED, so it
+can gate the build in a script.
+
+**Browser fallback when WebFetch / the API is blocked.** Some publishers and
+networks block programmatic access, and title-only citations have no DOI to
+resolve. In those cases confirm the reference by hand through the
+Claude-in-Chrome browser extension: open
+`https://doi.org/<doi>` and confirm it lands on the cited paper, or search the
+exact title on Crossref (`search.crossref.org`) or Google Scholar and confirm a
+real match. **Never ship a citation that neither the API nor the browser could
+verify.** Prefer the browser over `WebFetch` for this - publisher pages routinely
+return 403 to `WebFetch` while rendering normally in the logged-in browser.
+
 ### Step 2: Run the Conversion
 
 **Using the shell script:**
