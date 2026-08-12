@@ -12,7 +12,7 @@ Everything here shares three habits:
 
 ## Map
 
-![Tree map of the repo: a side-quests root card branches to seven section cards - computational-materials, ai-tooling, claude-skills, 3d-printing, hardware-tools, medical-imaging, and espresso-gaggiuino - each with a bold section name, a one-line problem statement, and two indented lines for approach and outcome](docs/repo-map.png)
+![Tree map of the repo: a side-quests root card branches to eight section cards - computational-materials, ai-tooling, claude-skills, 3d-printing, hardware-tools, medical-imaging, espresso-gaggiuino, and audio - each with a bold section name, a one-line problem statement, and two indented lines for approach and outcome](docs/repo-map-8.png)
 
 | Section | What's inside |
 |---|---|
@@ -23,6 +23,7 @@ Everything here shares three habits:
 | [hardware-tools/](hardware-tools/) | Batch label printing for a phone-app-only NIIMBOT printer: reverse-engineered BLE protocol, firmware-dialect detection, dry-run byte tracing |
 | [medical-imaging/](medical-imaging/) | An infant-movement video pipeline (SAM 3 on Apple Silicon) and a DICOM MRI toolkit, both de-identified and code-only, with caveats and shortcomings documented |
 | [espresso-gaggiuino/](espresso-gaggiuino/) | An open-source machine mod run as a data project: 639-shot telemetry corpus, drift detection, troubleshooting as differential diagnosis |
+| [audio/](audio/) | A construction-noise monitor: camera clips to a fully local dBFS timeline, noise-event detection, and an hour-bucketed report of loud minutes outside permitted hours (no speech, ever) |
 
 ## Highlights
 
@@ -75,6 +76,10 @@ Each has an `ARCHITECTURE.md` with system diagrams.
 ### [Espresso: Gaggiuino Build Research](espresso-gaggiuino/)
 
 Replaced the controls of a [Gaggia Classic Evo Pro](https://www.gaggia-na.com/products/gaggia-classic-pro) with the open-source [Gaggiuino](https://gaggiuino.github.io/) controller (STM32 + ESP32, pressure/flow profiling, PID), then treated eight months of daily use as a data project: a 639-shot telemetry corpus pulled from the machine's HTTP API, a machine-drift analysis that isolated OPV spring fatigue from grinder and coffee variables, and troubleshooting docs structured as differential diagnoses with explicit priors. Safety claims were checked against the firmware source, not forum consensus.
+
+### [Audio: Construction-Noise Monitor](audio/)
+
+Prolonged construction next door and a napping infant raised one question that opinions could not settle: how loud, how often, and inside or outside working hours? A [noise monitor](audio/) answers it with data. It extracts the audio track from home-camera clips (ffmpeg), builds a windowed dBFS level timeline, detects noise events against a rolling-median baseline with hysteresis, renders spectrograms, and produces an hour-bucketed report flagging loud minutes outside a permitted-hours window. It is fully local (numpy, no cloud, no API keys) and processes **no speech at all** - noise levels and timing only, deliberately nowhere near what anyone said. Levels are honest relative dBFS from an uncalibrated camera microphone, not dB(A). Ships with a seeded synthetic demo so it runs without any recording.
 
 ## How this was built
 
