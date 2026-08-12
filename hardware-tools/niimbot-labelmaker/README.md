@@ -42,6 +42,10 @@ python print_labels.py print   --file labels.txt
 
 macOS notes: grant your terminal Bluetooth permission on first scan (System Settings > Privacy & Security > Bluetooth), and close the NIIMBOT phone app first - BLE allows one connection at a time. The `label` wrapper script runs the CLI via a conda env without activation; edit or ignore it if you use plain venvs.
 
+## AI-assisted build notes
+
+Built with Claude in the loop. What AI acceleration bought: fast cross-referencing of three upstream reverse-engineering projects into one driver, and drafting the packet builders and the dry-run byte tracer from their scattered constants. Where it confidently failed: the `_M` firmware-dialect bug in [GOTCHAS.md](GOTCHAS.md). The model reasoned from the upstream code that a byte-perfect success trace meant a successful print, exactly as the upstream code assumed - and it was wrong, because the `_M` variant returns that trace while printing blanks. No amount of reading the protocol caught it; only holding the printer and watching blank labels come out did. The tooling parsed the protocol; the ground truth came from the hardware.
+
 ## License and attribution
 
 The NIIMBOT protocol knowledge here stands on three reverse-engineering projects: [AndBondStyle/niimprint](https://github.com/AndBondStyle/niimprint) (MIT), [labbots/NiimPrintX](https://github.com/labbots/NiimPrintX) (GPL-3.0), and [MultiMote/niimblue](https://github.com/MultiMote/niimblue) (MIT), whose `D110MV4PrintTask` documented the `_M` firmware dialect. Because packet sequences were taken from a GPL-3.0 project, **this folder is licensed GPL-3.0** (see [LICENSE](LICENSE)), unlike the rest of the repository, which is MIT. That is the conservative reading; protocol constants alone are arguably uncopyrightable facts, but conservative is cheap here.
