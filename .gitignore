@@ -35,3 +35,7 @@ dicom/
 
 # Niimbot runtime outputs (BLE traces carry device addresses)
 hardware-tools/niimbot-labelmaker/debug.log
+
+# Audio clips are never committed; the synthetic demo regenerates them
+*.wav
+audio/examples/demo-clips/
