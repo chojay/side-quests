@@ -84,6 +84,11 @@ Quantitative Results (5 points maximum)
 [Key quantitative results - property improvements, performance gains, efficiency
 - with specific values and units where available.]
 
+Stated Limitations and Open Questions (3 points maximum)
+[Limitations the paper itself states, and questions it leaves open. If the paper
+claims none, say so. This section is required - it is what lets a later
+cross-paper read find a recurring weakness, not only a recurring strength.]
+
 Focus on core technical content; omit introductions, license details, and references."""
     try:
         resp = await client.generate(model=model, system=SYSTEM_PROMPT, prompt=user_prompt)

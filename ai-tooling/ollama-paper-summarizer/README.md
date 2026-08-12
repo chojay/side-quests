@@ -8,7 +8,7 @@ The itch: a Zotero library grows faster than anyone reads it, and the papers
 you half-remember are exactly the ones you want to lean on when drafting a fresh
 note. This walks the whole library, extracts each PDF's text, and asks a local
 [Ollama](https://ollama.com/) model for a structured technical summary (key
-findings + quantitative results), writing one `<paper>_summary.md` per PDF into
+findings, quantitative results, and stated limitations), writing one `<paper>_summary.md` per PDF into
 an Obsidian folder. Then an Obsidian similarity plugin -
 [Smart Connections](https://github.com/brianpetro/obsidian-smart-connections) -
 embeds those summaries and surfaces the relevant ones next to whatever you are
@@ -54,7 +54,10 @@ python3 ollama_paper_summarizer.py \
 
 Point `--out` at a folder inside your Obsidian vault and let Smart Connections
 index it. See [examples/example-summary.md](examples/example-summary.md) for the
-output shape (a synthetic, illustrative summary - no real paper).
+output shape (a synthetic, illustrative summary - no real paper), and
+[GOTCHAS.md](GOTCHAS.md) for a worked example of the real payoff: three open-access
+Nature papers summarized, compared, and distilled into one recurring theme (and
+the prompt fix it forced).
 
 ## The prompt (why the summaries are consistent, not random)
 
@@ -87,14 +90,18 @@ Quantitative Results (5 points maximum)
 [Key quantitative results - property improvements, performance gains, efficiency
 - with specific values and units where available.]
 
+Stated Limitations and Open Questions (3 points maximum)
+[Limitations the paper states and questions it leaves open. Required, even if the
+paper claims none.]
+
 Focus on core technical content; omit introductions, license details, and references.
 ```
 
 Why each constraint earns its place:
 
-- **A fixed two-section format** (findings, then quantitative results) means every
-  note has the same shape, so the embeddings compare like with like and you can
-  skim a hundred at a glance.
+- **A fixed three-section format** (findings, quantitative results, limitations)
+  means every note has the same shape, so the embeddings compare like with like
+  and you can skim a hundred at a glance.
 - **Hard caps** (5 paragraphs, 5 points) stop the model from padding a thin paper
   to look substantial; a short summary of a thin paper is the correct output.
 - **"Quantitative results with values and units"** forces numbers into the note.
@@ -103,6 +110,12 @@ Why each constraint earns its place:
 - **"Omit introductions, license details, and references"** strips the
   boilerplate that otherwise dominates a short summary and pollutes similarity
   search with generic phrasing.
+- **A required limitations section.** This one was added *after* the fact: a
+  findings-and-numbers summary silently drops what a paper cannot do, which makes
+  an idea bank uniformly over-optimistic and hides the most useful cross-paper
+  signal. See [GOTCHAS.md](GOTCHAS.md) for the worked example that forced it. The
+  ~3,900 summaries already produced predate this line and will pick it up on the
+  re-run.
 
 The default wording is tuned for a materials/hardware library; both prompts are
 constants at the top of the script - edit them for your field, keep the

@@ -31,3 +31,11 @@ Quantitative Results
 - Deposition temperature 250 C, within the interconnect thermal budget.
 - Line-to-line leakage reduced by roughly an order of magnitude versus the
   sputtered barrier at the same nominal thickness.
+
+Stated Limitations and Open Questions
+
+- Reliability data is limited to a single anneal condition; long-term
+  electromigration behavior is not reported.
+- The precursor is costly and the deposition rate is low, so throughput at
+  production scale is an open question.
+- Results are on patterned test structures, not full interconnect stacks.
