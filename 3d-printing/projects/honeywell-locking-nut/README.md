@@ -2,7 +2,7 @@
 
 ![Knurled 100 mm locking ring with internal multi-start threads, iso render](locking_nut_isometric.png)
 
-The plastic locking nut that holds a Honeywell QuietSet tower fan (HYF260/HYF290) together cracked, and Honeywell does not sell it. This is a parametric build123d replacement: a 100 mm knurled ring with internal multi-start threads swept from a `Helix`, with a selectable thread profile (triangle / square / buttress).
+The plastic locking nut that holds a [Honeywell QuietSet tower fan](https://www.amazon.com/s?k=Honeywell+QuietSet+HYF290+tower+fan) (HYF260/HYF290) together cracked, and Honeywell does not sell it. This is a parametric build123d replacement: a 100 mm knurled ring with internal multi-start threads swept from a `Helix`, with a selectable thread profile (triangle / square / buttress).
 
 **Why it is interesting:** the mating thread is inside the fan housing where calipers barely reach. My measured pitch (2.84 mm from crest 1.61 + gap 1.23) produced a nut that fit but would not catch. Instead of guessing again, I bracketed the unknowns empirically: an overnight plate of 8 test rings (5 mm tall, ~15 minutes each) varying pitch (2.5 / 3.0 / 3.5), profile (triangle / square), depth (0.30 / 0.50 x pitch), and start count (2 vs 3). A second round varied bore diameter and ring height after two rings engaged but bound. Cheap prints turned an unmeasurable geometry problem into a lookup.
 
