@@ -2,7 +2,7 @@
 
 ![Disc slot rack variant - vertical edge slots, pegs, and ring cups, rendered from the generator](braun_mq9_caddy_B_slotrack.png)
 
-The [Braun MultiQuick 9](https://www.amazon.com/s?k=Braun+MultiQuick+9) food-processor kit ships a pile of loose blades, discs, and inserts with no storage (the OEM stand only exists in some non-US kits). One 900-line build123d script emits four caddy variants: an integrated single print, plus a two-part set (disc slot rack + peg/cup block) and an aux bin that fills the leftover L-notch behind the rack.
+The [Braun MultiQuick 9](https://www.braunhousehold.com/en-us/c/food-preparation/hand-blenders/multiquick-9) food-processor kit ships a pile of loose blades, discs, and inserts with no storage (the OEM stand only exists in some non-US kits). One 900-line build123d script emits four caddy variants: an integrated single print, plus a two-part set (disc slot rack + peg/cup block) and an aux bin that fills the leftover L-notch behind the rack.
 
 **The defining constraint: no part dimensions are published anywhere.** Braun, eReplacementParts, and Amazon spare listings carry electrical specs only (verified before giving up). So every dimension is an estimate scaled from the known 2 L bowl, clearances are deliberately generous (+3 mm slot gaps, +4 mm bores), the docstring shouts `!!! DIMENSIONS ARE ESTIMATES !!!`, and the workflow plans for a v1 test-fit followed by caliper-tightened constants. Designing for revision beats pretending to precision you do not have.
 
