@@ -13,7 +13,7 @@ headless and reproducibly.
 drawn from a projected range and straggle of the order SRIM returns for a light
 ion in a low-Z oxide; the real numbers come out of TRIM.*
 
-![Workflow: process knobs feed an ion-energy estimator, TRIM runs a Monte-Carlo ion-transport simulation in Docker, and the parsed output gives projected range, straggle, vacancy profiles, sputter yield, and energy partitioning](workflow.png)
+![Workflow: process knobs feed an ion-energy estimator, TRIM runs a Monte-Carlo ion-transport simulation in Docker, and the parsed output gives projected range, straggle, vacancy profiles, sputter yield, and energy partitioning](workflow-v2.png)
 
 ## What it does
 
