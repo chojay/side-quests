@@ -14,7 +14,7 @@ Everything here shares three habits:
 
 ## Map
 
-![Tree map of the repo: a side-quests root card branches to nine section cards - ai-tooling, advanced-materials-characterization, audio, claude-skills, computational-materials, espresso-gaggiuino, hardware-tools, medical-imaging, and 3d-printing - each with a bold section name, a one-line problem statement, and two indented lines for approach and outcome](docs/repo-map-9b.png)
+![Tree map of the repo: a side-quests root card branches to nine section cards - ai-tooling, advanced-materials-characterization, audio, claude-skills, computational-materials, espresso-gaggiuino, hardware-tools, medical-imaging, and 3d-printing - each with a bold section name, a one-line problem statement, and two indented lines for approach and outcome](docs/repo-map-9c.png)
 
 | Section | What's inside |
 |---|---|
