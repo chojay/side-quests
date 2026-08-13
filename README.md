@@ -37,22 +37,26 @@ Everything here shares three habits:
 
 <table>
 <tr>
-<td align="center" valign="middle" width="33%"><a href="advanced-materials-characterization/sem-super-resolution/"><img src="docs/gallery/sem-sr.png" alt="A synthetic SEM micrograph shown as a blocky low-resolution input beside a smoother x4 super-resolved version"></a></td>
-<td align="center" valign="middle" width="33%"><a href="advanced-materials-characterization/eis-drt-toolkit/"><img src="docs/gallery/drt.png" alt="A Distribution of Relaxation Times curve with two peaks landing on the known tau1 and tau2 marker lines of a synthetic spectrum"></a></td>
-<td align="center" valign="middle" width="33%"><a href="computational-materials/mp-interface-reactions/"><img src="docs/gallery/hull-o-si-ta.png" alt="Ternary convex hull of the O-Si-Ta system: stable phases as red nodes joined by tie-lines, including Ta2O5, SiO2, and TaSi2"></a></td>
+<td align="center" valign="middle" width="50%"><a href="advanced-materials-characterization/sem-super-resolution/"><img src="docs/gallery/sem-sr.png" alt="A synthetic SEM micrograph shown as a blocky low-resolution input beside a smoother x4 super-resolved version"></a></td>
+<td align="center" valign="middle" width="50%"><a href="advanced-materials-characterization/eis-drt-toolkit/"><img src="docs/gallery/drt.png" alt="A Distribution of Relaxation Times curve with two peaks landing on the known tau1 and tau2 marker lines of a synthetic spectrum"></a></td>
 </tr>
 <tr>
 <td align="center" valign="top"><sub><b>SEM super-resolution</b><br>classical vs deep-learning x4<br>synthetic sample, Apple Silicon</sub></td>
 <td align="center" valign="top"><sub><b>EIS to DRT</b><br>one Nyquist arc into peaks<br>validated on known tau</sub></td>
+</tr>
+<tr>
+<td align="center" valign="middle" width="50%"><a href="computational-materials/mp-interface-reactions/"><img src="docs/gallery/hull-o-si-ta.png" alt="Ternary convex hull of the O-Si-Ta system: stable phases as red nodes joined by tie-lines, including Ta2O5, SiO2, and TaSi2"></a></td>
+<td align="center" valign="middle" width="50%"><a href="medical-imaging/gma-video-pipeline/"><img src="docs/gallery/limb-screen-4x3.png" alt="Scatter plot of the synthetic example run: each keypoint plotted by symmetry index vs movement variety, unflagged keypoints in blue, pipeline-flagged left hip and right shoulder in red"></a></td>
+</tr>
+<tr>
 <td align="center" valign="top"><sub><b>Gate-dielectric screening</b><br>the O-Si-Ta convex hull:<br>Ta2O5 + Si -> silicides + SiO2</sub></td>
-</tr>
-<tr>
-<td align="center" valign="middle" width="33%"><a href="medical-imaging/gma-video-pipeline/"><img src="docs/gallery/limb-screen-4x3.png" alt="Scatter plot of the synthetic example run: each keypoint plotted by symmetry index vs movement variety, unflagged keypoints in blue, pipeline-flagged left hip and right shoulder in red"></a></td>
-<td align="center" valign="middle" width="33%"><a href="medical-imaging/dicom-mri-toolkit/"><img src="docs/gallery/mri-axial-putamen.png" alt="Axial slice of the public MNI152 template with the putamen circled and a basal ganglia example annotation, labeled EXAMPLE - not patient data"></a></td>
-<td align="center" valign="middle" width="33%"><a href="3d-printing/projects/kumiko-vent-covers/"><img src="docs/gallery/kumiko.png" alt="Kumiko asanoha lattice vent cover, code-generated"></a></td>
-</tr>
-<tr>
 <td align="center" valign="top"><sub><b>GMA video pipeline</b><br>per-keypoint symmetry screen<br>in-norm limbs blue, flagged red</sub></td>
+</tr>
+<tr>
+<td align="center" valign="middle" width="50%"><a href="medical-imaging/dicom-mri-toolkit/"><img src="docs/gallery/mri-axial-putamen.png" alt="Axial slice of the public MNI152 template with the putamen circled and a basal ganglia example annotation, labeled EXAMPLE - not patient data"></a></td>
+<td align="center" valign="middle" width="50%"><a href="3d-printing/projects/kumiko-vent-covers/"><img src="docs/gallery/kumiko.png" alt="Kumiko asanoha lattice vent cover, code-generated"></a></td>
+</tr>
+<tr>
 <td align="center" valign="top"><sub><b>DICOM MRI toolkit</b><br>annotating anatomy in code<br>shown: public MNI152 template</sub></td>
 <td align="center" valign="top"><sub><b>Kumiko lattice vent cover</b><br>parametric asanoha pattern<br>bed-split with real joinery</sub></td>
 </tr>
