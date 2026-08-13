@@ -10,7 +10,7 @@ Everything here shares three habits:
 2. **Validation as a first-class step.** Watertight checks and containment truth tables for printed parts, synthetic-data test suites for pipelines, adversarial review passes for research documents.
 3. **Calibrated AI-assist notes.** All of this was built with Claude in the loop. Each project documents concretely what AI acceleration bought and where it confidently failed, because both halves are the interesting part.
 
-> I'm a process and materials engineer by day, but everything in this repository is a personal, nights-and-weekends project. The materials-science, chemistry, and physics explorations here are pursued purely out of curiosity, on my own time. They use only publicly available data and open source codes, produce only self-generated results, and are kept deliberately separate from my professional work - no employer data, no proprietary systems, no affiliation. The views, and the mistakes, are my own.
+> I'm a process and materials engineer by day, but everything in this repository is a personal, nights-and-weekends project. The materials-science, chemistry, and physics explorations here are pursued purely out of curiosity, on my own time. They use only publicly available data and open source codes, produce only self-generated results, and are kept deliberately separate from my professional work and completely unrelated to my current daily activities - no employer data, no proprietary systems, no affiliation. The views, and the mistakes, are my own.
 
 ## Map
 
