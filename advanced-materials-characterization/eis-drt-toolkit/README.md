@@ -10,6 +10,30 @@ characteristic timescales.
 
 ![Synthetic Randles plus two-ZARC spectrum: on the left a Nyquist plot showing a blurry double arc, on the right the recovered DRT with two peaks landing on the known tau1 and tau2 marker lines](examples/synthetic_drt_result.png)
 
+## Why open-source tooling
+
+Three tools went into getting here, and the differences between them are the
+reason this project exists at all:
+
+- **[ZView](https://www.scribner.com/software/)** (Scribner Associates) is the
+  long-standing commercial option for equivalent-circuit fitting, Kramers-Kronig
+  validation, and plotting, and it is still actively maintained. It does offer
+  batch fitting, but only from inside its Windows GUI: there is no published
+  Python API or command-line interface, so an analysis cannot be driven from a
+  script and re-run later from the same source of truth.
+- **[pyimpspec](https://github.com/vyrjana/pyimpspec)** (GPLv3) is what this
+  toolkit is built on. It exposes the analysis as a Python API *and* a CLI, with
+  five DRT methods including the TR-RBF used here, so a folder of spectra becomes
+  a loop in a script rather than a sequence of clicks.
+- **[DearEIS](https://github.com/vyrjana/DearEIS)** (GPLv3, same author) is the
+  project-based desktop GUI built on top of pyimpspec, and it ships its own API
+  for some batch work. Worth knowing about if you want the interactive path
+  without giving up scriptability.
+
+That is the whole argument for the open-source stack here: not that the
+commercial tool computes the wrong answer, but that a scripted pipeline is
+reproducible and diffable, and a GUI session is not.
+
 ## Pipeline
 
 ```
