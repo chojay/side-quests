@@ -53,7 +53,7 @@ real is included here.
   keep on genuinely detail-starved inputs. The tool ships both so you can decide
   per image rather than assume.
 
-## The bug I shipped
+## A lesson caught in review
 
 `read_sem()` called `tifffile.imread` while `tifffile` was never imported, so the
 tool would `NameError` on the very first TIFF it touched. It is fixed here

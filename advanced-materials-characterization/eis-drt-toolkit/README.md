@@ -52,7 +52,7 @@ checked against ground truth. It lands both peaks within a few percent, and the
 faint third bump between them is exactly the kind of regularization artifact the
 method note warns about, left in rather than hidden.
 
-## The bug I shipped
+## A lesson caught in review
 
 The original batch script called `tqdm(...)` and `time.time()` while neither
 `tqdm` nor `time` was ever imported, so it would crash on the first spectrum. The
