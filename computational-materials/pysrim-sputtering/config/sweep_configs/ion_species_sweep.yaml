@@ -1,0 +1,7 @@
+sweep_type: "species"
+ions: ["N", "Ar", "O", "B"]
+energy_eV: 100
+target: "ITO"
+number_ions: 5000
+calculation_type: 2
+output_prefix: "species_sweep_100eV_ITO"

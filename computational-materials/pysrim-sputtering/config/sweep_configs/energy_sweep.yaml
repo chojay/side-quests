@@ -1,0 +1,7 @@
+sweep_type: "energy"
+ion: "N"
+target: "SiO2"
+energies_eV: [10, 15, 20, 30, 50, 75, 100, 150, 200, 300, 500, 750, 1000]
+number_ions: 5000
+calculation_type: 2
+output_prefix: "energy_sweep_N_SiO2"

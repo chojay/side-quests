@@ -1,0 +1,6 @@
+pyimpspec>=5.0
+numpy
+tqdm
+# interactive explorer (drt_equivalent_circuit.py):
+streamlit
+plotly

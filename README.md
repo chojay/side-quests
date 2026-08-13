@@ -1,6 +1,6 @@
 # Side Quests
 
-Things I build outside work. By day I am a semiconductor process and materials engineer; evenings and weekends produce what's in this repo: thermodynamic screening on open materials data, local-first AI tooling, parametric CAD written as Python, medical-imaging pipelines, and an espresso machine that files telemetry reports.
+Things I build outside work. By day I am a semiconductor process and materials engineer; evenings and weekends produce what's in this repo: thermodynamic screening on open materials data, materials-characterization pipelines (SEM super-resolution, impedance/DRT), local-first AI tooling, parametric CAD written as Python, medical-imaging pipelines, and an espresso machine that files telemetry reports.
 
 **In a hurry?** Three artifacts carry the flavor: the [caught-and-fixed API data bug](computational-materials/mp-interface-reactions/README.md) in the materials screening, the NIIMBOT driver's [GOTCHAS.md](hardware-tools/niimbot-labelmaker/GOTCHAS.md) (identical printers, different firmware dialects), and the GMA pipeline's [honest scorer](medical-imaging/gma-video-pipeline/src/gma_pipeline/mos_r.py) that declares three subscales NOT_COMPUTABLE rather than guessing.
 
@@ -14,11 +14,12 @@ Everything here shares three habits:
 
 ## Map
 
-![Tree map of the repo: a side-quests root card branches to eight section cards - computational-materials, ai-tooling, claude-skills, 3d-printing, hardware-tools, medical-imaging, espresso-gaggiuino, and audio - each with a bold section name, a one-line problem statement, and two indented lines for approach and outcome](docs/repo-map-8.png)
+![Tree map of the repo: a side-quests root card branches to nine section cards - computational-materials, characterization, ai-tooling, claude-skills, 3d-printing, hardware-tools, medical-imaging, espresso-gaggiuino, and audio - each with a bold section name, a one-line problem statement, and two indented lines for approach and outcome](docs/repo-map-9.png)
 
 | Section | What's inside |
 |---|---|
-| [computational-materials/](computational-materials/) | Materials Project interface-reaction screening: gate-dielectric stability, an 18-gas etch-chemistry study at 0 K vs 300 K, and a caught-and-fixed API data bug |
+| [computational-materials/](computational-materials/) | Materials Project interface-reaction screening (gate-dielectric stability, an 18-gas etch-chemistry study at 0 K vs 300 K, a caught-and-fixed API data bug), plus a scriptable SRIM/TRIM wrapper that drives ion-transport sputtering simulations across a parameter grid, headless in Docker |
+| [characterization/](characterization/) | Materials characterization two ways: SEM micrograph super-resolution (classical vs deep-learning upscaling on Apple Silicon) and an EIS/DRT toolkit that deconvolves impedance spectra into relaxation-time peaks; both run on bundled synthetic data |
 | [ai-tooling/](ai-tooling/) | Two local-first tools over your own paper library: a Zotero 7 plugin doing on-device retrieval (BM25 + ONNX embeddings) with only the most relevant passages sent to Claude, and a fully offline [Ollama](https://ollama.com/) batch summarizer that turned ~3,900 PDFs into a searchable Obsidian idea bank |
 | [claude-skills/](claude-skills/) | Nine working Claude Code skills: parametric CAD, academic figures, arXiv PDFs, hybrid retrieval, research orchestration, transcript tooling |
 | [3d-printing/](3d-printing/) | Seventeen parametric builds plus two design playbooks; every part is a Python or OpenSCAD program |
@@ -28,6 +29,11 @@ Everything here shares three habits:
 | [audio/](audio/) | A construction-noise monitor born of a napping baby vs. the jackhammers next door: camera clips to a fully local dBFS timeline, noise-event detection, and an hour-bucketed report of loud minutes outside permitted hours (levels only, no speech, ever) |
 
 ## Highlights
+
+<p align="center">
+<a href="computational-materials/pysrim-sputtering/"><img src="computational-materials/pysrim-sputtering/sputter_depth.gif" alt="Nitrogen ions implanting into a TiO2/ITO optical stack, scattering to a distribution of stopping depths while a projected-range histogram builds up with its peak Rp marked" width="72%"></a>
+<br><sub><b>pySRIM sputtering &amp; ion-transport</b> - where ions stop in an optical coating: projected range and straggle building up frame by frame (schematic; the real numbers come from TRIM in Docker)</sub>
+</p>
 
 <table>
 <tr>
@@ -49,6 +55,12 @@ Everything here shares three habits:
 ### [Computational Materials](computational-materials/)
 
 A [Materials Project interface-reaction tool](computational-materials/mp-interface-reactions/) that walks pseudo-binary mixing lines for reaction-energy kinks, MP-website style. The demo reproduces the classic gate-dielectric screening from open data: Ta2O5 decomposes against silicon into silicides + SiO2 (why it lost the high-k race) while HfO2 and Si3N4 sit at exactly 0.00 eV/atom (why they get to touch silicon). The companion study runs silicon against 18 fab gases - Bosch etch, chamber cleans, MEMS release - at 0 K and at 300 K via a SISSO-Gibbs mode, measuring exactly when the 0 K ranking stops being trustworthy and flagging where the 300 K mode itself deserves skepticism. Also documents a silently changed API default (mixed GGA/R2SCAN hull) that was corrupting results until a literature cross-check caught it.
+
+The second tool, [pySRIM](computational-materials/pysrim-sputtering/), wraps [SRIM/TRIM](http://www.srim.org/) - the standard ion-transport Monte-Carlo, normally a click-heavy Windows GUI - so it runs headless in Docker (Wine + xvfb, `--platform linux/amd64` on Apple Silicon) across a whole parameter grid. It sputters an optical thin-film stack - low-index SiO2, high-index TiO2, and the ITO transparent conductor - and returns projected range, straggle, vacancy/damage profiles, sputter yield, and energy partitioning. The honest-notes section is the point: it says where SRIM is trustworthy (range, damage) and where it is not (absolute low-energy sputter yields), and documents the import-time monkey-patch that keeps a decade-old package alive on modern PyYAML.
+
+### [Characterization](characterization/)
+
+Two ways to look harder at a material, both running on bundled synthetic data so nothing real ships. A [SEM super-resolution tool](characterization/sem-super-resolution/) batch-upscales grayscale electron-microscopy images on Apple Silicon, putting a five-model deep-learning zoo (Real-ESRGAN, SwinIR, HAT, Swin2SR, BSRGAN) next to a classical Lanczos baseline so you can decide per image whether the transformer actually resolves detail or just costs 100x more compute to look the same. Its companion, an [EIS/DRT toolkit](characterization/eis-drt-toolkit/), deconvolves an electrochemical impedance spectrum into a Distribution of Relaxation Times: one blurry Nyquist arc becomes a comb of peaks along a timescale axis, so you can count how many processes are actually hiding in it. It ships headless (pyimpspec TR-RBF, CSV out) and as a Streamlit slider app, and validates itself on a synthetic Randles + two-ZARC spectrum with known time constants rather than asserting an answer. Both tools document the same class of AI-assist failure caught in review: a missing import that would crash on the first run, and prototypes that hardcode a local absolute data path.
 
 ### [AI Tooling](ai-tooling/)
 

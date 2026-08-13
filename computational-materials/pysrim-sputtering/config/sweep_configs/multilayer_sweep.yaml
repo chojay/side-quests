@@ -1,0 +1,7 @@
+sweep_type: "multilayer"
+ion: "N"
+energy_eV: 100
+tio2_thicknesses_nm: [0, 1, 2, 5, 10]
+number_ions: 5000
+calculation_type: 2
+output_prefix: "multilayer_sweep_N_100eV"

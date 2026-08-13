@@ -1,0 +1,76 @@
+# Material definitions for SRIM/TRIM simulations.
+#
+# Domain: reactive RF magnetron sputtering of optical thin films -
+# a transparent conductive oxide (ITO) and dielectric optical coatings
+# (high-index TiO2, low-index SiO2) that make up anti-reflection stacks
+# and transparent-electrode devices.
+#
+# Each material has:
+#   density: g/cm3
+#   elements: dict of {symbol: {stoich, E_d, lattice, surface}}
+#     stoich  - Stoichiometric ratio (auto-normalized by pysrim)
+#     E_d     - Displacement energy (eV)  -  min energy to create a vacancy
+#     lattice - Lattice binding energy (eV)  -  energy to remove atom from lattice site
+#     surface - Surface binding energy (eV)  -  energy to eject atom from surface (approx sublimation heat)
+#   width_angstrom: default simulation thickness in Angstroms
+#
+# References:
+#   Displacement energies: SRIM defaults (Si 15, Ti 25, In 25, Sn 25, O 28 eV)
+#   Surface binding: SRIM elemental sublimation heats (Si 4.70, Ti 4.85, In 2.49, Sn 3.12, O 2.00 eV)
+#   SiO2 density: fused silica ~2.20 g/cm3  (low-index optical coating, n ~ 1.46)
+#   TiO2 density: rutile ~4.23 g/cm3        (high-index optical coating, n ~ 2.40)
+#   ITO density:  ~7.10 g/cm3               (transparent conductor, In2O3:Sn 90:10)
+
+SiO2:
+  name: "Silicon Dioxide (low-index optical coating)"
+  density: 2.20
+  elements:
+    Si:
+      stoich: 1.0
+      E_d: 15
+      lattice: 2.0
+      surface: 4.70
+    O:
+      stoich: 2.0
+      E_d: 28
+      lattice: 3.0
+      surface: 2.00
+  width_angstrom: 50000  # 5 um  -  thick enough no ions reach bottom
+
+TiO2:
+  name: "Titanium Dioxide (high-index optical coating)"
+  density: 4.23
+  density_range: [3.9, 4.23]  # anatase (~3.9) to rutile (~4.23) depending on deposition
+  elements:
+    Ti:
+      stoich: 1.0
+      E_d: 25
+      lattice: 3.0
+      surface: 4.85
+    O:
+      stoich: 2.0
+      E_d: 28
+      lattice: 3.0
+      surface: 2.00
+  width_angstrom: 600  # ~60 nm quarter-wave layer at 550 nm
+
+ITO:
+  name: "Indium Tin Oxide (transparent conductor)"
+  density: 7.10
+  elements:
+    In:
+      stoich: 1.8    # In2O3:SnO2 = 90:10 -> In1.8 Sn0.2 O3
+      E_d: 25
+      lattice: 3.0
+      surface: 2.49
+    Sn:
+      stoich: 0.2
+      E_d: 25
+      lattice: 3.0
+      surface: 3.12
+    O:
+      stoich: 3.0
+      E_d: 28
+      lattice: 3.0
+      surface: 2.00
+  width_angstrom: 1500  # 150 nm typical transparent electrode

@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  srim:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    volumes:
+      - ./config:/app/config
+      - ./src:/app/src
+      - ./examples:/app/examples
+      - ./output:/app/output
+    environment:
+      - SRIM_EXECUTABLE_DIRECTORY=/opt/SRIM
+      - DISPLAY=:99
+      - WINEDEBUG=-all
+    working_dir: /app
+
+  # Quick test service
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    volumes:
+      - ./config:/app/config
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./output:/app/output
+    environment:
+      - SRIM_EXECUTABLE_DIRECTORY=/opt/SRIM
+    command: python3 -m pytest tests/ -v --ignore=tests/test_integration.py
+    working_dir: /app

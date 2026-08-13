@@ -1,0 +1,12 @@
+# core (CLI + synthetic-image generator + classical baseline)
+numpy
+opencv-python
+tifffile
+Pillow
+scipy
+torch
+
+# deep-learning SR backends - install the ones you need for --model:
+#   realesrgan basicsr     # --model realesrgan | swinir | hat
+#   transformers           # --model swin2sr
+#   bm3d                   # notebook BM3D denoise baseline

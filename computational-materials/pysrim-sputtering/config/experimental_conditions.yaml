@@ -1,0 +1,59 @@
+# RF magnetron sputtering system parameters (generic / illustrative).
+#
+# Source: standard RF magnetron sputtering literature (Chapman; Lieberman & Lichtenberg).
+
+sputter_system:
+  rf_power_kw: 2.0                   # representative RF power
+  rf_power_range_kw: [0.5, 10.0]     # Explored range
+  pressures_mtorr: [8, 12, 30]       # Three pressure regimes studied
+  icp_power_kw: [1.0, 2.0]           # Additional ICP N2 ionization
+  target_material: "SiO2"
+  substrate_temp_C: 25               # Near room temperature
+  film_thickness_um: 1.2             # Typical optical-coating film
+  deposition_rate_nm_per_min: [1, 5] # Literature range
+  bias_voltages_V: [-20, -5, 0, 5, 20]  # substrate bias sweep
+
+# Ion energy estimation model
+#
+# In RF magnetron sputtering, ions are accelerated across the plasma sheath.
+# The ion energy at the substrate depends on:
+#   E_ion ≈ V_plasma + V_sheath(pressure, power) + |V_bias|
+#
+# V_plasma: ~15-25 V for RF discharges (floating potential)
+# V_sheath: Depends heavily on pressure (mean free path vs sheath thickness)
+#   - Low pressure: ions traverse sheath with few collisions → high energy
+#   - High pressure: multiple collisions in sheath → thermalized, lower energy
+#
+# For the sputter target (Scenario A), the relevant voltage is the
+# target self-bias, which scales with RF power.
+
+ion_energy_model:
+  plasma_potential_V: 20             # Typical RF discharge
+  plasma_potential_range_V: [15, 25]
+
+  # Sheath voltage vs pressure (literature-derived ranges)
+  sheath_models:
+    - pressure_mtorr: 8
+      label: "Low pressure (collisionless sheath)"
+      sheath_voltage_V: [50, 200]
+      notes: "Long mean free path, ions retain most sheath energy"
+    - pressure_mtorr: 12
+      label: "Medium pressure"
+      sheath_voltage_V: [30, 150]
+      notes: "Some collisions in sheath, moderate thermalization"
+    - pressure_mtorr: 30
+      label: "High pressure (collisional sheath)"
+      sheath_voltage_V: [10, 80]
+      notes: "Short mean free path, significant thermalization"
+
+  # ICP contribution: additional ionization increases plasma density
+  # and can modify sheath characteristics
+  icp_energy_boost_eV:
+    1.0: [10, 30]   # 1 kW ICP adds 10-30 eV to ion energy
+    2.0: [20, 50]   # 2 kW ICP adds 20-50 eV
+
+  # Target self-bias (Scenario A only)
+  # V_dc ≈ k * P_rf^0.5 for magnetron sputtering
+  target_self_bias:
+    coefficient: 50        # V_dc ≈ 50 * sqrt(P_rf_kW)
+    typical_range_V: [100, 400]

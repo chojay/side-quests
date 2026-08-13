@@ -1,0 +1,41 @@
+# Default simulation configuration.
+
+simulation:
+  number_ions: 5000           # Per simulation  -  balance speed vs statistics
+  calculation_type: 1         # 1=Quick KP, 2=Full Cascade, 3=Sputtering
+  srim_directory: null        # null → use Docker
+  use_docker: true
+  docker_image: "pysrim"
+
+ion_defaults:
+  species: "N"
+  energy_eV: 100
+
+target_defaults:
+  scenario_a: "SiO2"       # Sputter target
+  scenario_b: "ITO"        # Transparent conductor
+
+sweeps:
+  energy:
+    min_eV: 10
+    max_eV: 1000
+    n_points: 20
+    log_scale: true
+  species:
+    ions: ["N", "Ar", "O", "B"]
+    reference_energy_eV: 100
+  bias:
+    voltages_V: [-20, -5, 0, 5, 20]
+    reference_pressure_mtorr: 12
+  multilayer:
+    tio2_thicknesses_nm: [0, 1, 2, 5, 10]
+    reference_energy_eV: 100
+    ion: "N"
+
+output:
+  directory: "output/"
+  figures_dir: "output/figures/"
+  data_dir: "output/data/"
+  figure_format: "png"
+  figure_dpi: 300
+  save_raw_srim: true
