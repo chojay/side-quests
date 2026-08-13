@@ -24,7 +24,7 @@ Everything here shares three habits:
 | [claude-skills/](claude-skills/) | Nine working Claude Code skills: parametric CAD, academic figures, arXiv PDFs, hybrid retrieval, research orchestration, transcript tooling |
 | [computational-materials/](computational-materials/) | Materials Project interface-reaction screening (gate-dielectric stability, an 18-gas etch-chemistry study at 0 K vs 300 K, a caught-and-fixed API data bug), plus a scriptable SRIM/TRIM wrapper that drives ion-transport sputtering simulations across a parameter grid, headless in Docker |
 | [espresso-gaggiuino/](espresso-gaggiuino/) | An open-source machine mod run as a data project: 639-shot telemetry corpus, drift detection, troubleshooting as differential diagnosis |
-| [hardware-tools/](hardware-tools/) | Batch label printing for a phone-app-only NIIMBOT printer: reverse-engineered BLE protocol, firmware-dialect detection, dry-run byte tracing |
+| [hardware-tools/](hardware-tools/) | Bluetooth batch printing on macOS for a NIIMBOT label printer that ships phone-app-only: reverse-engineered BLE protocol, firmware-dialect detection, dry-run byte tracing |
 | [medical-imaging/](medical-imaging/) | An infant-movement video pipeline (SAM 3 on Apple Silicon) and a DICOM MRI toolkit, both de-identified and code-only, with caveats and shortcomings documented |
 | [3d-printing/](3d-printing/) | Seventeen parametric builds plus two design playbooks; every part is a Python or OpenSCAD program |
 
