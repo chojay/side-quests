@@ -26,7 +26,7 @@ Everything here shares three habits:
 | [espresso-gaggiuino/](espresso-gaggiuino/) | An open-source machine mod run as a data project: 639-shot telemetry corpus, drift detection, troubleshooting as differential diagnosis |
 | [hardware-tools/](hardware-tools/) | Bluetooth batch printing on macOS for a NIIMBOT label printer that ships phone-app-only: reverse-engineered BLE protocol, firmware-dialect detection, dry-run byte tracing |
 | [medical-imaging/](medical-imaging/) | An infant-movement video pipeline (SAM 3 on Apple Silicon) and a DICOM MRI toolkit, both de-identified and code-only, with caveats and shortcomings documented |
-| [3d-printing/](3d-printing/) | Seventeen parametric builds plus two design playbooks; every part is a Python or OpenSCAD program, plus a mesh-repair tool for the models you did not author |
+| [3d-printing/](3d-printing/) | Seventeen parametric builds plus two design playbooks; every part is a Python or OpenSCAD program |
 
 ## Highlights
 
@@ -107,7 +107,7 @@ Each has an `ARCHITECTURE.md` with system diagrams.
 
 ### [3D Printing as Code](3d-printing/)
 
-Every part is a Python or OpenSCAD program; every STL is reproducible by running a script. Seventeen curated builds from a workshop of about 30, printed on a [Bambu Lab H2D](https://bambulab.com/en/h2d): a six-version rice-bowl gravity dispenser, a child-safe nursery floor register whose safety constraint is an `assert` (and its wet-room and maximum-airflow descendants), a print-in-place sliding-damper register whose slider is collision-swept across its full travel, a 90-degree louver diverter designed by free-area arithmetic, a kumiko-lattice vent cover split for the bed with real joinery, and a multi-start replacement thread nut bracketed by an overnight eight-ring test matrix. Start with the [parametric design gotchas playbook](3d-printing/playbooks/parametric-design-gotchas.md): cross-project design rules, each traceable to a printed mistake. The section also carries one tool for the opposite situation, a model you did not author and cannot re-CAD: [stl-surgery](3d-printing/tools/stl-surgery/) profiles cross-sectional area along Z so an unwanted solid shows up as a measured step instead of a guess, then cuts and re-caps the mesh so it stays watertight.
+Every part is a Python or OpenSCAD program; every STL is reproducible by running a script. Seventeen curated builds from a workshop of about 30, printed on a [Bambu Lab H2D](https://bambulab.com/en/h2d): a six-version rice-bowl gravity dispenser, a child-safe nursery floor register whose safety constraint is an `assert` (and its wet-room and maximum-airflow descendants), a print-in-place sliding-damper register whose slider is collision-swept across its full travel, a 90-degree louver diverter designed by free-area arithmetic, a kumiko-lattice vent cover split for the bed with real joinery, and a multi-start replacement thread nut bracketed by an overnight eight-ring test matrix. Start with the [parametric design gotchas playbook](3d-printing/playbooks/parametric-design-gotchas.md): cross-project design rules, each traceable to a printed mistake.
 
 ## How this was built
 

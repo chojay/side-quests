@@ -29,10 +29,6 @@ The two documents in [playbooks/](playbooks/) are the distilled output of the wh
 - **[parametric-design-gotchas.md](playbooks/parametric-design-gotchas.md)** - cross-project design rules, each traceable to a printed part: dimension sourcing (worst case across vendors, never average), motion-envelope-first design, print physics as form-giver, CAD API traps, the validation doctrine, and why containment tests cannot catch a flipped export.
 - **[rice-tower-case-study.md](playbooks/rice-tower-case-study.md)** - one project told end to end: dispenser for an object with no published dimensions, researched via a hobbyist's hand measurements, six versions to a verified print at 5 mm under the printer's Z limit.
 
-## Tools
-
-- **[stl-surgery/](tools/stl-surgery/)** - the case everything else here avoids: a model you did not author and cannot re-CAD. It profiles cross-sectional area along Z so an unwanted solid closure shows up as a measured step rather than a guess, cuts above it, and re-caps the mesh so it stays watertight. Ships a synthetic flawed part to run on, so no third-party geometry is redistributed. The gotcha list includes one the tool's own demo generator produced: unioning a patch onto a part leaves a coincident-face seam that only fails watertightness *after* the STL round-trip.
-
 ## Projects
 
 | Project | One line |

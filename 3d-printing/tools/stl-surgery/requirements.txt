@@ -1,4 +1,0 @@
-trimesh>=4.0
-numpy
-manifold3d      # boolean backend used by make_broken_part.py
-matplotlib      # only needed for --plot
