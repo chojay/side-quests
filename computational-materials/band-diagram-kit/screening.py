@@ -101,8 +101,8 @@ if __name__ == "__main__":
     ax.plot(1e16, w_mid, "s", color="#c53030", ms=8, zorder=5)
     ax.annotate(f"$N_D = 10^{{16}}$ cm$^{{-3}}$, 0.6 V:\n"
                 f"$W$ = {w_mid:.0f} nm (textbook Si Schottky)",
-                xy=(1e16, w_mid * 1.25), xytext=(1e16, 4e3 * 0.09),
-                ha="center", va="top", fontsize=9.5, fontweight="bold",
+                xy=(1e16, w_mid * 0.8), xytext=(1.5e15, 2.5),
+                ha="center", va="bottom", fontsize=9.5, fontweight="bold",
                 color="#c53030",
                 arrowprops=dict(arrowstyle="->", color="#c53030", lw=1.2))
 
