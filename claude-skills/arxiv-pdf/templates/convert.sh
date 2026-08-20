@@ -54,6 +54,22 @@ if command -v pandoc-crossref &>/dev/null; then
   CROSSREF_FLAG="--filter pandoc-crossref"
 fi
 
+# Strip Chain-of-Evidence annotations before typesetting.
+# Evidence tags (<!--ev ... -->) bind each claim to the artifact that supports
+# it. They are HTML comments, so pandoc already ignores them, but the paper's
+# Claim Verifier "strips all inline evidence annotations" from the final draft
+# and doing it explicitly keeps them out of any HTML or Markdown target too.
+SOURCE="$INPUT"
+if grep -q '<!--[[:space:]]*ev[[:space:]]' "$INPUT" 2>/dev/null; then
+  NTAGS=$(grep -c '<!--[[:space:]]*ev[[:space:]]' "$INPUT" || true)
+  STRIPPED="${INPUT_DIR}/.$(basename "${INPUT%.md}").stripped.md"
+  perl -0pe 's/<!--\s*ev\s.*?-->\s*//gs' "$INPUT" > "$STRIPPED"
+  trap 'rm -f "$STRIPPED"' EXIT
+  SOURCE="$STRIPPED"
+  echo "Evidence:   stripped $NTAGS inline evidence tag(s) before typesetting"
+  echo "            (verify them first: scripts/verify_claims.py \"$INPUT\")"
+fi
+
 echo "Converting: $INPUT -> $OUTPUT"
 echo "Template:   $TEMPLATE"
 
@@ -63,7 +79,7 @@ if [[ "$OUTPUT" == *.tex ]]; then
   if grep -q '^bibliography:' "$INPUT" 2>/dev/null; then
     BIB_FLAG="--natbib"
   fi
-  pandoc "$INPUT" \
+  pandoc "$SOURCE" \
     --template="$TEMPLATE" \
     --resource-path="$INPUT_DIR" \
     $CROSSREF_FLAG \
@@ -80,7 +96,7 @@ if [[ "$OUTPUT" == *.tex ]]; then
   echo "  - Compile locally first: pdflatex $OUTPUT && bibtex ${OUTPUT%.tex} && pdflatex $OUTPUT && pdflatex $OUTPUT"
 else
   # Generate PDF directly
-  pandoc "$INPUT" \
+  pandoc "$SOURCE" \
     --template="$TEMPLATE" \
     --pdf-engine=pdflatex \
     --resource-path="$INPUT_DIR" \
