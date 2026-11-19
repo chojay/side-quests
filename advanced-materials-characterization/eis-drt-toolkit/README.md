@@ -80,7 +80,7 @@ method note warns about, left in rather than hidden.
 
 The original batch script called `tqdm(...)` and `time.time()` while neither
 `tqdm` nor `time` was ever imported, so it would crash on the first spectrum. The
-imports are added here, and the employer-specific hardcoded batch paths in the
+imports are added here, and the hardcoded absolute batch paths in the
 old `__main__` block were replaced with a proper `--input` / `--data-dir` CLI.
 
 ## AI-assisted build notes
@@ -88,7 +88,7 @@ old `__main__` block were replaced with a proper `--input` / `--data-dir` CLI.
 Built with Claude in the loop. Wins: it wrote the Gamry `.DTA` writer straight
 from pyimpspec's column contract and did the argparse/CLI refactor in minutes.
 Failures worth naming: the original script called `tqdm`/`time` with no imports
-(would crash on first run), and every prototype hardcoded an absolute data path,
+(would crash on first run), and every prototype hardcoded an absolute local path,
 exactly the pattern a human has to catch before anything ships. Judgment that
 stays manual: choosing the regularization level and deciding that a peak is a
 real physical process rather than a fitting artifact.

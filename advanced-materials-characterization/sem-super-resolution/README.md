@@ -1,7 +1,7 @@
 # SEM super-resolution: batch-upscale grayscale micrographs on Apple Silicon
 
-Benchtop SEM micrographs come off the instrument small and noisy. I wanted one
-command to batch-upscale a folder of them on a Mac GPU, and an honest way to see
+Benchtop SEM micrographs often come off the instrument small and noisy. I wanted one
+command to batch-upscale a folder of such images on a Mac GPU, and an honest way to see
 whether a deep-learning super-resolution network actually beats plain Lanczos
 interpolation, or just costs 100x more compute to look the same. This does both,
 while preserving the instrument's burnt-in metadata bar.
