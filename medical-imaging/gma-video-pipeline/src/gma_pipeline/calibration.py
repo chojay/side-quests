@@ -4,11 +4,11 @@ INDEPENDENT. This assessment is derived purely from the infant's own pose
 kinematics by comparing each limb to (a) its contralateral pair and (b) the
 distribution across all 12 paired keypoints. It is NOT calibrated to, and does
 not depend on, any external reading. An optional transcribed clinician reading
-(PT_ASSESSMENT in mos_r.py, empty by default) is carried ONLY as a separate,
+(EXTERNAL_READING in mos_r.py, empty by default) is carried ONLY as a separate,
 clearly-labeled side comparison - it is NOT a ground truth and NOT a
 calibration target.
 
-RELATIVE. This is a single infant with no normative database, so every signal is
+RELATIVE. Each run covers one subject with no normative database, so every signal is
 within-subject and relative - there is no absolute "normal" here. The HEADLINE is
 a RANKING of how much each keypoint stands out as BOTH (i) consistently slower than
 its contralateral pair AND (ii) lower in movement variety than the infant's own
@@ -31,7 +31,7 @@ bottom-tertile variety). A benign asymmetry is slow WITHOUT a variety loss; a
 reduced-repertoire limb is slow AND impoverished.
 
 LIMITATIONS (read before trusting anything here):
-- n=3 videos, single subject; EXPLORATORY, not a validated detector.
+- Few videos per run, one subject per run; EXPLORATORY, not a validated detector.
 - No normative database: the "bottom tertile" variety cutoff and the ranking are
   WITHIN-SUBJECT relative, not absolute/normal - they describe how this infant's
   limbs compare to EACH OTHER, nothing more.
@@ -43,7 +43,7 @@ LIMITATIONS (read before trusting anything here):
   slower limb tends toward lower entropy) - treat "both fired" as weaker than two
   fully-independent signals would be.
 - NOT a GMA (a whole-body Gestalt method); this is a derived kinematic SIGN.
-Final interpretation rests with the care team.
+Final interpretation rests with qualified clinicians.
 """
 
 from __future__ import annotations
@@ -53,7 +53,7 @@ from dataclasses import asdict, dataclass, field
 import numpy as np
 
 from gma_pipeline.features import PAIRED_KEYPOINTS, VideoFeatures
-from gma_pipeline.mos_r import PT_ASSESSMENT
+from gma_pipeline.mos_r import EXTERNAL_READING
 
 
 SEGMENTAL_VERSION = "v0.3-independent-relative"
@@ -82,7 +82,7 @@ class SegmentalFinding:
     standout_score: float  # 0..1 composite (slow-vs-pair AND low-variety-vs-peers)
     standout_rank: int  # 1 = stands out most
     pipeline_flag: bool  # caveated binary flag: consistent deficit AND low variety
-    # PROVISIONAL PT comparison (side-note only; NOT ground truth, NOT calibration).
+    # Clinician-reading comparison (side-note only; NOT ground truth, NOT calibration).
     pt_assessment_provisional: str | None
     pt_agreement_provisional: bool | None
 
@@ -97,7 +97,7 @@ class SegmentalAnalysis:
     ranking_summary: str  # the RELATIVE headline (independent)
     flag_summary: str  # the caveated binary-flag summary (independent)
     independence_note: str
-    # Provisional PT side-note (clearly NOT ground truth).
+    # Clinician-reading side-note (clearly NOT ground truth).
     pt_provisional_flagged: list[str]
     pt_provisional_agreement: dict[str, int]  # both_flag, both_clear, pipeline_only, pt_only
     pt_provisional_summary: str
@@ -178,7 +178,7 @@ def analyze_segmental_asymmetry(features_by_video: dict[str, VideoFeatures]) -> 
 
     # Relative ranks across the 12 keypoints.
     findings: list[SegmentalFinding] = []
-    pt_labels = PT_ASSESSMENT["labels"]
+    pt_labels = EXTERNAL_READING["labels"]
     pipeline_flagged: list[str] = []
     pt_flagged: list[str] = []
     both_flag = both_clear = pipeline_only = pt_only = 0
@@ -248,7 +248,7 @@ def analyze_segmental_asymmetry(features_by_video: dict[str, VideoFeatures]) -> 
     flag_summary = (
         f"Conservative binary flag (consistent contralateral speed deficit AND bottom-tertile variety, "
         f"threshold {threshold:.3f} nats): {', '.join(k.replace('_', ' ') for k in pipeline_flagged) or 'no limb flagged'}. "
-        "Heavily caveated: within-subject relative cutoff, n=3, 2D pixel-speed (camera-obliquity confound), signals partly co-vary."
+        "Heavily caveated: within-subject relative cutoff, few videos, 2D pixel-speed (camera-obliquity confound), signals partly co-vary."
     )
     independence_note = (
         "This assessment is INDEPENDENT: its rule and thresholds are within-subject relative comparisons derived from "
@@ -260,18 +260,18 @@ def analyze_segmental_asymmetry(features_by_video: dict[str, VideoFeatures]) -> 
     n_pt = both_flag + both_clear + pipeline_only + pt_only
     if n_pt == 0:
         pt_provisional_summary = (
-            "No external clinician reading has been transcribed (PT_ASSESSMENT in mos_r.py is an empty placeholder). "
+            "No external clinician reading has been transcribed (EXTERNAL_READING in mos_r.py is an empty placeholder). "
             "Fill it in to see a side-by-side coincidence count; the pipeline's own assessment above is independent "
             "of it either way."
         )
     else:
         pt_provisional_summary = (
-            f"PROVISIONAL clinician reading ({PT_ASSESSMENT['scorer']}, {PT_ASSESSMENT['date']}) - NOT a confirmed "
+            f"PROVISIONAL clinician reading ({EXTERNAL_READING['scorer']}, {EXTERNAL_READING['date']}) - NOT a confirmed "
             f"reference standard. It is shown only as an external side-note, NOT as ground truth. "
-            f"Reading: {PT_ASSESSMENT['categorical']} "
+            f"Reading: {EXTERNAL_READING['categorical']} "
             f"For interest only, the pipeline's own flag and this provisional reading happen to coincide on {both_flag + both_clear}"
             f"/{n_pt} keypoints (both-flagged={both_flag}, both-clear={both_clear}, pipeline-only={pipeline_only}, "
-            f"PT-only={pt_only}) - this is NOT a validation (the reading is provisional and the pipeline is not calibrated to it)."
+            f"clinician-only={pt_only}) - this is NOT a validation (the reading is provisional and the pipeline is not calibrated to it)."
         )
 
     notes = (
@@ -279,7 +279,7 @@ def analyze_segmental_asymmetry(features_by_video: dict[str, VideoFeatures]) -> 
         + ("WARNING: fewer than 3 videos weakens the 'consistent in every video' condition. " if len(videos) < 3 else "")
         + "EXPLORATORY (few videos, single subject, no normative database; within-subject relative thresholds; 2D pixel-speed "
         "camera-obliquity confound; the speed-deficit and low-variety signals partly co-vary). NOT a GMA. Final clinical "
-        "interpretation rests with the clinical care team; any transcribed clinician reading is a side-note, not a reference standard."
+        "interpretation rests with qualified clinicians; any transcribed clinician reading is a side-note, not a reference standard."
     )
 
     return SegmentalAnalysis(

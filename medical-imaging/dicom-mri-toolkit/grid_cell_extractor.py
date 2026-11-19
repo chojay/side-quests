@@ -5,7 +5,7 @@ Grid Cell Extractor
 Splits MRI comparison montage PNGs (grids of slices, as often exported by
 radiology viewers) into individual cell images, and renders a labeled
 reference image so a human can identify which cells match anatomically
-across two timepoints.
+across two studies.
 
 Companion to ssim_slice_matcher.py, which pairs the extracted cells
 automatically.
@@ -26,29 +26,17 @@ from PIL import Image, ImageDraw, ImageFont
 # Grid definitions for each source montage image.
 # EDIT THESE to match your own exported montages.
 GRID_LAYOUTS = {
-    "01_T2_FLAIR_multi.png": {
-        "grid": (3, 3),  # rows x columns
-        "description": "T2 FLAIR multiplanar"
+    "montage_A.png": {
+        "grid": (2, 4),  # rows x columns
+        "description": "two sequences, one per row"
     },
-    "02_DWI_ADC_comparison.png": {
-        "grid": (2, 4),
-        "description": "DWI (top) and ADC (bottom) sequences"
-    },
-    "03_T1_pre_post_comparison.png": {
-        "grid": (2, 3),
-        "description": "T1 pre-contrast (top) and post-contrast (bottom)"
-    },
-    "04_enhancement_subtraction.png": {
+    "montage_B.png": {
         "grid": (3, 3),
-        "description": "Enhancement subtraction mapping"
+        "description": "one sequence, multiplanar"
     },
-    "05_SWAN_multi.png": {
+    "montage_C.png": {
         "grid": (3, 3),
-        "description": "SWI/SWAN multiplanar"
-    },
-    "06_T2_multi.png": {
-        "grid": (3, 3),
-        "description": "T2 multiplanar"
+        "description": "one sequence, multiplanar"
     }
 }
 
@@ -198,7 +186,7 @@ def main():
         f.write("="*70 + "\n\n")
         f.write("HOW TO USE:\n")
         f.write("1. Open each *_REFERENCE_LABELED.png file\n")
-        f.write("2. Identify which cells show matching anatomy across the two timepoints\n")
+        f.write("2. Identify which cells show matching anatomy across the two studies\n")
         f.write("3. Note the cell numbers for matching pairs\n")
         f.write("4. Use these pairs (or ssim_slice_matcher.py) to build comparisons\n\n")
         f.write("="*70 + "\n\n")
@@ -221,7 +209,7 @@ def main():
     print("  Summary file: CELL_MAPPING_GUIDE.txt")
     print("\nNEXT STEPS:")
     print("1. Review the *_REFERENCE_LABELED.png images")
-    print("2. Identify matching cell pairs across the two timepoints")
+    print("2. Identify matching cell pairs across the two studies")
     print("3. Or run ssim_slice_matcher.py to pair them automatically")
     print("="*70 + "\n")
 

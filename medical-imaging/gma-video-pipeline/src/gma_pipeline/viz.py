@@ -103,10 +103,10 @@ def plot_segmental_concordance(analysis, output_path: Path) -> None:
     """Scatter of symmetry index vs movement variety per keypoint - the headline.
 
     Color = the PIPELINE's own assessment (red = pipeline flags abnormal). Marker
-    = the PT assessment (star = PT abnormal). A black edge marks keypoints where
-    the two assessments DIFFER. Shows why the pipeline flags the distal right arm
-    (high SI = right reduced AND low entropy) but not the benignly-slow legs (low
-    SI but NORMAL/high entropy).
+    = the transcribed clinician reading, if any (star = abnormal). A black edge
+    marks keypoints where the two assessments DIFFER. Shows why a keypoint with
+    high SI AND low entropy is flagged while a slow but varied one (low SI,
+    NORMAL/high entropy) is not.
     """
     from matplotlib.lines import Line2D
 
@@ -136,9 +136,9 @@ def plot_segmental_concordance(analysis, output_path: Path) -> None:
     handles = [
         Line2D([0], [0], marker="s", color="w", markerfacecolor=_ABN, markersize=11, label="pipeline flag: yes"),
         Line2D([0], [0], marker="s", color="w", markerfacecolor=_NORM, markersize=11, label="pipeline flag: no"),
-        Line2D([0], [0], marker="*", color="w", markerfacecolor=_GREY, markersize=15, label="provisional PT: abnormal"),
-        Line2D([0], [0], marker="o", color="w", markerfacecolor=_GREY, markersize=11, label="provisional PT: normal"),
-        Line2D([0], [0], marker="o", color="w", markerfacecolor=_GREY, markeredgecolor="black", markersize=11, label="pipeline / provisional-PT differ"),
+        Line2D([0], [0], marker="*", color="w", markerfacecolor=_GREY, markersize=15, label="clinician reading: abnormal"),
+        Line2D([0], [0], marker="o", color="w", markerfacecolor=_GREY, markersize=11, label="clinician reading: normal"),
+        Line2D([0], [0], marker="o", color="w", markerfacecolor=_GREY, markeredgecolor="black", markersize=11, label="pipeline / clinician differ"),
     ]
     ax.legend(handles=handles, loc="upper right", fontsize=8)
     ax.grid(alpha=0.3)
@@ -146,8 +146,8 @@ def plot_segmental_concordance(analysis, output_path: Path) -> None:
     ax.text(
         0.02, 0.02,
         "INDEPENDENT: pipeline flag = consistent contralateral speed deficit AND low variety (within-subject).\n"
-        f"Provisional-PT coincidence (NOT validation): both-flag={s['both_flag']}, both-clear={s['both_clear']}, "
-        f"pipeline-only={s['pipeline_only']}, PT-only={s['pt_only']}.",
+        f"Clinician coincidence (NOT validation): both-flag={s['both_flag']}, both-clear={s['both_clear']}, "
+        f"pipeline-only={s['pipeline_only']}, clinician-only={s['pt_only']}.",
         transform=ax.transAxes, fontsize=8, va="bottom",
         bbox=dict(boxstyle="round", facecolor="#f3f4f6", alpha=0.9),
     )

@@ -339,7 +339,7 @@ def detect_rolling_event_combined(df: pd.DataFrame, fps: float, n_frames: int | 
     """Try the velocity-spike detector first. If it fires, use it (more specific
     signal). Only fall back to the angle-late-shift detector when the velocity
     detector misses (captures gradual flips that don't produce a velocity
-    spike, like a slow-tilt flip observed in one of the real recordings).
+    spike, such as a slow tilt that turns the trunk over gradually).
     """
     vel = detect_rolling_event(df, fps=fps, n_frames=n_frames)
     if vel.detected:

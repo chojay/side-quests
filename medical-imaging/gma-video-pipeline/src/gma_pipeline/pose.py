@@ -20,8 +20,8 @@ MediaPipe Pose returns 33 landmarks; we project to these 13.
 
 Mask-guided inference: if a segmentation mask is provided, we darken the
 background before sending the frame to MediaPipe. This avoids false positives
-from caregiver legs and sheet creases that the adult-trained model is prone
-to detecting.
+from nearby people and background clutter that the adult-trained model is
+prone to detecting.
 """
 
 from __future__ import annotations

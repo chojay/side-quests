@@ -198,7 +198,7 @@ def test_segmental_discriminator_flags_right_arm_not_legs() -> None:
     assert "right_elbow" in flagged
     for leg_kp in ("left_knee", "left_ankle", "right_knee", "right_ankle", "left_hip", "right_hip"):
         assert leg_kp not in flagged
-    # With the empty PT_ASSESSMENT placeholder no agreement counts accumulate,
+    # With the empty EXTERNAL_READING placeholder no agreement counts accumulate,
     # so pipeline-only disagreements must stay at zero.
     assert analysis.pt_provisional_agreement["pipeline_only"] == 0
 

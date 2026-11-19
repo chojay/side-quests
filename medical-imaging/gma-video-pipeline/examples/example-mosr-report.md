@@ -25,13 +25,13 @@ values would fabricate pathology.
 
 ## Interpretation discipline (verbatim pipeline output)
 
-MOS-R PROXY (exploratory, non-clinical). Computable proxy F+C = 16 of 16 (F=12/12, C=4/4). Observed-patterns (P), age-adequate-repertoire (R) and postural (Po) are NOT computable from 2D pose and are clinician-only. UPPER BOUND on the full MOS-R = 28/28 (P/R/Po imputed at ceiling 4/4/4); the true MOS-R is <= this by an unknown margin and only a certified assessor can fill the missing 12 points. The upper bound's nominal 'optimal (25-28)' band is NOT reassurance: a near-normal proxy total more likely reflects this proxy's BLINDNESS to the P/R/Po/character channels than a normal infant - a genuinely CP-heralding unilateral deficit normally DRAGS the true MOS-R down (perinatal-stroke->unilateral-CP median MOS-R was 6, not near-normal; Bertoncelli 2024). GUARDRAIL: do not read a high F or a high upper bound as 'normal/reassuring' while a limb is flagged abnormal in the SEGMENTAL ASYMMETRY analysis - that per-limb map, not this total, is the headline.
+MOS-R PROXY (exploratory, non-clinical). Computable proxy F+C = 16 of 16 (F=12/12, C=4/4). Observed-patterns (P), age-adequate-repertoire (R) and postural (Po) are NOT computable from 2D pose and are clinician-only. UPPER BOUND on the full MOS-R = 28/28 (P/R/Po imputed at ceiling 4/4/4); the true MOS-R is <= this by an unknown margin and only a certified assessor can fill the missing 12 points. The upper bound's nominal 'optimal (25-28)' band is NOT reassurance: a near-normal proxy total more likely reflects this proxy's BLINDNESS to the P/R/Po/character channels than a normal infant - a clinically important focal deficit normally DRAGS the true MOS-R down (in a high-risk perinatal cohort, infants with a later one-sided motor outcome had a median MOS-R of 6, not near-normal; Bertoncelli 2024). GUARDRAIL: do not read a high F or a high upper bound as 'normal/reassuring' while a limb is flagged abnormal in the SEGMENTAL ASYMMETRY analysis - that per-limb map, not this total, is the headline.
 
 ## Per-limb monitoring (synthetic run)
 
 Each limb is tracked through its distal marker; the calibration module
 independently ranks limbs by contralateral speed deficit plus movement
-variety (figure: `example-run-limbs.png`).
+variety (figure: `example-run-limbs-v2.png`).
 
 | Limb | Distal marker | Fidgety quality | Speed (diag/s) | Dominant freq |
 |---|---|---|---:|---:|

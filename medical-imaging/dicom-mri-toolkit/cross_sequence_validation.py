@@ -2,13 +2,13 @@
 """
 Cross-Sequence Candidate Validation
 ===================================
-Validates nodule candidates (from ventricle_3d_analysis.py) against the
+Validates wall-shape candidates (from ventricle_3d_analysis.py) against the
 same anatomy on multiple MRI sequences: T2, FLAIR, T1 pre-contrast,
 T1 post-contrast, and SWI/SWAN.
 
 Per candidate, three generic tissue-characterization checks (thresholds are
 constants in the code; adjust them to the question you are asking):
-- Signal ratio against a cortical gray-matter reference on T2, FLAIR, and T1
+- Signal ratio against a reference region (default: the cortical rim) on T2, FLAIR, and T1
 - Contrast enhancement (T1 post / T1 pre signal ratio)
 - Susceptibility effects on SWI/SWAN
 
@@ -642,7 +642,7 @@ def measure_roi_signal(data, x, y, z, radius=6):
 
 
 def measure_cortex_signal(data, z, voxel_size):
-    """Measure mean cortical gray matter signal at a given slice.
+    """Measure mean signal of the reference region (cortical rim) at a given slice.
 
     Approximates cortex as the rim of the brain mask (mask minus its
     erosion, erosion depth ~8mm in physical units).
@@ -840,41 +840,40 @@ def assess_cross_sequence(candidate, cand_idx, xseq_results):
     t2_r = xseq_results['T2']['candidate_cortex_ratio']
     t2_wall = xseq_results['T2'].get('wall_cortex_ratio', t2_r)
     if 0.7 <= t2_r <= 1.4:
-        strengths.append(f"T2: isointense to cortex (tissue ratio {t2_r:.2f})")
+        strengths.append(f"T2: within reference-ratio band (tissue ratio {t2_r:.2f})")
     elif 0.5 <= t2_r <= 1.6:
-        notes.append(f"T2: near-isointense (tissue={t2_r:.2f}, wall={t2_wall:.2f}) - residual partial volume")
-        strengths.append(f"T2: near-isointense tissue signal ({t2_r:.2f})")
+        notes.append(f"T2: near reference-ratio band (tissue={t2_r:.2f}, wall={t2_wall:.2f}) - residual partial volume")
+        strengths.append(f"T2: near reference-ratio band ({t2_r:.2f})")
     else:
         issues.append(f"T2: discordant signal (tissue={t2_r:.2f}, wall={t2_wall:.2f})")
 
-    # FLAIR: tissue side should be GM-like (ratio ~1.0), not dark like CSF
+    # FLAIR: tissue side should sit near the reference ratio (~1.0), not dark like CSF
     flair_r = xseq_results['FLAIR']['candidate_cortex_ratio']
     flair_wall = xseq_results['FLAIR'].get('wall_cortex_ratio', flair_r)
     if 0.5 <= flair_r <= 1.5:
-        strengths.append(f"FLAIR: tissue isointense to cortex ({flair_r:.2f})")
+        strengths.append(f"FLAIR: tissue within reference-ratio band ({flair_r:.2f})")
     elif flair_r < 0.3:
         issues.append(f"FLAIR: tissue very dark ({flair_r:.2f}) - CSF-like even at tissue position")
     else:
         issues.append(f"FLAIR: discordant tissue signal ({flair_r:.2f}, wall={flair_wall:.2f})")
 
-    # T1 pre-contrast: candidate should be near-isointense to cortex
+    # T1 pre-contrast: candidate ratio should sit within the reference band
     t1_r = xseq_results['T1_pre']['candidate_cortex_ratio']
     if 0.6 <= t1_r <= 1.4:
-        strengths.append(f"T1 pre: isointense to cortex ({t1_r:.2f})")
+        strengths.append(f"T1 pre: within reference-ratio band ({t1_r:.2f})")
     elif t1_r > 1.4:
-        issues.append(f"T1 pre: brighter than cortex ({t1_r:.2f})")
+        issues.append(f"T1 pre: above reference band ({t1_r:.2f})")
     else:
-        issues.append(f"T1 pre: darker than cortex ({t1_r:.2f}) - not gray-matter-like")
+        issues.append(f"T1 pre: below reference band ({t1_r:.2f})")
 
-    # Enhancement: gray-matter-isointense tissue should NOT enhance
     enh = xseq_results.get('enhancement_ratio')
     if enh is not None:
         if enh < 1.15:
-            strengths.append(f"No gadolinium enhancement ({enh:.2f}) - meets no-enhancement criterion")
+            strengths.append(f"No gadolinium enhancement ({enh:.2f}) - below enhancement threshold")
         elif enh < 1.3:
             notes.append(f"Borderline enhancement ({enh:.2f}) - could be partial volume or normal variation")
         else:
-            issues.append(f"Significant enhancement ({enh:.2f}) - fails no-enhancement criterion")
+            issues.append(f"Significant enhancement ({enh:.2f}) - above enhancement threshold")
 
     # SWI: no blooming
     swan_r = xseq_results['SWAN']['candidate_cortex_ratio']
@@ -1002,13 +1001,13 @@ def generate_cross_sequence_summary(candidates, volumes, voxels, t2_voxel,
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Validate nodule candidates across multiple MRI sequences.")
+        description="Validate wall-shape candidates across multiple MRI sequences.")
     parser.add_argument('--data-dir', required=True,
                         help="Directory containing the NIfTI sequence files (see SEQUENCE_FILES)")
     parser.add_argument('--candidates', required=True,
                         help="Candidate JSON from ventricle_3d_analysis.py")
     parser.add_argument('--timepoint', default='followup', choices=['baseline', 'followup'],
-                        help="Which timepoint's candidates to validate (default: followup)")
+                        help="Which study's candidates to validate (default: followup)")
     parser.add_argument('--dicom-series', default='SER000XX',
                         help="Source DICOM series folder name for slice labels (default: SER000XX)")
     parser.add_argument('--output-dir', required=True,

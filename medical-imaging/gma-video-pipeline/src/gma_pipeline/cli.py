@@ -29,8 +29,10 @@ from gma_pipeline.config import PipelineConfig
 from gma_pipeline.preprocess import preprocess_many
 from gma_pipeline.spot_check import spot_check_video
 
+logger = logging.getLogger(__name__)
+
 app = typer.Typer(
-    help="Personal-reference GMA assessment pipeline (NOT a medical device).",
+    help="Educational GMA assessment pipeline (NOT a medical device).",
     add_completion=False,
     no_args_is_help=True,
 )
@@ -623,7 +625,7 @@ def pose_extract_cmd(
             creation_local_iso = meta.get("creation_datetime_local_iso")
             if creation_local_iso:
                 try:
-                    # Normalize ffprobe-style offset like '-0700' -> '-07:00'
+                    # Normalize ffprobe-style offset like '-0500' -> '-05:00'
                     iso = creation_local_iso
                     if len(iso) >= 5 and (iso[-5] in "+-") and iso[-3] != ":":
                         iso = iso[:-2] + ":" + iso[-2:]
@@ -827,8 +829,8 @@ def gma_evaluate_cmd(
         console.print(
             f"[bold green]Independent assessment:[/bold green] top standouts {', '.join(top3)}; "
             f"conservative flag: {', '.join(analysis.pipeline_flagged) or 'none'}. "
-            f"[dim]Provisional-PT coincidence (NOT validation): both-flag={s['both_flag']} "
-            f"both-clear={s['both_clear']} pipeline-only={s['pipeline_only']} PT-only={s['pt_only']}[/dim]"
+            f"[dim]Clinician-reading coincidence (NOT validation): both-flag={s['both_flag']} "
+            f"both-clear={s['both_clear']} pipeline-only={s['pipeline_only']} clinician-only={s['pt_only']}[/dim]"
         )
         seg_report = build_segmental_report(analysis, reports_root)
         console.print(f"  segmental report: {seg_report.relative_to(config.project_root)}")

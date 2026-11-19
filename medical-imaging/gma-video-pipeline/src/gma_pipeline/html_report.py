@@ -7,7 +7,7 @@ file is fully portable - no external assets):
     + scatter, MOS-R summary, links to per-video pages, population cutoffs).
 
 EVERY NUMBER IS A PROXY. Not a medical device. Final interpretation rests with
-the infant's clinical care team.
+qualified clinicians.
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ from pathlib import Path
 import numpy as np
 
 from gma_pipeline.features import VideoFeatures
-from gma_pipeline.mos_r import PT_ASSESSMENT, POPULATION_CUTOFFS, MOSRProxy
+from gma_pipeline.mos_r import EXTERNAL_READING, POPULATION_CUTOFFS, MOSRProxy
 from gma_pipeline.scoring import ScoringResult
 
 
@@ -48,9 +48,9 @@ code { background:#f3f4f6; padding:1px 5px; border-radius:4px; font-size:0.85em;
 """
 
 _DISCLAIMER = (
-    "<strong>NOT A MEDICAL DEVICE.</strong> This is a parent's exploratory, non-clinical pose-analysis of "
-    "home videos. Every number is a PROXY, not a GMA score or diagnosis. It has not been validated against "
-    "any clinical reference standard. Final interpretation rests entirely with the infant's clinical care team."
+    "<strong>NOT A MEDICAL DEVICE.</strong> This is an exploratory, non-clinical pose analysis of "
+    "video clips. Every number is a PROXY, not a GMA score or diagnosis. It has not been validated against "
+    "any clinical reference standard. Final interpretation rests with qualified clinicians."
 )
 
 
@@ -69,7 +69,7 @@ def _page(title: str, body: str) -> str:
         f"<title>{html.escape(title)}</title><style>{_CSS}</style></head><body>"
         f"{body}"
         f"<div class='footer'>Generated {stamp} - gma-pipeline v0.2 - "
-        "personal-reference, non-clinical.</div></body></html>"
+        "educational, non-clinical.</div></body></html>"
     )
 
 
@@ -133,7 +133,7 @@ def build_dashboard_html(features_by_video: dict, mosr_by_video: dict, analysis,
                          plots_dir: Path, out_dir: Path) -> Path:
     b: list[str] = []
     b.append("<h1>Independent GMA-informed Pose Assessment (v0.3)</h1>")
-    b.append("<p class='meta'>Fidgety-stage home recordings. This is the pose pipeline's OWN independent, "
+    b.append("<p class='meta'>Fidgety-stage recordings. This is the pose pipeline's OWN independent, "
              "relative assessment - each limb compared to its contralateral pair and to the infant's other limbs. It "
              "is NOT calibrated to any external reading. Any transcribed clinician reading appears further down as a "
              "side-note only.</p>")
@@ -163,11 +163,11 @@ def build_dashboard_html(features_by_video: dict, mosr_by_video: dict, analysis,
 
     # 3. External clinician reading (side-note only - NOT ground truth)
     b.append("<h2>3. External clinician reading (side-note only - NOT ground truth)</h2>")
-    if PT_ASSESSMENT.get("scorer"):
-        b.append(f"<div class='card'><b>{html.escape(str(PT_ASSESSMENT['scorer']))}</b>, "
-                 f"{html.escape(str(PT_ASSESSMENT['date'] or 'undated'))} "
+    if EXTERNAL_READING.get("scorer"):
+        b.append(f"<div class='card'><b>{html.escape(str(EXTERNAL_READING['scorer']))}</b>, "
+                 f"{html.escape(str(EXTERNAL_READING['date'] or 'undated'))} "
                  f"<span class='tag na'>PROVISIONAL</span><br>"
-                 f"<span class='meta'>{html.escape(str(PT_ASSESSMENT['categorical'] or ''))}</span><br>"
+                 f"<span class='meta'>{html.escape(str(EXTERNAL_READING['categorical'] or ''))}</span><br>"
                  f"<span class='meta'>{html.escape(analysis.pt_provisional_summary)}</span></div>")
     else:
         b.append(f"<div class='card'><span class='meta'>{html.escape(analysis.pt_provisional_summary)}</span></div>")

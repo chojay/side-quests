@@ -1,12 +1,12 @@
 # Disclaimer
 
-**This pipeline is for personal reference only.**
+**This pipeline is for education only.**
 
 It is not a medical device. It has not been validated for clinical use. It is not cleared by the FDA or any other regulatory body. Its outputs are not a diagnosis.
 
 It is not a substitute for professional General Movements Assessment (GMA) scoring by a trained clinician. All clinical decisions about any infant must be made by that infant's clinicians.
 
-Any results produced by this pipeline are best treated as exploratory pattern observations. This began as a personal project to better understand home recordings, to learn the relevant computer vision and signal processing techniques, and to track changes over time across recordings. It does not exist to compete with, replace, or second-guess a clinician's professional interpretation.
+Any results produced by this pipeline are best treated as exploratory pattern observations. It is a personal project to learn the relevant computer vision and signal processing techniques, and to see how much of a published clinical method a 2D pose model can reproduce. It does not exist to compete with, replace, or second-guess a clinician's professional interpretation.
 
 If pipeline output disagrees with a clinician's scoring, the clinical scoring is correct by definition. The pipeline is the thing being calibrated, not the clinician.
 

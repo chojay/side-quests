@@ -21,7 +21,7 @@ models/
 *.tflite
 *.task
 
-# Inputs (raw videos - personal recordings must never be committed)
+# Inputs (raw videos must never be committed)
 inputs/
 *.mov
 *.MOV

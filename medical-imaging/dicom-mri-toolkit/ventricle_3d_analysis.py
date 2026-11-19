@@ -2,8 +2,8 @@
 """
 Ventricle 3D Analysis
 =====================
-Shape-based detection of nodular protrusions along the lateral ventricle
-walls, with an interactive 3D reconstruction.
+Shape-based detection of sharp focal bends (curvature peaks) along the
+lateral ventricle walls, with an interactive 3D reconstruction.
 
 Pipeline:
 1. Loads baseline and follow-up T2 volumes from NIfTI
@@ -11,16 +11,15 @@ Pipeline:
    eroded brain mask, with spatial constraints and a volume sanity check
 3. Fits B-splines to ventricular wall contours per slice and computes
    signed curvature analytically from the spline derivatives
-4. Detects nodule candidates as curvature peaks with calibrated
+4. Detects wall-shape candidates as curvature peaks with calibrated
    prominence/height thresholds, grouped by cross-slice persistence
-5. Generates annotated inspection montages per timepoint
+5. Generates annotated inspection montages per study
 6. Reconstructs ventricle and brain-surface meshes with marching cubes and
-   renders an interactive Plotly 3D HTML with toggleable timepoint layers
+   renders an interactive Plotly 3D HTML with toggleable study layers
 
 Design note: detection is shape-based (wall curvature) rather than
-intensity-based because gray-white intensity contrast was unreliable in
-the dataset this was developed on. Curvature only depends on the wall
-geometry, not on which tissue is bright.
+intensity-based because signal ratios vary between scanners and sequences.
+Curvature only depends on the wall geometry, not on which tissue is bright.
 
 Usage:
     python ventricle_3d_analysis.py \
@@ -182,13 +181,13 @@ def compute_curvature_bspline(contour, smoothing=25.0):
         return np.zeros(len(contour)), contour
 
 
-def detect_nodule_candidates(curvature, contour, min_prominence=0.05):
-    """Detect nodule candidates from curvature peaks.
+def detect_wall_candidates(curvature, contour, min_prominence=0.05):
+    """Detect wall-shape candidates from absolute-curvature peaks.
 
     Thresholds calibrated iteratively to cut false positives from normal
     wall undulations:
     - prominence >= 0.05 (was 0.02 - flagged too many normal wall bumps)
-    - height >= 0.15 (was 0.05 - true nodules show strong curvature)
+    - height >= 0.15 (was 0.05 - only strong peaks survive)
     - distance >= 10 (was 5 - prevents double-counting single bumps)
     """
     abs_curv = np.abs(curvature)
@@ -249,7 +248,7 @@ def analyze_single_volume(data, voxel_size, label):
 
         for contour in contours:
             curvature, smooth_contour = compute_curvature_bspline(contour, smoothing=25.0)
-            candidates = detect_nodule_candidates(curvature, smooth_contour)
+            candidates = detect_wall_candidates(curvature, smooth_contour)
 
             for cand in candidates:
                 cand['slice'] = int(z)
@@ -271,7 +270,7 @@ def analyze_single_volume(data, voxel_size, label):
     persistent = group_persistent_candidates(all_candidates, tolerance=10)
 
     # Final filter: keep only top candidates by combined score
-    # (span * mean_curvature) - mimics a reader focusing on the most obvious nodules
+    # (span * mean_curvature) - mimics a reader focusing on the most prominent peaks
     for p in persistent:
         p['score'] = p['span'] * p['mean_curvature']
     persistent.sort(key=lambda x: x['score'], reverse=True)
@@ -320,7 +319,7 @@ def group_persistent_candidates(candidates, tolerance=15):
                 group.append(other)
                 used.add(j)
 
-        if len(group) >= 2:  # Persistent = appears in 2+ slices
+        if len(set(c['slice'] for c in group)) >= 2:  # Persistent = 2+ distinct slices
             avg_pos = np.mean([c['position'] for c in group], axis=0).tolist()
             avg_curv = float(np.mean([c['curvature'] for c in group]))
             slices = sorted(set(c['slice'] for c in group))
@@ -406,7 +405,7 @@ def generate_inspection_montage(data, vent_mask, results, output_path, title):
 
 def generate_comparison_montage(baseline_data, followup_data, baseline_mask, followup_mask,
                                 baseline_results, followup_results, output_path):
-    """Generate side-by-side comparison of both timepoints at matched ventricular levels."""
+    """Generate side-by-side comparison of both studies at matched ventricular levels."""
     print("  Generating baseline/follow-up comparison montage...")
 
     # Find overlapping ventricular level range (percentage-based matching)
@@ -558,8 +557,8 @@ def generate_3d_html(baseline_verts, baseline_faces, followup_verts, followup_fa
 
     Includes:
     - Transparent brain surface for anatomical context
-    - Ventricle meshes for both timepoints (toggleable)
-    - Nodule candidate markers
+    - Ventricle meshes for both studies (toggleable)
+    - Wall-shape candidate markers
     """
     print("  Generating interactive 3D HTML...")
 
@@ -689,7 +688,7 @@ def generate_3d_html(baseline_verts, baseline_faces, followup_verts, followup_fa
     fig.update_layout(
         title=dict(
             text=(
-                "3D Ventricle Reconstruction with Nodule Candidates<br>"
+                "3D Ventricle Reconstruction with Wall-Shape Candidates<br>"
                 "<sub>Red/Orange diamonds = curvature-detected candidates | "
                 "Toggle layers in legend</sub>"
             ),
@@ -747,7 +746,7 @@ def generate_summary_report(baseline_results, followup_results, output_path):
 
     # Candidate tables
     for label, results in [("Follow-up", followup_results), ("Baseline", baseline_results)]:
-        report.append(f"## Nodule Candidates - {label}")
+        report.append(f"## Wall-Shape Candidates - {label}")
         report.append("")
         if results['persistent_candidates']:
             report.append("| # | Side | Region | Slices | Span | Mean k | Max k | Confidence |")
@@ -773,7 +772,7 @@ def generate_summary_report(baseline_results, followup_results, output_path):
     report.append(f"- Follow-up persistent candidates: **{followup_n}**")
 
     if base_n > 0 and followup_n > 0:
-        report.append("- Candidates detected on BOTH timepoints - consistent with stable anatomy")
+        report.append("- Candidates detected in both studies - consistent with stable anatomy")
     elif followup_n > 0 and base_n == 0:
         report.append("- Candidates only on follow-up - may reflect better image quality or")
         report.append("  contrast on the follow-up scan rather than a true change")
@@ -785,7 +784,7 @@ def generate_summary_report(baseline_results, followup_results, output_path):
     report.append("|------|-------------|")
     report.append("| `candidate_inspection_baseline.png` | Baseline montage with ventricular contours and candidates |")
     report.append("| `candidate_inspection_followup.png` | Follow-up montage with ventricular contours and candidates |")
-    report.append("| `candidate_comparison_matched.png` | Side-by-side timepoints at matched ventricular levels |")
+    report.append("| `candidate_comparison_matched.png` | Side-by-side studies at matched ventricular levels |")
     report.append("| `ventricles_3d.html` | Interactive 3D Plotly visualization (open in browser) |")
     report.append("| `candidate_analysis_results.json` | Machine-readable analysis results |")
     report.append("")
@@ -819,10 +818,10 @@ def generate_summary_report(baseline_results, followup_results, output_path):
     report.append("## Limitations")
     report.append("")
     report.append("1. **No rigid/affine registration** - scanner coordinate frames were not preserved")
-    report.append("2. **Low tissue contrast** - reduced gray-white contrast limits intensity-based checks")
+    report.append("2. **Variable tissue contrast** - gray-white contrast differs between scanners and sequences, which limits intensity-based checks")
     report.append("3. **CSF-based segmentation** - ventricle segmentation may include cisterns")
-    report.append("4. **Interval growth** - anatomy can change between scans, complicating slice matching")
-    report.append("5. **Smoothing tradeoff** - B-spline s=25 may smooth away small (<2mm) nodules")
+    report.append("4. **Interval change** - anatomy and head position can differ between scans, complicating slice matching")
+    report.append("5. **Smoothing tradeoff** - B-spline s=25 may smooth away small (<2mm) wall features")
     report.append("6. **Not diagnostic** - exploratory tooling only; does not replace radiology")
     report.append("")
     report.append("*Pipeline: ventricle_3d_analysis.py (nibabel + scikit-image + plotly)*")
@@ -834,7 +833,7 @@ def generate_summary_report(baseline_results, followup_results, output_path):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="3D ventricle segmentation and curvature-based nodule candidate detection.")
+        description="3D ventricle segmentation and curvature-based wall-shape candidate detection.")
     parser.add_argument('--baseline', required=True,
                         help="Baseline T2 NIfTI volume (.nii.gz)")
     parser.add_argument('--followup', required=True,

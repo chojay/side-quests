@@ -6,7 +6,7 @@ System design of the GMA video pipeline: how a phone video becomes kinematic fea
 
 ```mermaid
 flowchart TD
-    V[/"home video (.mov)"/] --> PRE[preprocess.py <br/>frame extraction 30 fps, rotation metadata, <br/>ffprobe QuickTime timestamps]
+    V[/"phone video clip (.mov)"/] --> PRE[preprocess.py <br/>frame extraction 30 fps, rotation metadata, <br/>ffprobe QuickTime timestamps]
     PRE --> SEG[segment.py <br/>3-tier segmentation with fallback]
     SEG --> POSE[pose.py <br/>BlazePose 33 to 13 keypoints, <br/>mask-guided background darkening, <br/>principal-axis rotation normalization]
     POSE --> FEAT[features.py <br/>velocity, jerk, entropy, PSD, curvature, <br/>supine-validity mask, rolling detectors, <br/>whole-body synchrony]

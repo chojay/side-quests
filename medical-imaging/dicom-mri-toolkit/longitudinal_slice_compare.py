@@ -156,7 +156,7 @@ def compute_regional_statistics(image, mask):
         vals = image[right_mask]
         stats['right'] = {'mean': float(np.mean(vals)), 'std': float(np.std(vals))}
 
-    # Central (periventricular area)
+    # Central region (middle half of the slice)
     margin_y = h // 4
     margin_x = w // 4
     central_mask = np.zeros_like(mask)

@@ -2,8 +2,8 @@
 """
 DICOM Series Comparison
 =======================
-Compares two MRI studies (baseline vs follow-up) exported from a hospital
-imaging CD.
+Compares two MRI studies (called baseline and follow-up below, after the
+CLI arguments) from standard DICOM exports.
 
 For each study this script:
 1. Inventories every series folder and reads DICOM headers with pydicom

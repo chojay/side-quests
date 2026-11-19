@@ -2,7 +2,7 @@
 """
 SSIM Slice Matcher
 ==================
-Pairs anatomically matching MRI slices across two timepoints using
+Pairs anatomically matching MRI slices across two studies using
 structural similarity (SSIM), working on grid-cell PNGs produced by
 grid_cell_extractor.py.
 
@@ -11,9 +11,8 @@ For each configured sequence:
 2. Greedily pairs cells above a similarity threshold (0.80) - high SSIM
    means the two slices show the same anatomical level
 3. Disambiguates which member of each pair is the earlier scan using the
-   expected per-sequence signal evolution over time (e.g., DWI lesion
-   signal fades bright-to-dark, ADC recovers dark-to-bright, contrast
-   enhancement decreases)
+   expected per-sequence change between the two studies (for example, a
+   region expected to read brighter in the earlier study)
 4. Renders side-by-side validation images and saves all matches to JSON
 
 Usage:
@@ -34,31 +33,27 @@ import glob
 # EDIT THESE to match the montages you extracted with grid_cell_extractor.py.
 # "evolution" encodes how signal is EXPECTED to change from the earlier to
 # the later scan for whatever change you are tracking; it is used to order
-# each matched pair in time. The values below are a textbook example for a
-# resolving diffusion-restricting finding; substitute the expectations that
-# apply to your own comparison.
+# each matched pair in time. The keys and values below are neutral
+# placeholders that show the supported ordering rules; substitute your own
+# montage names, sequences and expectations.
+# Supported "evolution" values: bright_to_dark, high_to_low (brighter cell =
+# earlier study), dark_to_bright, subtle_to_prominent (darker cell = earlier
+# study), stable, baseline (no ordering signal; pair order is arbitrary).
 SEQUENCE_CONFIG = {
-    "02_DWI_ADC_comparison": {
-        "DWI": {"rows": [1], "evolution": "bright_to_dark"},  # Top row
-        "ADC": {"rows": [2], "evolution": "dark_to_bright"}   # Bottom row
+    "montage_A": {
+        "seq_1": {"rows": [1], "evolution": "bright_to_dark"},  # Top row
+        "seq_2": {"rows": [2], "evolution": "dark_to_bright"}   # Bottom row
     },
-    "01_T2_FLAIR_multi": {
-        "T2_FLAIR": {"rows": [1, 2, 3], "evolution": "subtle_to_prominent"}
+    "montage_B": {
+        "seq_3": {"rows": [1, 2, 3], "evolution": "subtle_to_prominent"}
     },
-    "03_T1_pre_post_comparison": {
-        "T1_pre": {"rows": [1], "evolution": "baseline"},
-        "T1_post": {"rows": [2], "evolution": "enhancement_decrease"}
-    },
-    "04_enhancement_subtraction": {
-        "Enhancement": {"rows": [1, 2, 3], "evolution": "high_to_low"}
-    },
-    "05_SWAN_multi": {
-        "SWAN": {"rows": [1, 2, 3], "evolution": "stable"}
-    },
-    "06_T2_multi": {
-        "T2": {"rows": [1, 2, 3], "evolution": "stable"}
+    "montage_C": {
+        "seq_4": {"rows": [1, 2, 3], "evolution": "stable"}
     }
 }
+
+SUPPORTED_EVOLUTIONS = {"bright_to_dark", "high_to_low", "dark_to_bright",
+                        "subtle_to_prominent", "stable", "baseline"}
 
 SSIM_THRESHOLD = 0.80
 
@@ -96,7 +91,7 @@ def load_cells_for_source(cells_dir, source_prefix):
     cells = []
     for cell_file in cell_files:
         basename = os.path.basename(cell_file)
-        # Parse: 02_DWI_ADC_comparison_cell01_r1c1.png
+        # Parse: montage_A_cell01_r1c1.png
         parts = basename.split('_cell')
         if len(parts) == 2:
             cell_part = parts[1].replace('.png', '')
@@ -157,20 +152,20 @@ def find_anatomical_matches(cells, evolution_type):
             cell_i = cells[i]
             cell_j = cells[best_j]
 
-            if evolution_type == "bright_to_dark":  # e.g., DWI signal fades
+            if evolution_type == "bright_to_dark":  # brighter cell = earlier study
                 early = cell_i if cell_i['intensity'] > cell_j['intensity'] else cell_j
                 late = cell_j if cell_i['intensity'] > cell_j['intensity'] else cell_i
-            elif evolution_type == "dark_to_bright":  # e.g., ADC recovers
+            elif evolution_type == "dark_to_bright":  # darker cell = earlier study
                 early = cell_i if cell_i['intensity'] < cell_j['intensity'] else cell_j
                 late = cell_j if cell_i['intensity'] < cell_j['intensity'] else cell_i
-            elif evolution_type == "high_to_low":  # e.g., enhancement decreases
+            elif evolution_type == "high_to_low":  # higher-signal cell = earlier study
                 early = cell_i if cell_i['intensity'] > cell_j['intensity'] else cell_j
                 late = cell_j if cell_i['intensity'] > cell_j['intensity'] else cell_i
             elif evolution_type == "subtle_to_prominent":  # structural changes
                 # Less certain - order by intensity as a hint, verify visually
                 early = cell_i if cell_i['intensity'] < cell_j['intensity'] else cell_j
                 late = cell_j if cell_i['intensity'] < cell_j['intensity'] else cell_i
-            else:  # stable / baseline: no reliable ordering signal
+            else:  # stable / baseline (or unknown): no reliable ordering signal
                 early = cell_i
                 late = cell_j
 
@@ -229,8 +224,8 @@ def create_validation_image(match, cells_dir, source_prefix, sequence_name, outp
     font = load_font(24)
     font_small = load_font(16)
 
-    draw.text((10, 10), f"Timepoint A (Cell #{match['early_cell']})", fill='yellow', font=font)
-    draw.text((img1.width + 20, 10), f"Timepoint B (Cell #{match['late_cell']})", fill='cyan', font=font)
+    draw.text((10, 10), f"Study A (Cell #{match['early_cell']})", fill='yellow', font=font)
+    draw.text((img1.width + 20, 10), f"Study B (Cell #{match['late_cell']})", fill='cyan', font=font)
 
     draw.text((10, height-30), f"SSIM: {match['similarity']:.3f} | {sequence_name}", fill='white', font=font_small)
 
@@ -239,7 +234,7 @@ def create_validation_image(match, cells_dir, source_prefix, sequence_name, outp
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Pair anatomically matching MRI slices across two timepoints using SSIM.")
+        description="Pair anatomically matching MRI slices across two studies using SSIM.")
     parser.add_argument('--cells-dir', required=True,
                         help="Directory of grid-cell PNGs from grid_cell_extractor.py")
     parser.add_argument('--output-dir', required=True,
@@ -278,6 +273,9 @@ def main():
                 continue
 
             # Find matches
+            if seq_config['evolution'] not in SUPPORTED_EVOLUTIONS:
+                print(f"    WARNING: unknown evolution '{seq_config['evolution']}'; "
+                      "pair order will be arbitrary")
             matches = find_anatomical_matches(seq_cells, seq_config['evolution'])
 
             print(f"    Matches found: {len(matches)}")

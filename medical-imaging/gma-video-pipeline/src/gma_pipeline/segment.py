@@ -19,7 +19,7 @@ Auto-detection order:
 
 3. MediaPipe alone: fallback if neither SAM is available. NOT recommended for
    production GMA work because the Selfie Segmenter systematically misses
-   extended limbs (validated empirically on the real recordings).
+   extended limbs (seen in development testing).
 
 What SAM 3 will do differently once auth is configured:
 - Native text prompt "baby" or "infant in diaper" instead of MediaPipe bbox
@@ -43,7 +43,7 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
-# SAM 2.1 checkpoint variants. base_plus is the default for quality.
+# SAM 2.1 checkpoint variants. tiny is the default (see SAM21_DEFAULT_VARIANT).
 SAM21_CHECKPOINTS = {
     "tiny": {
         "url": "https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_tiny.pt",
@@ -70,7 +70,7 @@ SAM21_CHECKPOINTS = {
         "size_mb": 856,
     },
 }
-SAM21_DEFAULT_VARIANT = "tiny"  # Empirically gives the most coherent whole-body mask on real infant videos. base_plus separates diaper from skin (more "correct" but introduces a hole that breaks downstream pose use).
+SAM21_DEFAULT_VARIANT = "tiny"  # Empirically gave the most coherent whole-body mask in development testing. base_plus separates diaper from skin (more "correct" but introduces a hole that breaks downstream pose use).
 
 
 @dataclass
@@ -325,8 +325,8 @@ class SAM21Segmenter(Segmenter):
     2. Feed (box, center_point) to SAM 2.1 image predictor.
     3. SAM refines to a precise body outline including limbs.
 
-    Empirically validated to correctly capture thin extended limbs,
-    which the MediaPipe-only path misses.
+    Captures thin extended limbs in development testing, which the
+    MediaPipe-only path misses.
 
     Per-frame inference time on M4 Pro/Max MPS: roughly 0.5 to 1 second.
     """

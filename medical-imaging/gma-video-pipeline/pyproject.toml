@@ -1,7 +1,7 @@
 [project]
 name = "gma-video-pipeline"
 version = "0.1.0"
-description = "Personal-reference (non-medical) infant GMA video analysis pipeline. SAM 3 or SAM 2.1 segmentation + infant pose + kinematic features + MOS-R proxy scoring."
+description = "Educational (non-medical) GMA video analysis pipeline. SAM 3 or SAM 2.1 segmentation + infant pose + kinematic features + MOS-R proxy scoring."
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 license = { text = "MIT" }

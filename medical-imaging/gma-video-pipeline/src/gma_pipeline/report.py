@@ -28,9 +28,9 @@ logger = logging.getLogger(__name__)
 
 
 DISCLAIMER_HEADER = """
-> **NOT A MEDICAL DEVICE.** This report is a personal-reference exploration of
+> **NOT A MEDICAL DEVICE.** This report is an educational, non-clinical exploration of
 > pose-derived kinematic features. It is not a GMA score. It is not validated.
-> Clinical interpretation rests entirely with the infant's clinical care team.
+> Clinical interpretation rests with qualified clinicians.
 > See `DISCLAIMER.md` for the full disclaimer.
 """.strip()
 
@@ -248,7 +248,7 @@ def build_report(
         lines.append("")
         lines.append("> Read the **independent segmental asymmetry** analysis as the headline, not this total. A "
                      "near-normal whole-body proxy total is NOT reassurance - it can reflect the proxy's blindness to "
-                     "the character/posture/repertoire channels, and a focal deficit can herald a unilateral lesion. "
+                     "the character/posture/repertoire channels, and a focal one-limb deficit can matter even when the total looks normal. "
                      "See `segmental-asymmetry-independent.md`.")
         lines.append("")
 
@@ -314,7 +314,7 @@ def build_report(
         "Any transcribed clinician reading is carried "
         "only as a clearly-labeled PROVISIONAL side-note, not a reference standard. See "
         "`segmental-asymmetry-independent.md`. Every number remains a PROXY; final clinical interpretation rests with "
-        "the care team."
+        "qualified clinicians."
     )
     lines.append("")
 
@@ -324,7 +324,7 @@ def build_report(
 
 
 def build_segmental_report(analysis, output_dir: Path) -> Path:
-    """Render the cross-video INDEPENDENT relative segmental assessment (+ provisional PT side-note)."""
+    """Render the cross-video INDEPENDENT relative segmental assessment (+ clinician-reading side-note)."""
     output_dir.mkdir(parents=True, exist_ok=True)
     L: list[str] = []
     L.append("# Segmental Asymmetry - Independent Relative Assessment")
@@ -371,13 +371,13 @@ def build_segmental_report(analysis, output_dir: Path) -> Path:
     L.append(
         "- **Window note:** the fidgety period is optimal at 12-16 weeks and valid to ~20 weeks; FMs normally fade at "
         "18-20 weeks (Ferrari 2016). Validity is keyed to corrected age AT RECORDING, not any later scoring date. "
-        "\"Poor repertoire\" is formally a writhing-stage whole-body category, not a fidgety-stage or per-limb label."
+        "For GM category names by age period, see Einspieler & Prechtl 2005 (PMID 15856440)."
     )
     L.append("")
     s = analysis.pt_provisional_agreement
     L.append(
         f"- **Provisional coincidence (NOT validation):** both-flagged={s['both_flag']}, both-clear={s['both_clear']}, "
-        f"pipeline-only={s['pipeline_only']}, PT-only={s['pt_only']}. The pipeline is NOT calibrated to this reading and "
+        f"pipeline-only={s['pipeline_only']}, clinician-only={s['pt_only']}. The pipeline is NOT calibrated to this reading and "
         "the reading is NOT confirmed, so this is not evidence for either the pipeline or the reading."
     )
     L.append("")

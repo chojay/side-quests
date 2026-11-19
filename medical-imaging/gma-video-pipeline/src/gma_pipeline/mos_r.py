@@ -5,7 +5,7 @@ It produces an explicitly-labeled, honest proxy of the subset of the MOS-R that
 single-camera 2D pose kinematics can even partially address. The companion
 calibration.py produces a 2D-pose-derived per-limb SEGMENTAL-ASYMMETRY signal
 and can compare it with an external clinician reading, if one is transcribed
-into the PT_ASSESSMENT placeholder below.
+into the EXTERNAL_READING placeholder below.
 
 Not a GMA. Prechtl's General Movements Assessment is by definition a whole-body
 visual-Gestalt method: a trained observer judges the OVERALL quality (complexity,
@@ -45,24 +45,25 @@ Design (per the MOS-R research synthesis)
    (a whole-body Gestalt subscale) high when fidgety is globally present (e.g.
    3/4 limbs normal) is faithful to how F is scored. A focal single-limb finding
    is carried instead by the segmental-asymmetry channel: segmental movement
-   asymmetry was PRESENT in 91.7% (22/24) of perinatal-stroke infants
-   (Bertoncelli 2024) - a prevalence among affected infants, NOT a CP-detection
-   sensitivity.
+   asymmetry was PRESENT in 91.7% (22/24) of the affected (case) group in a
+   high-risk perinatal cohort (Bertoncelli 2024) - a prevalence among cases,
+   NOT a detection sensitivity.
 
-   BUT this must not read as reassuring. A genuinely CP-heralding unilateral
-   deficit normally DRAGS the true MOS-R total DOWN (character, posture and
-   repertoire all degrade): perinatal-stroke infants who developed unilateral CP
+   BUT this must not read as reassuring. In that cohort, a focal deficit that
+   later mattered clinically DRAGGED the true MOS-R total DOWN (character,
+   posture and repertoire all degrade): infants with a later one-sided motor outcome
    had a median MOS-R of 6, vs 26 in controls (Bertoncelli 2024). So a
    near-normal 2D-proxy total more likely reflects the proxy's BLINDNESS to
-   those channels than reassurance, and a focal fidgety-age asymmetry is itself
-   an established early marker of a unilateral brain lesion / congenital
-   hemiplegic CP (Guzzetta 2003, PMID 12776225). The segmental-asymmetry channel,
-   not the F/upper-bound total, is the headline.
+   those channels than reassurance, and a focal fidgety-age asymmetry is
+   reported as an early sign of a later one-sided motor outcome (Guzzetta 2003,
+   PMID 12776225).
+   The segmental-asymmetry channel, not the F/upper-bound total, is the
+   headline.
 
 Final scoring rests with a certified GMA assessor.
 
 Key references: Einspieler et al. 2019, J Clin Med 8(10):1616 (MOS-R instrument);
-Bertoncelli et al. 2024, Children 11(8):940 (perinatal-stroke MOS-R cutoffs).
+Bertoncelli et al. 2024, Children 11(8):940 (MOS-R cutoffs in a high-risk perinatal cohort).
 """
 
 from __future__ import annotations
@@ -87,25 +88,19 @@ MOSR_PROXY_VERSION = "v0.2"
 # (calibration.py) is INDEPENDENT and is NEVER calibrated to or graded against
 # this dict; it is carried only as a clearly-labeled side-note.
 #
-# TERMINOLOGY NOTE for transcription: "poor repertoire" is formally one of the
-# four WRITHING-period whole-body GM categories (normal / poor-repertoire /
-# cramped-synchronized / chaotic), assessed term to ~6-9 weeks, and is never a
-# per-limb label. In the fidgety period the standard nomenclature is normal /
-# absent / abnormal(exaggerated) fidgety plus MOS-R subscale descriptors. Keep
-# any clinician quote verbatim, but do NOT treat writhing-period category names
-# as fidgety-stage or per-limb GMA categories in scoring logic (Einspieler &
-# Prechtl 2005, PMID 15856440).
+# TERMINOLOGY: for GM category names by age period, see Einspieler & Prechtl
+# 2005 (PMID 15856440).
 #
 # TIMING NOTE: the fidgety window opens ~6-9 wk, is OPTIMAL 12-16 wk, remains
 # valid to ~20 wk, and FMs normally fade/disappear 18-20 wk as antigravity
 # movements emerge (Ferrari et al. 2016, Early Hum Dev 103:219-224, PMID 27825041).
 # Window validity is keyed to corrected age AT RECORDING, not the scoring date.
 # ---------------------------------------------------------------------------
-PT_ASSESSMENT = {
-    "scorer": None,  # e.g. "<clinician name>, PT"
+EXTERNAL_READING = {
+    "scorer": None,  # e.g. "<assessor name>"
     "date": None,  # ISO date of the clinical scoring, if any
     "corrected_age_weeks": None,  # corrected age at recording, if known
-    "provisional": True,  # any transcribed reading is a side-note, not a reference standard
+    "provisional": None,  # set True/False when a reading is transcribed; either way it is a side-note
     "provisional_note": (
         "Placeholder: no external clinician reading has been transcribed. Fill this dict in to see a "
         "side-by-side comparison; the pipeline's own assessment is independent of it either way."
@@ -137,14 +132,14 @@ POPULATION_CUTOFFS = [
         "source": "Einspieler et al. 2019, J Clin Med 8(10):1616",
     },
     {
-        "population": "Perinatal arterial stroke / unilateral injury",
+        "population": "High-risk perinatal cohort (Bertoncelli 2024)",
         "threshold": "MOS-R <= 13",
         "note": (
-            "100% sens & spec for unilateral CP (GMFCS>=2); segmental asymmetry present in 91.7% (22/24). "
-            "Wide CI: 24 stroke cases of 48 enrolled; specificity CI floor ~30.5%, so 100% spec is NOT robust. "
-            "DIRECTION OF BIAS: this cutoff is from a near-obligate-CP cohort (~87.5% developed unilateral CP), so "
-            "applied outside that etiology it is at best a conservative upper-bound context number, not a "
-            "calibrated risk estimate."
+            "100% sens & spec for a later one-sided motor outcome (GMFCS>=2); segmental asymmetry present in "
+            "91.7% (22/24) of cases. Wide CI: 24 affected cases of 48 enrolled; specificity CI floor ~30.5%, so "
+            "100% spec is NOT robust. DIRECTION OF BIAS: this cutoff is derived from a cohort in which most cases "
+            "had the outcome (~87.5%), so outside that population it is at best an upper-bound context number, "
+            "not a calibrated risk estimate."
         ),
         "source": "Bertoncelli et al. 2024, Children 11(8):940 (PMC11352565)",
     },
@@ -153,12 +148,6 @@ POPULATION_CUTOFFS = [
         "threshold": "MOS-R <= 23 general impairment; <= 15 definite CP",
         "note": "<=15: 100% sens / 95% spec for definite CP; median 24 (IQR 21-26) in very preterm (n=169).",
         "source": "Kwong AK-L, et al. 2022, J Clin Med 11(7):1833 (PMC9000187)",
-    },
-    {
-        "population": "Malformation of cortical development (NO validated cutoff)",
-        "threshold": "no MOS-R cutoff exists",
-        "note": "Descriptive only (n=9): abnormal GMs in all, poor repertoire universal. Literature context, not thresholding.",
-        "source": "Ferrari F, Prechtl HFR, Cioni G, et al. 1997, Early Hum Dev 50(1):87-113 (PMID 9467696)",
     },
 ]
 
@@ -359,8 +348,9 @@ def compute_mosr_proxy(features: VideoFeatures) -> MOSRProxy:
         f"(P/R/Po imputed at ceiling 4/4/4); the true MOS-R is <= this by an unknown margin and only a certified "
         f"assessor can fill the missing 12 points. The upper bound's nominal '{_band(upper_bound_28)}' band is NOT "
         f"reassurance: a near-normal proxy total more likely reflects this proxy's BLINDNESS to the P/R/Po/character "
-        f"channels than a normal infant - a genuinely CP-heralding unilateral deficit normally DRAGS the true MOS-R "
-        f"down (perinatal-stroke->unilateral-CP median MOS-R was 6, not near-normal; Bertoncelli 2024). GUARDRAIL: do "
+        f"channels than a normal infant - a clinically important focal deficit normally DRAGS the true MOS-R "
+        f"down (in a high-risk perinatal cohort, infants with a later one-sided motor outcome had a median MOS-R "
+        f"of 6, not near-normal; Bertoncelli 2024). GUARDRAIL: do "
         f"not read a high F or a high upper bound as 'normal/reassuring' while a limb is flagged abnormal in the "
         f"SEGMENTAL ASYMMETRY analysis - that per-limb map, not this total, is the headline."
     )

@@ -1,4 +1,4 @@
-# Infant GMA Video Analysis Pipeline
+# GMA Video Analysis Pipeline
 
 A personal side quest: replicate the ideas behind a published infant General Movements Assessment (GMA) pipeline on consumer hardware, using nothing but consumer phone video, open models, and a Mac.
 
@@ -6,7 +6,7 @@ A personal side quest: replicate the ideas behind a published infant General Mov
 
 ![Workflow: consumer phone video is segmented and tracked into a 13-keypoint pose, passed through the supine-validity gate, and scored honestly with F and C computed and P/R/Po marked NOT_COMPUTABLE](workflow.png)
 
-No real videos, frames, pose data, or reports ship with this project; the pipeline expects you to supply your own recordings in `./inputs/`. The [examples folder](examples/) holds one evaluation generated entirely from the synthetic test fixtures, so the output format is visible without any recording.
+No real videos, frames, pose data, or reports ship with this project; the pipeline expects you to supply your own clips in `./inputs/`. The [examples folder](examples/) holds one evaluation generated entirely from the synthetic test fixtures, so the output format is visible without any recording.
 
 ## Example run (fully synthetic recording)
 
@@ -30,7 +30,7 @@ Everything below comes from one **actual run of the evaluation path on a synthet
 
 **Per-limb monitoring** - each arm and leg tracked through its distal marker and ranked by the independent segmental-asymmetry module:
 
-![Per-limb segmental concordance figure](examples/example-run-limbs.png)
+![Per-limb segmental concordance figure](examples/example-run-limbs-v2.png)
 
 **The proxy score, saying what it cannot see** - only F and C are computed; the clinician-only subscales report NOT_COMPUTABLE and the upper bound imputes at ceiling:
 
@@ -46,13 +46,13 @@ Computable proxy 16/16 against a ceiling-imputed upper bound of 28/28: the clini
 
 ## Why I built it
 
-General movements assessment is a routine, well-validated infant developmental screen: a trained clinician watches an infant's spontaneous movement and judges its quality. It is also, famously, a visual-Gestalt method. I wanted to understand the science behind it: what part of that Gestalt is quantifiable from a single overhead phone camera, and what part fundamentally is not. It started with wanting to understand home recordings properly, and turned into a deep dive through the GMA literature and a lot of computer-vision plumbing.
+General movements assessment (GMA) is a well-validated developmental screen from the published literature: a trained clinician watches spontaneous movement in early infancy and judges its quality. It is also, famously, a visual-Gestalt method, which makes it an interesting test case for computer vision. I wanted to understand the science behind it: what part of that Gestalt is quantifiable from a single overhead phone camera, and what part fundamentally is not. It turned into a deep dive through the GMA literature, the published open GMA pipeline, and a lot of computer-vision plumbing.
 
 The honest answer the project converged on: a 13-keypoint 2D skeleton can partially address 2 of the 5 MOS-R subscales. The pipeline says so, loudly, in its own outputs.
 
 ## What it does
 
-Feed it home videos of an infant lying on their back. It produces, per run:
+Give it a phone-camera clip of a subject lying supine, filmed from above, as the GMA protocol specifies. It produces, per run:
 
 - per-frame segmentation masks and pose keypoints (parquet, with absolute timestamps recovered from QuickTime metadata via ffprobe)
 - kinematic features per keypoint: velocity, acceleration, jerk, path-length-normalized jerk index, velocity entropy, Welch PSD, autocorrelation prominence, trajectory curvature, in-band energy fraction
@@ -65,7 +65,7 @@ Everything is orchestrated by a 10-subcommand Typer CLI (`version`, `doctor`, `p
 
 ## Architecture
 
-About 6,200 lines of Python 3.12 across 16 modules, plus about 530 lines of tests. uv-managed, hatchling build, ruff-linted.
+About 6,200 lines of Python 3.12 across 16 modules, plus about 530 lines of tests. uv-managed, hatchling build.
 
 ```
 video (.mov)
@@ -117,21 +117,21 @@ SAM 3 interprets "baby's left arm" from the observer's perspective, which is inv
 
 ### Supine-validity as a first-class signal
 
-GMA is only valid with the infant supine. The validity mask votes per frame on trunk geometry: bi-acromial width collapse below 0.65x the recording median (borderline collapse requires bi-iliac corroboration, which rejects arm-over-torso occlusion), a sign flip in the signed shoulder offset as left/right keypoints cross during a roll (the single most specific roll indicator in this data), and trunk tilt over 45 degrees. Votes are debounced with a centered majority window. The mask supports multiple disjoint valid segments, and kinematics are computed over the full series with invalid frames as NaN so derivatives never bridge an excluded roll.
+GMA is only valid with the infant supine. The validity mask votes per frame on trunk geometry: bi-acromial width collapse below 0.65x the recording median (borderline collapse requires bi-iliac corroboration, which rejects arm-over-torso occlusion), a sign flip in the signed shoulder offset as left/right keypoints cross during a roll (the single most specific roll indicator in testing), and trunk tilt over 45 degrees. Votes are debounced with a centered majority window. The mask supports multiple disjoint valid segments, and kinematics are computed over the full series with invalid frames as NaN so derivatives never bridge an excluded roll.
 
-Two complementary rolling detectors run on top: a velocity-spike detector (trunk speed over 10x median) and an angle detector for gradual flips, added after a real slow-tilt flip evaded the spike detector.
+Two complementary rolling detectors run on top: a velocity-spike detector (trunk speed over 10x median) and an angle detector for gradual flips, added after a slow-tilt flip slipped past the spike detector in testing.
 
 ## The science
 
 The pipeline implements or cites, among others:
 
-- Novak et al. 2017, JAMA Pediatrics: early, accurate CP detection guideline; the clinical context for why early movement assessment matters.
+- Novak et al. 2017, JAMA Pediatrics: the early-detection guideline that gives the clinical context for why early movement assessment matters.
 - Einspieler et al. 2019, J Clin Med 8(10):1616: the MOS-R instrument this proxy is honest about not being.
 - Einspieler and Prechtl 2005: the canonical definition of fidgety movements ("small movements of moderate speed with variable acceleration ... in all directions"), which is why a sharp spectral peak is treated as a warning sign, not a reward.
 - Ferrari et al. 2016, Early Hum Dev: the fidgety window (optimal 12-16 weeks corrected, valid to ~20).
-- Bertoncelli et al. 2024, Children 11(8):940: segmental movement asymmetry present in 91.7 percent of a perinatal-stroke cohort; used as context with its cohort bias documented, not as a threshold.
+- Bertoncelli et al. 2024, Children 11(8):940: segmental movement asymmetry present in 91.7 percent of the case group in a high-risk perinatal cohort; used as context with its cohort bias documented, not as a threshold.
 - Kwong et al. 2022, J Clin Med: MOS-R cutoffs in very preterm infants.
-- Guzzetta 2003, Ferrari et al. 1997: additional cohort context for early-asymmetry findings.
+- Guzzetta 2003: additional cohort context for early-asymmetry findings.
 - Kanemaru et al. 2019: trajectory curvature as the best single fidgety discriminator, which motivated the curvature feature replacing a conceptually backwards low-jerk reward.
 - Groos et al., GigaScience 2024: the open GMA computer-vision pipeline whose feature schema this project adapts. The code documents exactly where it diverges: it adds jerk and frequency features that the original pre-registered pipeline deliberately excluded.
 - Ostadabbas SyRIP: infant-specific pose estimation, noted as the planned replacement for the adult-trained BlazePose backend.
@@ -145,7 +145,7 @@ The pipeline implements or cites, among others:
 - Adult-trained pose models systematically misplace infant keypoints.
 - The rule baked into every scoring path: if pipeline output disagrees with clinical scoring, the clinical scoring is correct by definition. The pipeline is the thing being calibrated.
 
-There is a `PT_ASSESSMENT` placeholder in `mos_r.py` where a user can transcribe an external clinician reading for a side-by-side coincidence count. It ships empty. The pipeline's own assessment is independent of it and is never calibrated to it.
+There is a `EXTERNAL_READING` placeholder in `mos_r.py` where a user can transcribe an external clinician reading for a side-by-side coincidence count. It ships empty. The pipeline's own assessment is independent of it and is never calibrated to it.
 
 ## What went wrong (engineering notes)
 
@@ -163,7 +163,7 @@ No real data appears anywhere in the tests. Everything is synthetic:
 - rectangle masks validate the principal-axis rotation math
 - handcrafted `VideoFeatures` objects drive the MOS-R proxy (F=12/C=4 on clean input, C=1 at synchrony 0.9) and the flag/no-flag discriminator edge cases, including the key false-positive suppression: a consistent speed deficit without a variety loss must not flag
 
-Run with `uv run pytest`.
+Run with `uv run --extra dev pytest`.
 
 ## Setup
 
@@ -174,7 +174,7 @@ Target hardware: Apple Silicon (developed on M4-class machines). SAM 2.1 per-fra
 uv sync
 
 uv run gma-pipeline doctor          # verify PyTorch/MPS/OpenCV/MediaPipe
-# place your own recordings in ./inputs/, then:
+# place your own clips in ./inputs/, then:
 uv run gma-pipeline run inputs/IMG_0001.mov
 ```
 

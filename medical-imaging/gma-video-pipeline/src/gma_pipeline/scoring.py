@@ -360,7 +360,7 @@ def _interpret(result: ScoringResult, features: VideoFeatures) -> str:
     pieces.append(
         "EVERY NUMBER IS A PROXY. This is exploratory pattern observation, not a clinical GMA score. The "
         "headline is the segmental-asymmetry analysis; "
-        "final interpretation rests with the clinical care team."
+        "final interpretation rests with qualified clinicians."
     )
     return " ".join(pieces)
 
