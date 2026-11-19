@@ -1,0 +1,109 @@
+# A native oxide on silicon, fully declared and physically consistent.
+# Widths are not chosen from a literature range: each is the Voigt floor implied by the
+# declared instrumental Gaussian width and the tabulated core-hole lifetime width,
+# scaled by a factor that stays inside the broadening allowance. Every value here is
+# invented for the example; nothing was measured.
+
+source = "example:SiO2-on-Si (clean)"
+
+[instrument]
+gaussian_width = 0.45      # synthetic value; in real use, measure on Ag 3d5/2 at your pass energy
+pass_energy = 20.0
+source_linewidth = 0.26    # monochromated Al K-alpha
+transmission_function = "vendor-calibrated"   # synthetic label
+work_function = 4.6        # synthetic value; in real use, measure by UPS
+
+[survey]
+elements = ["Si", "O", "C"]
+
+[[spectrum]]
+name = "Si2p"
+background = "active-shirley"
+background_mode = "active"
+step_size = 0.05
+quantified = true
+
+[spectrum.charge_reference]
+method = "internal"
+value = 99.5
+basis = "bulk Si 2p3/2 of the substrate"
+
+[[spectrum.component]]
+id = "Si0_1_2"
+element = "Si"
+orbital = "2p"
+j = "1/2"
+binding_energy = 100.1
+fwhm = 0.62
+area = 500.0
+lineshape = "voigt"
+gl_mix = 0.25
+assignment = "Si"
+material_class = "semiconductor"
+doublet_partner = "Si0_3_2"
+
+[[spectrum.component]]
+id = "Si0_3_2"
+element = "Si"
+orbital = "2p"
+j = "3/2"
+binding_energy = 99.5
+fwhm = 0.62
+area = 1000.0
+lineshape = "voigt"
+gl_mix = 0.25
+assignment = "Si"
+material_class = "semiconductor"
+doublet_partner = "Si0_1_2"
+
+[[spectrum.component]]
+id = "Si4_1_2"
+element = "Si"
+orbital = "2p"
+j = "1/2"
+binding_energy = 104.1
+fwhm = 1.05
+area = 250.0
+lineshape = "voigt"
+gl_mix = 0.20
+assignment = "SiO2"
+material_class = "oxide"
+doublet_partner = "Si4_3_2"
+
+[[spectrum.component]]
+id = "Si4_3_2"
+element = "Si"
+orbital = "2p"
+j = "3/2"
+binding_energy = 103.5
+fwhm = 1.05
+area = 500.0
+lineshape = "voigt"
+gl_mix = 0.20
+assignment = "SiO2"
+material_class = "oxide"
+doublet_partner = "Si4_1_2"
+
+[[spectrum]]
+name = "O1s"
+background = "tougaard"
+background_mode = "active"
+step_size = 0.05
+quantified = true
+
+[spectrum.charge_reference]
+method = "internal"
+value = 99.5
+basis = "bulk Si 2p3/2 of the substrate"
+
+[[spectrum.component]]
+id = "O1s_SiO2"
+element = "O"
+orbital = "1s"
+binding_energy = 532.6
+fwhm = 1.08
+area = 1500.0
+lineshape = "voigt"
+gl_mix = 0.20
+assignment = "SiO2"
+material_class = "oxide"

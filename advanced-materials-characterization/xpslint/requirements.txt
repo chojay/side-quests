@@ -1,0 +1,12 @@
+# Runtime dependencies: none. Deliberately.
+# The rule layer is the novel surface here; a fitting engine and file-format
+# readers (lmfit, lmfitxps, pynxtools-xps) arrive only when VAMAS ingest lands,
+# and adding them earlier would have meant debugging someone else's parser
+# instead of the physics.
+#
+# Development tooling only:
+pytest>=8
+pytest-cov>=5
+hypothesis>=6
+ruff>=0.6
+mypy>=1.11

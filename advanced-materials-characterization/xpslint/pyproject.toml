@@ -1,0 +1,63 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "xpslint"
+version = "0.1.0"
+description = "A physics-rule linter for X-ray photoelectron spectroscopy peak fits"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Jay Cho" }]
+keywords = ["xps", "photoelectron", "spectroscopy", "peak-fitting", "linter", "metrology"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Physics",
+]
+# Deliberately zero runtime dependencies at this stage. Fitting-engine and file-format
+# dependencies (lmfit, lmfitxps, pynxtools-xps, xps) arrive at M3/M5, not before.
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov>=5", "hypothesis>=6", "ruff>=0.6", "mypy>=1.11"]
+
+[project.scripts]
+xpslint = "xpslint.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/xpslint"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src/xpslint"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+# ---------------------------------------------------------------------------
+# xpslint's own configuration surface, mirroring how ruff is configured.
+# Tier 1 rules cannot be disabled or downgraded here; attempting it is an error.
+# ---------------------------------------------------------------------------
+[tool.xpslint]
+disable = []
+
+[tool.xpslint.tolerances]
+so001_area_ratio = 0.10
+so002_separation_ev = 0.05
+fw001_broadening_allowance = 2.5
+
+[tool.xpslint.severity]
+# example: FW001 = "info"

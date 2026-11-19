@@ -1,0 +1,19 @@
+# Core-hole lifetime Lorentzian FWHM, eV.
+#
+# STATUS: provisional and deliberately sparse. Values ultimately want to come from a
+# primary compilation (Campbell and Papp, At. Data Nucl. Data Tables 77, 1 (2001)).
+# Absent entries produce cannot-check on FW001, which is the correct behaviour: the
+# physical FWHM floor cannot be computed without this term, and inventing one would
+# reintroduce exactly the folklore this tool exists to remove.
+
+[Si]
+"2p" = 0.05
+
+[Al]
+"2p" = 0.03
+
+[C]
+"1s" = 0.10
+
+[O]
+"1s" = 0.16

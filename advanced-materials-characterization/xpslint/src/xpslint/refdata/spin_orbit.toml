@@ -1,0 +1,58 @@
+# Spin-orbit splitting separations, eV.
+# p: 3/2 - 1/2   d: 5/2 - 3/2   f: 7/2 - 5/2
+#
+# STATUS: provisional. These are widely quoted values assembled for development, and
+# each should be checked against a primary reference before being relied on. Entries
+# absent from this file are reported as cannot-check rather than guessed, so it is
+# safe to leave an element out until it has been verified.
+#
+# The 2p splitting of a 3d transition metal changes with chemical state by more than the
+# default SO002 tolerance (Ti 2p is about 5.7 eV in TiO2 and about 6.1 eV in Ti metal).
+# One number per element cannot hold for every state, so SO002 reports cannot-check for
+# the transitions listed in state_dependent until state-resolved values are tabulated.
+# The values below for those elements are kept for reference only. Zn is listed as a
+# precaution: its state dependence has not been checked.
+
+state_dependent = ["Ti 2p", "Fe 2p", "Ni 2p", "Cu 2p", "Zn 2p"]
+
+[Si]
+"2p" = 0.60
+
+[Al]
+"2p" = 0.44
+
+[P]
+"2p" = 0.87
+
+[S]
+"2p" = 1.18
+
+[Cl]
+"2p" = 1.60
+
+[Ti]
+"2p" = 5.72
+
+[Fe]
+"2p" = 13.1
+
+[Ni]
+"2p" = 17.5
+
+[Cu]
+"2p" = 19.75
+
+[Zn]
+"2p" = 23.1
+
+[Mo]
+"3d" = 3.13
+
+[Ag]
+"3d" = 6.00
+
+[W]
+"4f" = 2.17
+
+[Au]
+"4f" = 3.67

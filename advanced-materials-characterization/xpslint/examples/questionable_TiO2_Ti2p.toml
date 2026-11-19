@@ -1,0 +1,55 @@
+# A deliberately flawed fit, written to exercise every outcome.
+# It is synthetic. Do not point this tool at a named author's published data.
+#
+# Expect: SO001 fail (ratio), LS001 fail (asymmetry on an oxide), LS003 fail
+# (un-truncated DS while quantifying), ST001 fail (TiO2 assigned with no oxygen in the
+# survey), FW001 cannot-check (no instrument declared at all), SO002 cannot-check (the
+# Ti 2p splitting depends on chemical state, so one tabulated value cannot judge it),
+# CA001 prompt (284.8 eV with no work function and no calibration chain),
+# BG002 prompt (Shirley used for quantification).
+
+source = "example:TiO2 Ti 2p (questionable)"
+
+[survey]
+elements = ["Ti", "C"]
+
+[[spectrum]]
+name = "Ti2p"
+background = "shirley"
+background_mode = "static"
+step_size = 0.1
+quantified = true
+
+[spectrum.charge_reference]
+method = "adventitious_carbon"
+value = 284.8
+
+[[spectrum.component]]
+id = "Ti4_1_2"
+element = "Ti"
+orbital = "2p"
+j = "1/2"
+binding_energy = 464.1
+fwhm = 1.9
+area = 585.0
+lineshape = "doniach-sunjic"
+gl_mix = 0.3
+asymmetry = 0.08
+assignment = "TiO2"
+material_class = "oxide"
+doublet_partner = "Ti4_3_2"
+
+[[spectrum.component]]
+id = "Ti4_3_2"
+element = "Ti"
+orbital = "2p"
+j = "3/2"
+binding_energy = 458.7
+fwhm = 1.1
+area = 1000.0
+lineshape = "doniach-sunjic"
+gl_mix = 0.3
+asymmetry = 0.08
+assignment = "TiO2"
+material_class = "oxide"
+doublet_partner = "Ti4_1_2"
