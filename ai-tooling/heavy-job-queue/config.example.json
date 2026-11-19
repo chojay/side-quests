@@ -1,0 +1,54 @@
+{
+  "_about": "Copy to ~/.config/memguard/config.json (or point MEMGUARD_CONFIG at it). Every key is optional; missing keys keep the defaults in memlib.DEFAULTS. Keys that start with _ are ignored.",
+  "state_dir": "~/.local/state/memguard",
+  "alert_cmd": [],
+  "_alert_cmd_example": ["osascript", "-e", "on run argv", "-e", "display notification (item 1 of argv) with title \"memguard\"", "-e", "end run"],
+  "protect_regex": [
+    "\\bmcp\\b",
+    "(^|/)claude( |$)",
+    "^\\S*[Pp]ython[0-9.]* +(\\S*/)?(heavy(\\.py)?|mem_watchdog\\.py|heavy_job_guard\\.py)( |$)",
+    "WindowServer",
+    "Virtualization"
+  ],
+  "job_regex": [
+    "(^|/)[Pp]ython[0-9.]*( |$)",
+    "(^|/)[Bb]lender( |$)",
+    "(^|/)ffmpeg ",
+    "(^|/)uv ",
+    "(^|/)(julia|Rscript|java) "
+  ],
+  "heavy": {
+    "default_need_gb": 8,
+    "default_cap_gb": 30,
+    "busy_gb": 6,
+    "wait_min": 180,
+    "poll_s": 2
+  },
+  "watchdog": {
+    "interval_s": 5,
+    "sustain": 2,
+    "warn_level_pct": 15,
+    "crit_level_pct": 8,
+    "crit_on_os_critical": true,
+    "warn_swap_gb": 12,
+    "crit_swap_gb": 24,
+    "swap_counts_below_level_pct": 30,
+    "single_job_cap_gb": 36,
+    "min_victim_gb": 3,
+    "kill_cooldown_s": 20,
+    "warn_repeat_min": 30,
+    "log_every_s": 60
+  },
+  "hook": {
+    "light_marker": "MEMGUARD_LIGHT=1",
+    "wrappers": ["heavy"],
+    "patterns": [
+      "--device[ =](mps|cuda)",
+      "\\b[Bb]lender\\b[^|;&]*\\s(-b|--background)\\b",
+      "\\bimport (torch|tensorflow|transformers|mlx_lm)\\b",
+      "\\bfrom (torch|tensorflow|transformers|mlx_lm)\\b",
+      "\\bmlx_lm\\.generate\\b",
+      "\\bpython[0-9.]*\\b[^|;&]*\\b\\w*(train|infer|embed)\\w*\\.py\\b"
+    ]
+  }
+}

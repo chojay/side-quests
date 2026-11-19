@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Memory watchdog LaunchAgent template. Render it with launchd/render_plist.sh, read
+  the result, then load it yourself (the script prints the commands; it runs none).
+-->
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>__LABEL__</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>__PYTHON__</string>
+		<string>__SCRIPT__</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<true/>
+	<key>ThrottleInterval</key>
+	<integer>10</integer>
+	<key>ProcessType</key>
+	<string>Interactive</string>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>USER</key>
+		<string>__USER__</string>
+		<key>MEMGUARD_CONFIG</key>
+		<string>__CONFIG__</string>
+	</dict>
+	<key>StandardOutPath</key>
+	<string>__STATE__/launchd.out.log</string>
+	<key>StandardErrorPath</key>
+	<string>__STATE__/launchd.err.log</string>
+</dict>
+</plist>

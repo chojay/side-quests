@@ -1,0 +1,13 @@
+# Runtime state never belongs in the repo: logs, the queue, state files.
+heavy.log*
+watchdog.log*
+watchdog_state.json*
+current.json*
+queue/
+*.lock
+launchd.*.log
+# A rendered plist names a real home directory.
+*.plist
+!launchd/*.plist.template
+__pycache__/
+.pytest_cache/
