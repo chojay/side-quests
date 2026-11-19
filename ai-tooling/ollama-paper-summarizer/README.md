@@ -14,27 +14,51 @@ an Obsidian folder. Then an Obsidian similarity plugin -
 embeds those summaries and surfaces the relevant ones next to whatever you are
 writing, so the library augments the draft instead of sitting unread.
 
-![Workflow: a library of PDFs from a Zotero storage tree is read by pdfplumber across a process pool, summarized by a local model running on the Apple Silicon GPU through Ollama (shown as its llama mark), written as one structured Markdown file per paper, and surfaced by an Obsidian similarity plugin while writing; about 3,900 papers summarized locally with no cloud and no API key](pipeline-ollama.png)
+![Workflow: a library of PDFs from a Zotero storage tree is read by pdfplumber across a process pool, summarized by a local model running on the Apple Silicon GPU through Ollama (shown as its llama mark), written as one structured Markdown file per paper, and surfaced by an Obsidian similarity plugin while writing; summarized locally with no cloud and no API key](pipeline-ollama-v2.png)
 
-> **Scale so far: ~3,900 papers summarized, entirely offline.** Across
-> incremental runs between mid-2024 and early 2025 it produced ~3,900
-> `_summary.md` files from my Zotero library on a personal machine - no tokens
-> billed, nothing uploaded, the model running locally the whole time. Because
-> the run is idempotent, each pass only touches papers added since the last one,
-> so it ran unattended and grew with the library rather than as one marathon.
+> **Correction: the v1 notes are withdrawn.** An earlier version of this page
+> said the tool had turned about 3,900 papers into a searchable idea bank. It
+> did write that many `_summary.md` files from my Zotero library, on personal
+> time and on a personal machine, across incremental runs between mid-2024 and
+> early 2025. But the v1 script called Ollama's `generate()` with
+> no options, so it never set a context length. Every call ran at the default
+> context length, and Ollama's FAQ of that period (the v0.3.0 and v0.5.7
+> releases) gives that default as 2,048 tokens, unless a model's own Modelfile
+> sets more (not checked for the models I used). A journal paper's extracted
+> text is usually far longer than that. The calls did not fail (the script logs
+> a failed call and writes no note), so for long papers the model most likely saw
+> only part of the text, and the script had no way to tell. The cause is inferred from the code and from the notes; I did
+> not re-run v1 to watch it happen. Because nothing marks which notes were cut,
+> none of the v1 notes for long papers can be trusted, and I no longer use the
+> v1 notes as a reference.
 >
-> **Status: a bit old (2024-2025), and I plan to re-run it soon.** It was built
-> against llama3, moved to qwen2, and last ran on phi4; the model tag is a flag,
-> so re-running the whole library on a current local model is a one-line change.
-> The summaries it already produced still serve as the idea bank; this note is
-> the code, cleaned up for reuse.
+> The script in this folder is fixed: every call sets `num_ctx`, a paper that
+> does not fit is cut on purpose with a visible marker or skipped with a logged
+> reason, and the server's `prompt_eval_count` is checked after each call (see
+> [Context window](#context-window-set-on-purpose-and-checked) below).
+
+> **Field record.** A later check on my own library took a random 300 of the v1
+> notes for papers that also have a checked note, and compared them with the
+> notes written for the same papers by a separate pipeline that checks each
+> quote against the paper text and the numbers in its findings against the
+> quotes or the text (not published here). In the v1 notes, 527 of 991 decimal numbers (53.2%) appear
+> nowhere in the paper's extracted full text, references included; in the
+> checked notes, 13 of 3,706 (0.4%). And 23.3% of the v1 notes contain fewer than
+> 30% of the content words of the paper's own title, against 0.7%. Read these as
+> upper bounds: the comparison text came from a different PDF extractor than the
+> one v1 used, so some numbers may have been extracted differently rather than
+> invented, and the checked notes were written from that same comparison text.
+> The figures show the v1 notes are unreliable; they do not separate truncation
+> from other model errors.
 
 ## Pipeline
 
 ```
 folder of PDFs (e.g. a Zotero storage tree)
-  -> pdfplumber        extract text per PDF (skip > 70 pages)   [process pool, cores-2]
-  -> Ollama (local)    structured summary: findings + quantitative results
+  -> pdfplumber        extract text per PDF (skip >= 70 pages)  [process pool, cores-2]
+  -> context check     estimate prompt tokens vs num_ctx; cut with a marker, or skip
+  -> Ollama (local)    structured summary, num_ctx set on every call
+  -> fit check         prompt_eval_count vs the estimate; discard if the server cut the input
   -> <paper>_summary.md written into an Obsidian folder          [idempotent: skip existing]
   -> Smart Connections embeds the summaries; surfaces related ones while you write
 ```
@@ -49,15 +73,24 @@ pip install pdfplumber mdutils ollama
 python3 ollama_paper_summarizer.py \
     --input ~/Zotero/storage \
     --out "<vault>/Imports/paper-summaries" \
-    --model phi4
+    --model phi4 \
+    --num-ctx 16384 \
+    --on-overflow truncate    # or: skip
+```
+
+Tests (no Ollama and no PDFs needed; a fake client stands in for the server):
+
+```bash
+python3 -m unittest discover -s tests -v
 ```
 
 Point `--out` at a folder inside your Obsidian vault and let Smart Connections
 index it. See [examples/example-summary.md](examples/example-summary.md) for the
 output shape (a synthetic, illustrative summary - no real paper), and
-[GOTCHAS.md](GOTCHAS.md) for a worked example of the real payoff: three open-access
-Nature papers summarized, compared, and distilled into one recurring theme (and
-the prompt fix it forced).
+[GOTCHAS.md](GOTCHAS.md) for two lessons: a worked example of the real payoff
+(three open-access Nature papers summarized, compared, and distilled into one
+recurring theme, and the prompt fix it forced), and the context-window failure
+behind the correction above.
 
 ## The prompt (why the summaries are consistent, not random)
 
@@ -106,7 +139,9 @@ Why each constraint earns its place:
   to look substantial; a short summary of a thin paper is the correct output.
 - **"Quantitative results with values and units"** forces numbers into the note.
   Numbers are what you actually reach for when writing, and they are what the
-  early freeform prompts dropped first.
+  early freeform prompts dropped first. This is also why a cut input is so
+  damaging: the model is told to produce numbers, and when the part of the paper
+  that holds them is missing, it still produces numbers.
 - **"Omit introductions, license details, and references"** strips the
   boilerplate that otherwise dominates a short summary and pollutes similarity
   search with generic phrasing.
@@ -114,8 +149,7 @@ Why each constraint earns its place:
   findings-and-numbers summary silently drops what a paper cannot do, which makes
   an idea bank uniformly over-optimistic and hides the most useful cross-paper
   signal. See [GOTCHAS.md](GOTCHAS.md) for the worked example that forced it. The
-  ~3,900 summaries already produced predate this line and will pick it up on the
-  re-run.
+  withdrawn v1 notes predate this line.
 
 The default wording is tuned for a materials/hardware library; both prompts are
 constants at the top of the script - edit them for your field, keep the
@@ -153,14 +187,56 @@ structural constraints.
   server. The file list is shuffled so a run does not stall on a cluster of long
   PDFs landing on the same worker.
 - **Idempotent, resumable runs.** A non-empty `_summary.md` is skipped, so a
-  ~3,900-paper library is processed incrementally: adding papers and re-running
-  only touches the new ones, and an interrupted overnight run resumes where it
-  stopped. The check is *non-empty*, not merely *exists*, so a zero-byte file
-  from a killed run is retried rather than treated as done.
-- **A hard page cap, honestly.** PDFs at or above 70 pages are skipped rather
-  than truncated: books and theses blow the context window, and a silently
-  truncated summary is worse than none. Raising the cap means shortening the
-  text some other way first.
+  library of thousands of papers is processed incrementally: adding papers and
+  re-running only touches the new ones, and an interrupted overnight run resumes
+  where it stopped. The check is *non-empty*, not merely *exists*, so a
+  zero-byte file from a killed run is retried rather than treated as done. The
+  flip side: an existing note is never rewritten, so to replace notes made by an
+  older version, point `--out` at a fresh folder.
+- **A hard page cap.** PDFs at or above 70 pages (books, theses) are skipped.
+  The page cap alone did not protect anything in v1: a 20-page paper was already
+  far past the default context length. The context check below is what does.
+
+### Context window: set on purpose, and checked
+
+- **`num_ctx` on every call** (`--num-ctx`, default 16384), with `num_predict`
+  set to the tokens reserved for the answer (`--reserve-tokens`, default 1536).
+  Pick a value your model supports and your memory allows; a larger context
+  costs memory and time per call.
+- **Before the call:** the script estimates the prompt in tokens from its
+  length in characters, using a low characters-per-token rate (3.0) so the
+  estimate errs high for English prose. Dense text (formulas, tables, CJK
+  scripts) can tokenize at fewer characters per token, and then the estimate
+  errs low. If the prompt would not fit in `num_ctx` minus the
+  reserve, `--on-overflow truncate` (the default) keeps the start of the paper
+  and adds a marker the model can see (`[TRUNCATED BY THE SUMMARIZER: only the
+  first N of M characters ...]`), and the saved note opens with a line that says
+  it covers only part of the paper. `--on-overflow skip` writes nothing and logs
+  the reason.
+- **After the call:** the script compares the server's `prompt_eval_count` with
+  a second, lenient estimate of the prompt size. If the server evaluated far
+  fewer tokens than were sent, the input was cut somewhere the script did not
+  control, so the summary is discarded with a logged reason. A missing
+  `prompt_eval_count`, or an answer that stopped at `num_predict`
+  (`done_reason == "length"`), is also discarded. So is a call where the server
+  evaluated as many prompt tokens as the budget allows (`num_ctx` minus the
+  reserve): the estimate was too low for that text, and the server may have cut
+  it. If a paper keeps too little text after the cut (under 2,000 characters),
+  it is skipped rather than summarized from almost nothing.
+- **Limits of the check.** The character-based estimate is crude; it catches a
+  large cut (the v1 case), not a small one. It assumes Latin-script prose; for
+  dense or CJK text the budget check above is what catches an overflow, and a
+  cut that stays just under the budget can still be missed. If you need a tight
+  bound, count tokens with the model's own tokenizer. Ollama reuses its cache
+  for a repeated prompt prefix and does not count those tokens again, so a
+  duplicate PDF processed right after its twin can be rejected as cut (not
+  tested). Truncation keeps the start of a paper,
+  so results reported late in a long paper are missing from its note, and the
+  note says so.
+- The tests in [tests/](tests/) use a fake client that behaves like a server
+  with a small context: they check that `num_ctx` is always sent, that the
+  truncate and skip paths both work, and that a server-side cut is caught. They
+  do not run a model.
 
 ## AI-assisted build notes
 
@@ -170,9 +246,19 @@ through several rounds before it stopped writing marketing-flavored abstracts
 and started reporting numbers, and the page cap plus the skip-existing logic came
 from watching real runs (a thesis that ran for twenty minutes and produced
 mush; an interrupted run that left zero-byte files the next pass had to be taught
-to retry). The output quality is only as good as the local model of the day,
-which is the honest reason this is worth re-running now rather than trusting a
-2024 summary.
+to retry).
+
+The failure that mattered most was one neither of us looked for. The v1 call to
+`generate()` passed no options, and the code read cleanly: one call, one
+response, one file. Nothing in the code asked how much of the paper the model
+actually received, and the server raised no error. The notes looked fluent and
+full of numbers, which is exactly what the prompt asked for. It took a later,
+separate pipeline
+that checks quotes, and most numbers, against the paper text to show how many
+of them were not in the paper. The fix is small (set `num_ctx`, read `prompt_eval_count`), and
+this time it came with tests that use a fake server with a small context, so
+the check is exercised without a model. The lesson I took: for any model call,
+check what the server reports it consumed, not only what it returned.
 
 ---
 

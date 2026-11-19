@@ -1,5 +1,9 @@
 # Gotchas: what the idea bank is actually good for (and where it lies to you)
 
+Two lessons: the first is about what the summaries leave out by design; the
+second ([the context window you did not set](#gotcha-2-the-context-window-you-did-not-set))
+is about what the model never saw, and it is why the v1 notes are withdrawn.
+
 The per-paper summaries are the boring part. The value shows up in the **compare**
 step: read a few papers, summarize each, hold each new summary against the ones
 already in the bank, and watch for a theme none of the papers states on its own.
@@ -69,8 +73,7 @@ Two concrete fixes, both now noted against the pipeline:
    limitations and open questions (up to 3 points)" section costs almost nothing
    and is what lets a cross-paper read find a *recurring weakness* rather than
    only a recurring strength. This has been applied to the shipped prompt; the
-   ~3,900 summaries already produced predate it and will pick it up on the
-   re-run. A calibrated idea bank has to index what a paper cannot do, not just
+   v1 notes predate it (and are withdrawn for a separate reason, below). A calibrated idea bank has to index what a paper cannot do, not just
    what it claims.
 2. **Index the critiques next to the originals.** A comment or perspective paper
    is often where the real recurring theme is stated plainly. Summarize those
@@ -80,3 +83,34 @@ The larger lesson is the repo's lesson: a tool that only records advertised wins
 produces a confident, wrong picture. The summaries were never the point - the
 honest comparison across them is, and it only works if the summaries carry the
 caveats.
+
+## Gotcha 2: the context window you did not set
+
+The v1 script called `client.generate(model=..., system=..., prompt=...)` with
+no `options`, so every call ran at Ollama's default context length. Ollama's FAQ
+in the v0.3.0 and v0.5.7 releases gives that default as 2,048 tokens (a model's
+Modelfile can set more; not checked for the models used here). A journal
+paper's extracted text is usually far longer. The calls did not fail, a note
+was written for every paper that reached the model, and nothing in the note said how much of the paper
+the model had seen. The cause is inferred from the code and the notes, not
+re-run.
+
+Why it is worse than a missing note: the prompt asks for quantitative results
+with values and units, so a model that saw only part of a paper still reports
+numbers. A fluent note with confident numbers is the failure mode, not a blank
+one. Because the prompt pushes for numbers and nothing marks which notes were
+cut, the v1 notes are withdrawn as a set.
+
+What the fixed script does:
+
+1. Sends `options={"num_ctx": N, "num_predict": R}` on every call.
+2. Estimates the prompt size before the call; a paper that does not fit is cut
+   with a marker the model can see and the note says so, or it is skipped with
+   a logged reason (`--on-overflow`).
+3. Reads `prompt_eval_count` from the response and discards the note if the
+   server evaluated far fewer tokens than were sent.
+
+The general rule: for any model call, read back what the server says it
+consumed (`prompt_eval_count` here), not only the text it returned. A default
+you did not choose is still a choice, and a local server will not warn you about
+it in the response.
