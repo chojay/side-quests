@@ -78,7 +78,7 @@ Headless-safe (`matplotlib.use("Agg")`); every script prints its numeric checks 
 
 ## Honest notes
 
-- **This is a schematic construction, not a device solver.** Abrupt box charge, one permittivity per side, no interface states. It gives the right shape, sign, and scale of the bending; converged carrier profiles need `devsim` or `solcore` and real transport inputs.
+- **This is a schematic construction, not a device solver.** Abrupt box charge, the same permittivity on both sides (so the bending splits in proportion to the depletion widths you enter, which are drawing inputs, not solved), no interface states. It gives the right shape, sign, and scale of the bending; converged carrier profiles need `devsim` or `solcore` and real transport inputs.
 - **Anderson's rule ignores interface dipoles.** Real offsets deviate by a few tenths of an eV; treat drawn offsets as +/- 0.3 eV at best.
 - **Signs are hard, magnitudes are soft.** Measured electron affinities of the transition-metal oxides used in gate stacks and OLED injection layers (MoO3 on ITO being the famous case) shift by more than 1 eV between vacuum-clean and air-exposed surfaces (Meyer et al. 2012). Draw conclusions from the sign of an offset, not its second decimal.
 - **Fermi depths are inputs.** Only their ordering is usually measured (photoemission); V_bi scales directly with the difference you choose. An arbitrary guess in an early draft of the junction demo produced a plausible-looking diagram with the space charge on the wrong sides; pinning the ordering to measured work functions is what fixed it.

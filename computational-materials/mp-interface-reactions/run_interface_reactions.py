@@ -89,7 +89,7 @@ def analyze_interface(mpr, ref_formula, mat_formula, compat, temperature=None):
                     chemsys, use_gibbs=int(temperature)
                 )
                 print(f"  Retrieved {len(all_entries)} Gibbs entries")
-                # GibbsComputedStructureEntry already includes corrections —
+                # GibbsComputedStructureEntry already includes corrections;
                 # do NOT run compat.process_entries() again
                 processed = all_entries
             except Exception as gibbs_err:
@@ -487,7 +487,7 @@ def generate_markdown(results, ref_name, materials_list, temperature=None):
         md.append(f"**Minimum Reaction Energy**: {r.get('minimum_energy', 'N/A'):.4f} eV/atom")
         md.append("")
 
-        # All kink reactions table (sorted by energy, most negative first — matching MP web)
+        # All kink reactions table (sorted by energy, most negative first, matching MP web)
         reactions = r.get("all_reactions", [])
         min_rxn = r.get("minimum_rxn")
         min_e = min_rxn["energy_eV_per_atom"] if min_rxn else None

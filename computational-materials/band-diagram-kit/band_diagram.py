@@ -22,8 +22,11 @@ doped/defective oxide, ~gap/2 for an intrinsic one).
   -> built-in field E points from the + space charge to the - space charge.
 
 Poisson in 1D with a box charge profile gives a parabolic potential inside each
-depletion width w_i and flat bands outside.  Charge neutrality N1*w1 = N2*w2
-makes the potential drop split as phi_i = V_bi * w_i / (w1 + w2).
+depletion width w_i and flat bands outside.  The drop on side i is
+q*N_i*w_i**2 / (2*eps_i); with charge neutrality N1*w1 = N2*w2 the ratio is
+phi_1/phi_2 = (eps_2*w_1) / (eps_1*w_2).  The kit assumes EQUAL permittivities
+on both sides, so the split reduces to phi_i = V_bi * w_i / (w1 + w2), with
+the depletion widths w_i taken as drawing inputs (Material.w_dep).
 
 Self-consistency check (worth knowing, it is what makes the picture correct):
 with both bulks drawn at their own d_i above a COMMON flat E_F, the CB
@@ -252,7 +255,7 @@ def stack_profile(layers, ax=None, barrier_ref=0, ylabel="Energy vs. vacuum (eV)
         ok = "Type I" if (d_ec > 0 and d_ev > 0) else "not Type I"
         col = "#1a7a3a" if ok == "Type I" else "#b3261e"
         ax.text(0.5 * (x0 + x1), lo + 1.85,
-                f"$\Delta E_C$ {d_ec:+.2f}\n$\Delta E_V$ {d_ev:+.2f}\n{ok}".replace("\\n", "\n"),
+                f"$\\Delta E_C$ {d_ec:+.2f}\n$\\Delta E_V$ {d_ev:+.2f}\n{ok}",
                 ha="center", va="bottom", fontsize=8.5, color=col, linespacing=1.5)
 
     ax.axhline(ref.e_cb, ls="--", lw=1.1, color=ref.color, alpha=0.55, zorder=0)
