@@ -358,6 +358,9 @@ export class LocalRAGService {
   private lastIndexedAt: Date | null = null;
   private dbPath: string;
   private isLoaded: boolean = false;
+  /** True when initialize() fell back to an empty index because loading threw.
+   *  Guards saveIndex() from overwriting a good file with that empty state. */
+  private loadFailed: boolean = false;
 
   // Optional embedding infrastructure (injected after construction)
   private embeddingService: any = null;
@@ -414,6 +417,11 @@ export class LocalRAGService {
       if (error.stack) Zotero.debug(`Claude Assistant: Stack: ${error.stack}`);
       Zotero.debug(`Claude Assistant: Starting with empty index. Papers will need to be re-indexed.`);
       Zotero.debug(`Claude Assistant: ===== END INDEX LOAD ERROR =====`);
+      // Remember that this empty index is the RESULT OF A FAILURE, not a genuinely
+      // empty library. Without this flag the shutdown save happily serializes the
+      // empty index over a perfectly good file, so one transient read error
+      // (cloud-storage placeholder, file lock, AV scan) permanently destroys the index.
+      this.loadFailed = true;
       this.isLoaded = true;
     }
   }
@@ -693,7 +701,8 @@ export class LocalRAGService {
         }
 
         if (newChunkIds.length > 0) {
-          const embeddings = await this.embeddingService.embedBatch(newChunkTexts);
+          // Stored document text: e5 wants the "passage: " prefix.
+          const embeddings = await this.embeddingService.embedBatch(newChunkTexts, 'passage');
           const entries: Array<{ chunkId: string; itemKey: string; embedding: any }> = [];
           for (let i = 0; i < newChunkIds.length; i++) {
             if (embeddings[i]) {
@@ -868,7 +877,9 @@ export class LocalRAGService {
     }
 
     // Get query embedding
-    const queryEmbedding = await this.embeddingService.embed(query);
+    // Search query: e5 wants the "query: " prefix. Using the passage prefix here
+    // would not error, it would just retrieve worse.
+    const queryEmbedding = await this.embeddingService.embed(query, 'query');
     if (!queryEmbedding) return [];
 
     const keySet = itemKeys && itemKeys.length > 0 ? new Set(itemKeys) : null;
@@ -1112,6 +1123,14 @@ export class LocalRAGService {
    * Save the index to disk
    */
   async saveIndex(): Promise<void> {
+    // Refuse to persist an empty index that exists only because loading failed.
+    if (this.loadFailed && this.chunks.size === 0) {
+      Zotero.debug(
+        'Claude Assistant: REFUSING to save an empty index over the existing file ' +
+        '(the previous load failed). Re-index explicitly to overwrite.'
+      );
+      return;
+    }
     try {
       const data = {
         version: 3,
@@ -1123,8 +1142,13 @@ export class LocalRAGService {
 
       const jsonStr = JSON.stringify(data);
       const encoder = new TextEncoder();
-      // Use IOUtils (Zotero 7 / Firefox 102+) instead of deprecated OS.File
-      await IOUtils.write(this.dbPath, encoder.encode(jsonStr));
+      // Use IOUtils (Zotero 7 / Firefox 102+) instead of deprecated OS.File.
+      // tmpPath makes the write atomic: without it this is a truncate-in-place,
+      // so an interrupted write leaves a half-written JSON that fails to parse
+      // on next launch and looks exactly like an empty library.
+      await IOUtils.write(this.dbPath, encoder.encode(jsonStr), {
+        tmpPath: this.dbPath + '.tmp',
+      });
 
       Zotero.debug(`Claude Assistant: Index saved (${this.chunks.size} chunks)`);
     } catch (error: any) {
@@ -1332,8 +1356,16 @@ export class LocalRAGService {
         chunks.push(chunk);
       }
 
-      start = end - overlap;
-      if (start >= text.length - overlap) break;
+      // The sentence-boundary adjustment above only guarantees
+      // end > start + chunkSize/2. If overlap exceeds chunkSize/2, start moves
+      // BACKWARDS and this loop never terminates while pushing chunks into an
+      // unbounded array. That is reachable from the preferences pane alone,
+      // which allows chunk size down to 500 with overlap up to 1000.
+      const effectiveOverlap = Math.max(0, Math.min(overlap, Math.floor(chunkSize / 2) - 1));
+      const next = end - effectiveOverlap;
+      // Hard progress guard: never allow a non-advancing iteration.
+      start = next > start ? next : end;
+      if (start >= text.length - effectiveOverlap) break;
     }
 
     return chunks;

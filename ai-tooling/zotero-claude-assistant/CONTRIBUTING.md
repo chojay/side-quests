@@ -6,7 +6,7 @@ By participating you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md)
 
 ## Ways to contribute
 
-- Report bugs and request features through [GitHub Issues](https://github.com/chojay/zotero-claude-assistant/issues).
+- Report bugs and request features through the [side-quests issue tracker](https://github.com/chojay/side-quests/issues). The plugin lives in that repository under `ai-tooling/zotero-claude-assistant/`, so put "Zotero plugin" in the issue title.
 - Improve documentation (README, this guide, in-code comments).
 - Submit code via pull requests.
 
@@ -16,21 +16,21 @@ For anything large or architectural, please open an issue to discuss it before w
 
 ### Prerequisites
 
-- Node.js 18 or later
-- A [Zotero 7](https://www.zotero.org/) installation for testing
+- Node.js 18.17 or later (tested only on Node 26)
+- A [Zotero](https://www.zotero.org/) 7 to 9.x installation for testing (the manifest's range; Zotero 10 is untested)
 - A Claude API key from the [Anthropic Console](https://console.anthropic.com/) (only needed to exercise the chat features)
 
 ### Build steps
 
 ```bash
-# Clone your fork
-git clone https://github.com/<your-username>/zotero-claude-assistant.git
-cd zotero-claude-assistant
+# Clone your fork of side-quests and enter the plugin folder
+git clone https://github.com/<your-username>/side-quests.git
+cd side-quests/ai-tooling/zotero-claude-assistant
 
 # Install dependencies
 npm install
 
-# Fetch the embedding model weights (~32 MB ONNX, not committed)
+# Fetch the embedding model weights (~110 MB ONNX, not committed)
 ./scripts/fetch-model.sh
 
 # Compile and assemble
@@ -42,7 +42,7 @@ npm run package
 
 `npm run watch` recompiles TypeScript as you edit.
 
-> **Why the separate model fetch?** The model config and tokenizer JSON are committed so the architecture is visible, but the quantized ONNX weight is git-ignored to keep the repo small. Without running `fetch-model.sh`, keyword (BM25) search still works, but semantic and hybrid search will not. Run it once before testing retrieval.
+> **Why the separate model fetch?** The model config and tokenizer JSON are committed so the architecture is visible, but the quantized ONNX weight is git-ignored to keep the repo small. Without running `fetch-model.sh`, `npm run build` stops with an error that lists the missing weights. To build a keyword-only plugin on purpose, run `ZCA_ALLOW_DEGRADED=1 npm run package` (or `ZCA_ALLOW_DEGRADED=1 npm run build`). Run `npm run doctor` to see which artifacts are present.
 
 ### Loading the plugin in Zotero for testing
 
@@ -60,7 +60,7 @@ A short map (see the README for the full tree):
 - `src/modules/embedding-service.ts` / `embedding-store.ts` - semantic embeddings.
 - `src/modules/conversation-store.ts` - chat history persistence.
 - `addon/` - manifest, UI (XHTML/JS), worker, icons, model files.
-- `scripts/` - build, package, and model-fetch scripts.
+- `scripts/` - build, package, doctor (preflight checks), and model-fetch scripts.
 
 ## Coding conventions
 
@@ -75,15 +75,15 @@ A short map (see the README for the full tree):
 
 1. Create a topic branch off `main`: `git checkout -b feature/short-description`.
 2. Make focused commits with clear messages (imperative mood, e.g. "Add hybrid score weighting option").
-3. Run `npm run build`, `npm run lint`, and `npm run format` and confirm the plugin still loads in Zotero.
+3. Run `npm run build`, `npm run lint`, and `npm run format` and confirm the plugin still loads in Zotero. No CI runs for this plugin, so these local checks are the only checks; say in the pull request which ones you ran and on which Zotero version.
 4. Update `CHANGELOG.md` under `[Unreleased]` describing your change.
-5. Open a pull request against `main` using the PR template. Link any related issue and describe how you tested.
+5. Open a pull request against `main` of side-quests. Link any related issue and describe how you tested.
 
 Keep pull requests as small as is reasonable. Large, unrelated changes bundled together are harder to review and slower to merge.
 
 ## Reporting bugs
 
-Use the bug report template and include:
+Open an issue and include:
 
 - Zotero version and operating system
 - Plugin version (see `manifest.json` / Add-ons list)

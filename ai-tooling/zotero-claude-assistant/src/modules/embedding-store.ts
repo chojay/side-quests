@@ -9,13 +9,21 @@
  *   embeddings(chunk_id TEXT PK, item_key TEXT, embedding BLOB, model_version TEXT)
  */
 
+import { EMBEDDING_DIM, MODEL_VERSION } from './embedding-service';
+
 declare const Zotero: any;
 
 const SCHEMA_VERSION = 1;
-const EMBEDDING_DIM = 384; // bge-small-en-v1.5
+// EMBEDDING_DIM is imported from embedding-service so the store can never drift
+// from the model that actually produces the vectors. It was previously a second,
+// independent literal here (384 for bge-small-en-v1.5), which is exactly the kind
+// of duplicate constant that silently goes stale on a model change.
 
 export class EmbeddingStore {
   private db: any = null;
+  /** True when initialize() discarded vectors because the model or dimension changed.
+   *  Callers should tell the user to re-run Generate Embeddings. */
+  public wipedOnUpgrade: boolean = false;
   private _initialized: boolean = false;
 
   /**
@@ -58,11 +66,29 @@ export class EmbeddingStore {
       const storedModel = await this.db.valueQueryAsync(
         `SELECT value FROM meta WHERE key = 'model'`
       );
-      const currentModel = 'bge-small-en-v1.5';
+      // Imported, NOT re-declared. This was previously a hardcoded second copy of
+      // the model name. Because it was independent of MODEL_VERSION, changing the
+      // shipped model would leave this literal stale, the wipe below would never
+      // fire, and vectors from the old model would be silently compared against the
+      // new model's query vectors. That is exactly what the 2.4.0 bge to e5 switch
+      // would have triggered.
+      const currentModel = MODEL_VERSION;
+      const storedDim = await this.db.valueQueryAsync(
+        `SELECT value FROM meta WHERE key = 'dim'`
+      );
 
-      if (storedModel && storedModel !== currentModel) {
-        Zotero.debug(`Claude Assistant: Model changed (${storedModel} → ${currentModel}), clearing old embeddings`);
+      const modelChanged = !!storedModel && storedModel !== currentModel;
+      // Dimension is checked independently: a model can keep its name across a
+      // re-export that changes output shape, and a length mismatch is unrecoverable.
+      const dimChanged = !!storedDim && String(storedDim) !== String(EMBEDDING_DIM);
+
+      if (modelChanged || dimChanged) {
+        const why = modelChanged
+          ? `model changed (${storedModel} to ${currentModel})`
+          : `dimension changed (${storedDim} to ${EMBEDDING_DIM})`;
+        Zotero.debug(`Claude Assistant: ${why}, clearing stale embeddings`);
         await this.db.queryAsync(`DELETE FROM embeddings`);
+        this.wipedOnUpgrade = true;
       }
 
       // Set/update meta
@@ -100,6 +126,46 @@ export class EmbeddingStore {
   }
 
   /**
+   * Decode a BLOB column into a Float32Array.
+   *
+   * The previous one-liner was `new Float32Array(row.embedding.buffer || row.embedding)`.
+   * When Zotero's storage layer hands a BLOB back as a plain array of octets rather
+   * than a typed array, `.buffer` is undefined and the fallback ran the array-LIKE
+   * constructor, producing a 1536-element Float32Array holding byte magnitudes 0 to 255
+   * instead of 384 unit-norm floats. Neither branch threw and no length was checked, so
+   * cosine similarity silently ranked against garbage. Validate instead of guessing.
+   */
+  private static decodeVector(value: any): Float32Array | null {
+    let bytes: Uint8Array;
+    if (value instanceof Uint8Array) {
+      bytes = value;
+    } else if (value && value.buffer instanceof ArrayBuffer) {
+      bytes = new Uint8Array(value.buffer, value.byteOffset || 0, value.byteLength);
+    } else if (Array.isArray(value)) {
+      bytes = Uint8Array.from(value);
+    } else {
+      Zotero.debug('Claude Assistant: embedding BLOB has unrecognized representation; dropping');
+      return null;
+    }
+    if (bytes.byteLength !== EMBEDDING_DIM * 4) {
+      Zotero.debug(
+        `Claude Assistant: embedding BLOB is ${bytes.byteLength} bytes, expected ` +
+        `${EMBEDDING_DIM * 4} for ${EMBEDDING_DIM}-dim vectors; dropping. ` +
+        'This usually means the store still holds vectors from a previous model.'
+      );
+      return null;
+    }
+    if (bytes.byteLength === 0 || bytes.byteLength % 4 !== 0) {
+      Zotero.debug(
+        `Claude Assistant: embedding BLOB length ${bytes.byteLength} is not a multiple of 4; dropping`
+      );
+      return null;
+    }
+    // Copy so the view owns aligned memory regardless of the source byteOffset.
+    return new Float32Array(bytes.slice().buffer);
+  }
+
+  /**
    * Get embedding for a single chunk
    */
   async getEmbedding(chunkId: string): Promise<Float32Array | null> {
@@ -109,7 +175,7 @@ export class EmbeddingStore {
       [chunkId]
     );
     if (!row || !row.embedding) return null;
-    return new Float32Array(row.embedding.buffer || row.embedding);
+    return EmbeddingStore.decodeVector(row.embedding);
   }
 
   /**
@@ -172,13 +238,18 @@ export class EmbeddingStore {
       `SELECT chunk_id, embedding FROM embeddings`
     );
 
+    let dropped = 0;
     for (const row of rows) {
-      if (row.embedding) {
-        const float32 = new Float32Array(
-          row.embedding.buffer || row.embedding
-        );
-        result.set(row.chunk_id, float32);
+      if (!row.embedding) continue;
+      const v = EmbeddingStore.decodeVector(row.embedding);
+      if (v) {
+        result.set(row.chunk_id, v);
+      } else {
+        dropped++;
       }
+    }
+    if (dropped > 0) {
+      Zotero.debug(`Claude Assistant: dropped ${dropped} stored embeddings that failed validation`);
     }
 
     return result;

@@ -1,13 +1,18 @@
 {
   "name": "zotero-claude-assistant",
-  "version": "2.2.0",
+  "version": "2.4.0",
   "description": "Dual-mode AI research assistant: chat with Claude or search your Zotero library with RAG",
   "author": "chojay",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chojay/zotero-claude-assistant.git"
+    "url": "https://github.com/chojay/side-quests.git",
+    "directory": "ai-tooling/zotero-claude-assistant"
   },
+  "bugs": {
+    "url": "https://github.com/chojay/side-quests/issues"
+  },
+  "homepage": "https://github.com/chojay/side-quests/tree/main/ai-tooling/zotero-claude-assistant",
   "keywords": [
     "zotero",
     "zotero-plugin",
@@ -20,13 +25,14 @@
     "llm"
   ],
   "scripts": {
-    "build": "npm run build:ts && npm run build:addon",
+    "build": "npm run doctor -- --quiet && npm run build:ts && npm run build:addon",
     "build:ts": "tsc",
     "build:addon": "node scripts/build.js",
     "watch": "tsc --watch",
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "package": "npm run build && node scripts/package.js"
+    "package": "npm run build && node scripts/package.js",
+    "doctor": "node scripts/doctor.js"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

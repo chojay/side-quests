@@ -195,7 +195,7 @@
       <html:b>Test:</html:b> Index 10 random papers to verify everything works
     </description>
     <description style="margin-top: 5px;">
-      <html:b>Generate Embeddings:</html:b> Create semantic embeddings for hybrid search (one-time, ~50ms/chunk)
+      <html:b>Generate Embeddings:</html:b> Create semantic embeddings for hybrid search (one-time; can take a while for a large library)
     </description>
 
     <hbox id="index-stats" style="margin-top: 15px; padding: 10px; background: #f5f5f5; border-radius: 5px;">
@@ -224,13 +224,13 @@
     <caption label="About"/>
 
     <description style="font-weight: 600; color: #1e293b;">
-      Claude Research Assistant v2.2.0
+      Claude Research Assistant v2.4.0
     </description>
     <description style="margin-top: 5px;">
       Dual-mode AI assistant: Chat with Claude or search your papers with RAG
     </description>
     <description style="margin-top: 5px;">
-      Hybrid search: BM25 keyword + semantic embedding (bge-small-en-v1.5)
+      Hybrid search: BM25 keyword + semantic embedding (e5-base-v2, 768-dim)
     </description>
     <description style="margin-top: 5px;">
       Author: chojay

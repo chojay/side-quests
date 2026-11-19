@@ -7,6 +7,18 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
+// Artifacts whose absence silently disables semantic search. Historically each
+// of these only produced a console.warn while the build still exited 0, which
+// meant a perfectly normal-looking .xpi could ship with half of retrieval dead.
+// We now collect them and fail the build unless --allow-degraded is passed.
+const missingSemanticArtifacts = [];
+const ALLOW_DEGRADED =
+  process.argv.includes('--allow-degraded') || process.env.ZCA_ALLOW_DEGRADED === '1';
+
+function requireSemanticArtifact(label, remedy) {
+  missingSemanticArtifacts.push({ label, remedy });
+}
+
 const BUILD_DIR = path.join(__dirname, '..', 'build');
 const ADDON_DIR = path.join(__dirname, '..', 'addon');
 const SRC_DIR = path.join(__dirname, '..', 'src');
@@ -24,7 +36,9 @@ fs.mkdirSync(BUILD_DIR, { recursive: true });
 // Step 2: Compile TypeScript
 console.log('2. Compiling TypeScript...');
 try {
-  execSync('tsc', { stdio: 'inherit' });
+  // Resolve tsc from node_modules so `node scripts/build.js` also works outside npm scripts.
+  const tscBin = require.resolve('typescript/bin/tsc');
+  execSync(`"${process.execPath}" "${tscBin}"`, { stdio: 'inherit' });
   console.log('   ✓ TypeScript compiled');
 } catch (error) {
   console.error('   ✗ TypeScript compilation failed');
@@ -125,7 +139,11 @@ if (fs.existsSync(transformersSrc)) {
   fs.copyFileSync(transformersSrc, path.join(addonBuildDir, 'content', 'scripts', 'transformers.min.js'));
   console.log('   ✓ transformers.min.js');
 } else {
-  console.warn(`   ⚠ transformers.min.js not found at ${transformersSrc} - semantic search will not work in this build`);
+  console.warn(`   ⚠ transformers.min.js not found at ${transformersSrc}`);
+  requireSemanticArtifact(
+    'transformers.min.js',
+    'Run "npm install" first; this file is vendored from node_modules/@huggingface/transformers/dist/.'
+  );
 }
 
 // Copy ONNX runtime WASM files (needed by Transformers.js)
@@ -136,17 +154,48 @@ wasmFiles.forEach((wasmFile) => {
     fs.copyFileSync(wasmSrc, path.join(addonBuildDir, 'content', 'scripts', wasmFile));
     console.log(`   ✓ ${wasmFile}`);
   } else {
-    console.warn(`   ⚠ ${wasmFile} not found - semantic search will not work in this build`);
+    console.warn(`   ⚠ ${wasmFile} not found`);
+    requireSemanticArtifact(
+      wasmFile,
+      'Run "npm install"; ONNX Runtime WASM ships inside @huggingface/transformers/dist/.'
+    );
   }
 });
 
-// Copy ONNX Runtime bundle from onnxruntime-web (referenced by the webpack bundle for sub-workers)
-const ortBundleSrc = path.join(NODE_MODULES, 'onnxruntime-web', 'dist', 'ort.bundle.min.mjs');
+// Copy ONNX Runtime bundle from onnxruntime-web (referenced by the webpack bundle for sub-workers).
+//
+// onnxruntime-web arrives TRANSITIVELY via @huggingface/transformers, so it is
+// not guaranteed to be hoisted to the top level of node_modules. Resolving it
+// through Node's own resolver handles both the hoisted and the nested layout;
+// the previous hardcoded top-level path silently missed the nested case and
+// produced a build with broken semantic search.
+// require.resolve('<pkg>/package.json') is not usable here: onnxruntime-web
+// declares an "exports" map without "./package.json", so current Node throws
+// ERR_PACKAGE_PATH_NOT_EXPORTED. Walk Node's lookup paths for the directory instead.
+function resolvePackageDir(pkgName) {
+  const projectRoot = path.join(__dirname, '..');
+  const candidates = (require.resolve.paths(pkgName) || [])
+    .concat([path.join(projectRoot, 'node_modules', '@huggingface', 'transformers', 'node_modules')])
+    .map((dir) => path.join(dir, pkgName));
+  for (const dir of candidates) {
+    if (fs.existsSync(path.join(dir, 'package.json'))) return dir;
+  }
+  return null;
+}
+
+const ortDir = resolvePackageDir('onnxruntime-web');
+const ortBundleSrc = ortDir
+  ? path.join(ortDir, 'dist', 'ort.bundle.min.mjs')
+  : path.join(NODE_MODULES, 'onnxruntime-web', 'dist', 'ort.bundle.min.mjs');
 if (fs.existsSync(ortBundleSrc)) {
   fs.copyFileSync(ortBundleSrc, path.join(addonBuildDir, 'content', 'scripts', 'ort.bundle.min.mjs'));
   console.log('   ✓ ort.bundle.min.mjs');
 } else {
-  console.warn(`   ⚠ ort.bundle.min.mjs not found - semantic search will not work in this build`);
+  console.warn(`   ⚠ ort.bundle.min.mjs not found at ${ortBundleSrc}`);
+  requireSemanticArtifact(
+    'ort.bundle.min.mjs',
+    'Run "npm install". onnxruntime-web arrives transitively via @huggingface/transformers.'
+  );
 }
 
 // Copy license and third-party notices so the packaged .xpi carries them
@@ -162,8 +211,8 @@ if (fs.existsSync(ortBundleSrc)) {
 });
 
 // Copy model files
-const modelSrcDir = path.join(ADDON_DIR, 'content', 'models', 'bge-small-en-v1.5');
-const modelDestDir = path.join(addonBuildDir, 'content', 'models', 'bge-small-en-v1.5');
+const modelSrcDir = path.join(ADDON_DIR, 'content', 'models', 'e5-base-v2');
+const modelDestDir = path.join(addonBuildDir, 'content', 'models', 'e5-base-v2');
 
 function copyDirRecursive(src, dest) {
   if (!fs.existsSync(src)) return;
@@ -182,8 +231,58 @@ function copyDirRecursive(src, dest) {
 
 if (fs.existsSync(modelSrcDir)) {
   copyDirRecursive(modelSrcDir, modelDestDir);
-  console.log('   ✓ Model files (bge-small-en-v1.5)');
+  console.log('   ✓ Model files (e5-base-v2)');
+}
+
+// The recursive copy above happily succeeds with only config/tokenizer JSON
+// present, which is exactly the state a fresh clone is in. Check the weights
+// explicitly: without them the worker cannot load the model at runtime.
+const onnxWeights = path.join(modelSrcDir, 'onnx', 'model_quantized.onnx');
+if (fs.existsSync(onnxWeights)) {
+  const mb = fs.statSync(onnxWeights).size / (1024 * 1024);
+  if (mb < 50) {
+    console.warn(`   ⚠ model_quantized.onnx is only ${mb.toFixed(1)} MB, expected roughly 110 MB (truncated download?)`);
+    requireSemanticArtifact(
+      'model_quantized.onnx (truncated)',
+      'Delete addon/content/models/e5-base-v2/onnx/model_quantized.onnx and re-run ./scripts/fetch-model.sh'
+    );
+  } else {
+    console.log(`   ✓ model_quantized.onnx (${mb.toFixed(1)} MB)`);
+  }
+} else {
+  console.warn('   ⚠ model_quantized.onnx not found');
+  requireSemanticArtifact(
+    'model_quantized.onnx',
+    'Run "./scripts/fetch-model.sh" to download the ~110 MB quantized weights.'
+  );
+}
+
+if (missingSemanticArtifacts.length > 0) {
+  const summary = missingSemanticArtifacts
+    .map((m) => `   - ${m.label}\n     ${m.remedy}`)
+    .join('\n');
+
+  if (ALLOW_DEGRADED) {
+    console.warn('\n⚠ DEGRADED BUILD: semantic search will NOT work in this .xpi.');
+    console.warn('  Missing artifacts:');
+    console.warn(summary);
+    console.warn('  Continuing because --allow-degraded or ZCA_ALLOW_DEGRADED=1 was given.\n');
+  } else {
+    console.error('\n✗ Build FAILED: semantic search artifacts are missing.');
+    console.error('  This build would produce an .xpi where hybrid search silently');
+    console.error('  degrades to keyword-only, with no indication to the user.\n');
+    console.error('  Missing artifacts:');
+    console.error(summary);
+    console.error('\n  Fix the above, or build a keyword-only plugin on purpose:');
+    console.error('    ZCA_ALLOW_DEGRADED=1 npm run package\n');
+    process.exit(1);
+  }
 }
 
 console.log('\n✓ Build complete!');
 console.log(`   Output: ${addonBuildDir}`);
+if (missingSemanticArtifacts.length === 0) {
+  console.log('   Semantic search: enabled (all artifacts present)');
+} else {
+  console.log('   Semantic search: DISABLED (degraded build)');
+}

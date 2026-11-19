@@ -10,8 +10,10 @@ dist/
 *.tsbuildinfo
 
 # Embedding model weights (fetched at setup via scripts/fetch-model.sh)
-# Kept out of git: the bge-small-en-v1.5 ONNX file is ~32 MB.
+# Kept out of git: the e5-base-v2 quantized ONNX file is about 110 MB.
 addon/content/models/**/*.onnx
+# Interrupted downloads from scripts/fetch-model.sh
+addon/content/models/**/*.partial
 
 # IDE
 .vscode/

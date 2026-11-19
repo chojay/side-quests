@@ -141,34 +141,13 @@ Provide concise, accurate analysis based on the document content.`;
   }
 
   /**
-   * Generate semantic representation for a text chunk
-   * Since Claude API doesn't provide direct embeddings, we use a structured prompt
-   * to create a semantic summary that can be used for similarity matching
-   */
-  async generateEmbedding(text: string): Promise<string> {
-    const systemPrompt = `Extract the key semantic content from the text as a structured summary.
-Focus on: main concepts, entities, relationships, and core ideas.
-Format: concise bullet points.`;
-
-    const messages: ClaudeMessage[] = [
-      {
-        role: 'user',
-        content: text,
-      },
-    ];
-
-    const response = await this.chat(messages, systemPrompt);
-    return ClaudeClient.extractText(response);
-  }
-
-  /**
    * Answer question using Python RAG search results
    */
   async answerWithRAGResults(
     question: string,
     searchResults: RAGSearchResult[],
     conversationHistory?: ClaudeMessage[]
-  ): Promise<ClaudeResponse> {
+  ): Promise<{ response: ClaudeResponse; orderedSources: RAGSearchResult[] }> {
     // Sort results by year ascending for temporal coherence
     const sorted = [...searchResults].sort((a, b) => {
       const yearA = parseInt(a.year) || 0;
@@ -192,7 +171,12 @@ Format: concise bullet points.`;
       }
     }));
 
-    return this.answerWithContext(question, contextChunks, conversationHistory);
+    // Return the ORDER USED FOR NUMBERING alongside the response. answerWithContext
+    // numbers the chunks it is given as Source 1..N, and this method re-sorts by year,
+    // so a caller that renders its own relevance-ordered array would attach [Source N]
+    // to the wrong paper and send the user to a different item than Claude cited.
+    const response = await this.answerWithContext(question, contextChunks, conversationHistory);
+    return { response, orderedSources: sorted };
   }
 
   /**

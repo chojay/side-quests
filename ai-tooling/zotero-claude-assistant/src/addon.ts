@@ -11,6 +11,7 @@ import { EmbeddingStore } from './modules/embedding-store';
 import { EmbeddingService } from './modules/embedding-service';
 import { ConversationStore, ConversationMeta, StoredMessage } from './modules/conversation-store';
 import { Preferences } from './prefs';
+import { VERSION } from './version';
 
 // Chat mode types
 type ChatMode = 'auto' | 'research' | 'chat';
@@ -171,6 +172,18 @@ export class ClaudeAssistant {
         this.embeddingStore = new EmbeddingStore();
         await this.embeddingStore.initialize();
 
+        // A model or dimension upgrade discards existing vectors. Say so out loud:
+        // silently emptying the semantic index and carrying on is the same class of
+        // invisible degradation this plugin was already bitten by.
+        if (this.embeddingStore.wipedOnUpgrade) {
+          this.showNotification(
+            'The embedding model changed, so previous embeddings were discarded. ' +
+            'Run Generate Embeddings in Settings to restore semantic search. ' +
+            'Keyword search is unaffected.',
+            'warning'
+          );
+        }
+
         this.embeddingService = new EmbeddingService(this.rootURI);
         await this.embeddingService.initialize();
 
@@ -178,7 +191,21 @@ export class ClaudeAssistant {
           const embCount = await this.embeddingStore.getEmbeddingCount();
           Zotero.debug(`Claude Assistant: Embedding service ready, ${embCount} embeddings stored`);
         } else {
-          Zotero.debug('Claude Assistant: Embedding service not available - BM25 only');
+          // Do NOT fail silently here. Semantic search being dead while the UI
+          // still offers a "hybrid" mode is the single most confusing state this
+          // plugin can be in: searches keep returning plausible BM25 results and
+          // nothing ever tells the user that half of retrieval is missing.
+          const status = this.embeddingService.getStatus();
+          Zotero.debug(
+            `Claude Assistant: Embedding service not available (${status.code}): ${status.message}`
+          );
+          if (status.remedy) {
+            Zotero.debug(`Claude Assistant: Remedy: ${status.remedy}`);
+          }
+          this.showNotification(
+            `Semantic search is unavailable, so retrieval is keyword-only. ${status.remedy || status.message}`,
+            'warning'
+          );
         }
 
         // Inject embedding services into LocalRAGService for auto-embedding during indexItem()
@@ -536,11 +563,14 @@ export class ClaudeAssistant {
     }
 
     // Call Claude API with search results
-    const response = await this.claudeClient.answerWithRAGResults(
+    const { response, orderedSources } = await this.claudeClient.answerWithRAGResults(
       question,
       sources,
       this.conversationHistory.slice(-10) // Include recent history
     );
+    // Render the same ordering Claude numbered against, so [Source N] resolves
+    // to the item Claude actually cited.
+    sources = orderedSources;
 
     const rawResponseText = ClaudeClient.extractText(response) || 'No response received.';
 
@@ -626,14 +656,12 @@ export class ClaudeAssistant {
       }
 
       // Call Claude API with search results
-      const claudeResponse: ClaudeResponse = await this.claudeClient.answerWithRAGResults(
-        question,
-        sources
-      );
+      const { response: claudeResponse, orderedSources } =
+        await this.claudeClient.answerWithRAGResults(question, sources);
 
       return {
         text: ClaudeClient.extractText(claudeResponse) || 'No response received.',
-        sources: sources
+        sources: orderedSources
       };
 
     } catch (error: any) {
@@ -804,8 +832,13 @@ export class ClaudeAssistant {
         init: async function(options: any) {
           try {
             if (!self.embeddingService?.isAvailable()) {
+              const status = self.embeddingService?.getStatus();
               return [503, 'application/json', JSON.stringify({
-                error: 'Embedding service not available'
+                error: 'Embedding service not available',
+                code: status?.code ?? 'not_initialized',
+                reason: status?.message ?? 'The embedding service has not been initialized.',
+                remedy: status?.remedy ?? null,
+                model: status?.modelVersion ?? null
               })];
             }
 
@@ -819,7 +852,11 @@ export class ClaudeAssistant {
               })];
             }
 
-            const embedding = await self.embeddingService.embed(data.text);
+            // e5 is prefix-sensitive. Callers embedding stored document text must
+            // pass {"kind":"passage"}; the default is "query" because that is what
+            // external search tools use this endpoint for.
+            const kind = data.kind === 'passage' ? 'passage' : 'query';
+            const embedding = await self.embeddingService.embed(data.text, kind);
             if (!embedding) {
               return [500, 'application/json', JSON.stringify({
                 error: 'Embedding generation failed'
@@ -829,6 +866,7 @@ export class ClaudeAssistant {
             return [200, 'application/json', JSON.stringify({
               embedding: Array.from(embedding),
               model: self.embeddingService.getModelVersion(),
+              kind,
               dim: embedding.length
             })];
           } catch (error: any) {
@@ -842,6 +880,59 @@ export class ClaudeAssistant {
       Zotero.debug('Claude Assistant: Registered /claude-assistant/embed endpoint');
     } catch (error: any) {
       Zotero.debug(`Claude Assistant: Failed to register embed endpoint: ${error.message}`);
+    }
+
+    // Health endpoint. Deliberately always returns 200 with a body describing
+    // the true state, so a caller can distinguish "plugin is not running at all"
+    // (connection refused) from "plugin is running but its embedder is dead"
+    // (200 with available:false). The /embed 503 alone cannot express that.
+    try {
+      const self = this;
+      Zotero.Server.Endpoints['/claude-assistant/status'] = function() {};
+      Zotero.Server.Endpoints['/claude-assistant/status'].prototype = {
+        supportedMethods: ['GET', 'POST'],
+        supportedDataTypes: ['application/json'],
+        permitBookmarklet: false,
+
+        init: async function(_options: any) {
+          try {
+            const status = self.embeddingService?.getStatus() ?? {
+              available: false,
+              code: 'not_initialized',
+              message: 'The embedding service has not been initialized.',
+              modelVersion: null,
+              dim: null,
+              remedy: null,
+            };
+            let embeddingCount: number | null = null;
+            try {
+              embeddingCount = self.embeddingStore
+                ? await self.embeddingStore.getEmbeddingCount()
+                : null;
+            } catch (e) {
+              embeddingCount = null;
+            }
+            const ragStats = self.localRAG ? self.localRAG.getStats() : null;
+
+            return [200, 'application/json', JSON.stringify({
+              plugin: 'claude-assistant',
+              version: VERSION,
+              embedding: status,
+              embeddingCount,
+              indexedItems: ragStats?.indexedItems ?? null,
+              totalChunks: ragStats?.totalChunks ?? null,
+              retrievalMode: status.available ? 'hybrid-capable' : 'keyword-only'
+            })];
+          } catch (error: any) {
+            return [500, 'application/json', JSON.stringify({
+              error: error.message || 'Internal error'
+            })];
+          }
+        }
+      };
+      Zotero.debug('Claude Assistant: Registered /claude-assistant/status endpoint');
+    } catch (error: any) {
+      Zotero.debug(`Claude Assistant: Failed to register status endpoint: ${error.message}`);
     }
   }
 
@@ -1249,7 +1340,12 @@ export class ClaudeAssistant {
     }
 
     if (!this.embeddingService?.isAvailable()) {
-      this.showNotification('Embedding service not available. Model files may be missing.', 'error');
+      const status = this.embeddingService?.getStatus();
+      this.showNotification(
+        `Cannot generate embeddings: ${status?.message ?? 'the embedding service is not available.'} ` +
+        `${status?.remedy ?? ''}`.trim(),
+        'error'
+      );
       return { generated: 0, skipped: 0, errors: 0 };
     }
 
@@ -1296,7 +1392,7 @@ export class ClaudeAssistant {
       }
 
       try {
-        const embeddings = await this.embeddingService.embedBatch(texts);
+        const embeddings = await this.embeddingService.embedBatch(texts, 'passage');
 
         const entries: Array<{ chunkId: string; itemKey: string; embedding: Float32Array }> = [];
         for (let j = 0; j < batch.length; j++) {
@@ -1392,6 +1488,7 @@ export class ClaudeAssistant {
     // Unregister the local server endpoint so a disabled plugin leaves
     // nothing live on Zotero's HTTP server
     delete Zotero.Server.Endpoints['/claude-assistant/embed'];
+    delete Zotero.Server.Endpoints['/claude-assistant/status'];
 
     // Remove UI elements from all registered windows
     for (const window of this.registeredWindows) {

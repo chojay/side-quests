@@ -56,10 +56,9 @@ an individual is officially representing the community in public spaces.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the maintainer through
-[GitHub's private vulnerability reporting](https://github.com/chojay/zotero-claude-assistant/security/advisories/new)
-for sensitive reports, or by opening an issue that contains no sensitive
-details and asking for a private channel. All complaints will be reviewed and
+reported to the maintainer by opening an
+[issue in the side-quests repository](https://github.com/chojay/side-quests/issues)
+that contains no sensitive details and asks for a private channel. All complaints will be reviewed and
 investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the

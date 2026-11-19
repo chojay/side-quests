@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Claude Research Assistant",
-  "version": "2.2.0",
+  "version": "2.4.0",
   "description": "Dual-mode AI research assistant: chat with Claude or search your Zotero library with RAG-powered intelligent routing",
   "author": "chojay",
   "icons": {
@@ -11,7 +11,7 @@
   "applications": {
     "zotero": {
       "id": "claude-assistant@chojay.github.io",
-      "update_url": "https://raw.githubusercontent.com/chojay/zotero-claude-assistant/main/updates.json",
+      "update_url": "https://raw.githubusercontent.com/chojay/side-quests/main/ai-tooling/zotero-claude-assistant/updates.json",
       "strict_min_version": "6.999",
       "strict_max_version": "9.*"
     }

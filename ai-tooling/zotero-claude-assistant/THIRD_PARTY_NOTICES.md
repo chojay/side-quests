@@ -12,19 +12,23 @@ trademark of the Corporation for Digital Scholarship.
 
 ---
 
-## bge-small-en-v1.5 (embedding model)
+## e5-base-v2 (embedding model)
 
 - **What ships:** model configuration and tokenizer files committed under
-  `addon/content/models/bge-small-en-v1.5/`; the quantized ONNX weight is
+  `addon/content/models/e5-base-v2/`; the quantized ONNX weight is
   downloaded by `scripts/fetch-model.sh` from the Xenova ONNX port and included
   in the packaged `.xpi`.
-- **Source:** <https://huggingface.co/BAAI/bge-small-en-v1.5>
-  (ONNX port: <https://huggingface.co/Xenova/bge-small-en-v1.5>)
+- **Source:** <https://huggingface.co/intfloat/e5-base-v2>
+  (ONNX port: <https://huggingface.co/Xenova/e5-base-v2>)
 - **License:** MIT
+- **Note:** replaced `BAAI/bge-small-en-v1.5` (also MIT) in v2.4.0.
+- **License text:** declared as MIT in the model card metadata; the repository has no
+  license file, so the notice below is the standard MIT text with the copyright holder as
+  stated by the model authors (Microsoft).
 
 > MIT License
 >
-> Copyright (c) 2023 Beijing Academy of Artificial Intelligence (BAAI)
+> Copyright (c) 2023 Microsoft Corporation
 >
 > Permission is hereby granted, free of charge, to any person obtaining a copy
 > of this software and associated documentation files (the "Software"), to deal

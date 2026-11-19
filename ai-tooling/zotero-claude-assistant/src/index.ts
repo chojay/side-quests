@@ -9,5 +9,6 @@ export { LocalRAGService } from './modules/local-rag';
 export { ConversationStore } from './modules/conversation-store';
 export { Preferences } from './prefs';
 
-// Version - must match manifest.json and package.json
-export const VERSION = '2.2.0';
+// Version - single source of truth lives in version.ts and is cross-checked
+// against package.json / manifest.json / updates.json by scripts/doctor.js
+export { VERSION } from './version';

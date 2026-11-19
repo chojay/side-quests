@@ -4,7 +4,7 @@
  * Runs in a separate thread. Communicates with EmbeddingService via postMessage.
  *
  * Messages received:
- *   { type: 'init', id, transformersPath, modelPath } -> load model
+ *   { type: 'init', id, transformersPath, modelRoot, modelId, ortWasmPath } -> load model
  *   { type: 'embed', id, text }                       -> embed single text
  *   { type: 'embed_batch', id, texts }                 -> embed batch of texts
  *
@@ -47,7 +47,13 @@ onmessage = async function(event) {
 
 async function handleInit(id, data) {
   var transformersPath = data.transformersPath;
-  var modelPath = data.modelPath;
+  // modelRoot is the directory that CONTAINS the model folder; modelId is the
+  // folder name. Transformers.js joins them itself. A single combined path for
+  // both roles would double in Transformers.js versions that always join
+  // localModelPath; 3.8.1 skips the join for a URL model id.
+  var modelRoot = data.modelRoot;
+  var modelId = data.modelId;
+  var ortWasmPath = data.ortWasmPath;
 
   // @huggingface/transformers v3.x ships as an ES module (export{}, import.meta)
   // which is incompatible with importScripts(). Instead, fetch as text,
@@ -102,15 +108,23 @@ async function handleInit(id, data) {
   if (envObj) {
     envObj.allowRemoteModels = false;
     envObj.allowLocalModels = true;
-    envObj.localModelPath = modelPath;
-    // Prevent ONNX Runtime from creating sub-workers (unsupported in ChromeWorker)
-    if (envObj.backends && envObj.backends.onnx && envObj.backends.onnx.wasm) {
-      envObj.backends.onnx.wasm.numThreads = 1;
+    envObj.localModelPath = modelRoot;
+
+    if (!envObj.backends || !envObj.backends.onnx || !envObj.backends.onnx.wasm) {
+      // Fail loudly rather than proceeding into a CDN fetch we cannot make.
+      throw new Error('ONNX wasm backend not present on Transformers.js env; cannot pin wasmPaths');
     }
+    // Prevent ONNX Runtime from creating sub-workers (unsupported in ChromeWorker)
+    envObj.backends.onnx.wasm.numThreads = 1;
+    // Point ORT at the .wasm files vendored into the .xpi by scripts/build.js.
+    // Transformers.js otherwise defaults wasmPaths to a jsdelivr CDN URL, which
+    // meant the vendored files were dead weight AND embedding required internet
+    // access from inside a ChromeWorker.
+    envObj.backends.onnx.wasm.wasmPaths = ortWasmPath;
   }
 
   // 8. Create the feature extraction pipeline
-  extractor = await pipelineFn('feature-extraction', modelPath, {
+  extractor = await pipelineFn('feature-extraction', modelId, {
     quantized: true,
     revision: 'default',
   });
