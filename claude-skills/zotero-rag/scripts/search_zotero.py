@@ -32,8 +32,8 @@ B = 0.75
 # RRF parameter
 RRF_K = 60
 
-# Embedding dimension (all-MiniLM-L6-v2)
-EMBEDDING_DIM = 384
+# Embedding dimension (intfloat/e5-base-v2, served by plugin 2.4.0; not used for validation)
+EMBEDDING_DIM = 768
 
 # English stopwords - must match the indexer's implementation exactly
 STOPWORDS = {

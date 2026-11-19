@@ -168,7 +168,7 @@ mcp__claude-in-chrome__get_page_text(tabId=TAB)
 
 // Step 2: Search for low-cost item
 // Look for search bar in snapshot
-mcp__claude-in-chrome__form_input(tabId=TAB, uid="{search_input_uid}", value="sale items under $20")
+mcp__claude-in-chrome__form_input(tabId=TAB, uid="{search_input_uid}", value="sale items under \$20")
 mcp__claude-in-chrome__computer(action="left_click", tabId=TAB, ref="{search_button_uid}")
 mcp__claude-in-chrome__find(tabId=TAB, text="results")
 mcp__claude-in-chrome__get_page_text(tabId=TAB)

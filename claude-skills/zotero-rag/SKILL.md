@@ -173,7 +173,7 @@ Parsed index and embeddings are cached as `.pkl` files for faster subsequent loa
 - **BM25 Index:** `~/Zotero/claude-assistant-index.json`
 - **Embeddings:** `~/Zotero/claude-assistant-embeddings.sqlite`
 - **Format:** JSON with BM25 data (v2) + SQLite with Float32 BLOB embeddings
-- **Embedding model:** all-MiniLM-L6-v2 (384 dimensions)
+- **Embedding model:** intfloat/e5-base-v2 (768 dimensions), the model the plugin's `/claude-assistant/embed` endpoint serves as of plugin version 2.4.0
 - **Updates:** Re-index in Zotero extension to update
 
 ## Troubleshooting
@@ -207,7 +207,7 @@ Parsed index and embeddings are cached as `.pkl` files for faster subsequent loa
 
 **Author name searches fail (two causes):**
 
-1. **BM25 does not index the `authors` field.** The BM25 index tokenizes only the `text` field (abstract + body). Searching "Kimura" returns 0 results even though the paper is indexed with `authors: "Kimura et al."`. The author name simply isn't in the searchable text.
+1. **BM25 does not index the `authors` field.** The BM25 index tokenizes only the `text` field (abstract + body). Searching "Smith" returns 0 results even though the paper is indexed with `authors: "Smith et al."`. The author name simply isn't in the searchable text.
    - *Workaround:* Search by distinctive title phrases or unique concepts, not author names.
 
 2. **Unicode diacritics cause false negatives when checking the raw index.** Zotero stores author names with full Unicode (e.g., "Müller", "Gómez", "Mäkinen", "Sønderberg"). Python string comparison treats "Gómez" ≠ "Gomez" and "Sønderberg" ≠ "Sonderberg". This repeatedly causes papers to be falsely reported as "not in the library" when they are actually indexed.
@@ -266,11 +266,13 @@ The script is also importable for programmatic use (`from verify_candidates impo
 
 ## Adaptation Notes (added for the public copy)
 
-This skill is published as a reference implementation. As-is, it hard-depends on a **custom "Claude Assistant" Zotero extension that is NOT included in this repo**. That private extension is what:
+This skill is published as a reference implementation. As-is, it depends on the "Claude Assistant" Zotero extension, published in this repo at [ai-tooling/zotero-claude-assistant](../../ai-tooling/zotero-claude-assistant/). That extension is what:
 
 1. Builds the BM25 index at `~/Zotero/claude-assistant-index.json`
 2. Generates the embeddings database at `~/Zotero/claude-assistant-embeddings.sqlite`
 3. Serves the query-embedding HTTP endpoint at `http://127.0.0.1:23119/claude-assistant/embed`
+
+The extension writes both files to the Zotero data directory, so the `~/Zotero` paths above hold only for the default data directory.
 
 Without those three inputs, the search scripts have nothing to search. To adapt the skill to your own setup, produce compatible artifacts with any indexer of your choice:
 
@@ -280,8 +282,8 @@ Without those three inputs, the search scripts have nothing to search. To adapt 
 - `indexedItemKeys`: array of Zotero item keys (used only for the `total_indexed` count)
 
 **Embeddings database schema** (`claude-assistant-embeddings.sqlite`):
-- Table `embeddings(chunk_id TEXT, embedding BLOB)` where the BLOB is a little-endian Float32 array (384 dims for all-MiniLM-L6-v2, L2-normalized so cosine similarity reduces to a dot product)
+- Table `embeddings(chunk_id TEXT, embedding BLOB)` where the BLOB is a little-endian Float32 array (768 dims for e5-base-v2, L2-normalized so cosine similarity reduces to a dot product)
 
-**Embed endpoint contract**: `POST {"text": "..."}` returns `{"embedding": [float, ...]}` matching the stored embedding space. If you cannot serve one, keyword mode still works; hybrid/semantic modes fall back to keyword automatically.
+**Embed endpoint contract**: `POST {"text": "..."}` returns `{"embedding": [float, ...]}` matching the stored embedding space. The plugin's 2.4.0 endpoint also accepts an optional `"kind"` (`"query"`, the default, or `"passage"`), because e5 expects a `query: ` or `passage: ` prefix. If your own endpoint uses an e5 model, prefix queries with `query: ` and indexed text with `passage: `. If you cannot serve one, keyword mode still works; hybrid/semantic modes fall back to keyword automatically.
 
 `verify_candidates.py` needs only the JSON index (no embeddings, no endpoint). Both scripts are Python standard library only - no pip installs required.
