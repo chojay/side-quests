@@ -67,7 +67,9 @@ The combination - pump pushing *more* water while taking *longer* to build press
 
 Observed: water taking **up to 15 seconds** to reach the shower screen. That's beyond the 3-10s range that ordinary 3-way solenoid back-drain explains, and too large for benign boiler thermal contraction (which caps out under 1 second of delay). Volume math puts it at ~120-150 ml of air at the Ulka's full-flow rate - roughly 2-3x the ~40-60 ml normal post-solenoid brew-path volume. This is consistent with the same OPV-bleed signature already found in the drift audit (real shots there hit pre-pressure delays up to 27.5s in the most recent bucket). Full escalation writeup: [Gaggiuino-Troubleshooting-Delayed-First-Flow](Gaggiuino-Troubleshooting-Delayed-First-Flow.md).
 
-### Action Item (Not Yet Done)
+### Action Item (open as of 2026-11)
+
+Status as of 2026-11: no result for the steps below is recorded in these notes.
 
 1. **Blank-basket pressure test**: lock in the blind basket, run the pump at full output, and read the gauge. If peak pressure reads meaningfully below the ~12 bar the OPV is set for, the spring has weakened. This is a 5-minute test, no disassembly required. **Do this first** - it's the fastest check and matches both the drift-audit signature and the 15s shower-head delay.
 2. If confirmed: replace the OPV spring (~$15-20, same 12-bar part used at install - see [Gaggiuino-OPV-Spring-Research-Community-Findings](../research-notes/Gaggiuino-OPV-Spring-Research-Community-Findings.md) for sourcing) rather than adding washers, since the existing spring is already known to have fatigued once.

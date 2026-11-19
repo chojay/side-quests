@@ -9,7 +9,7 @@
 - Source: 650 shots pulled from the Gaggiuino `/api/shots/{id}` endpoint on 2026-06-03 (raw JSON archived locally); 11 arrived truncated (IDs below), leaving 639 valid.
 - Counting note (re-verified against the archived raw JSON, 2026-08-10): profile totals within the 639 valid shots are Londinium 256, Blooming espresso 261, IUIUIU Classic 112, Adaptive 8, Zer0 2. The 606-shot espresso set excludes 33 water/flush runs identified by end weight. Bucket Ns in the tables below count the shots for which the bucketed metric is computable, so they sum below the profile totals; the drift conclusions ride on bucket medians, not on exact exclusion membership.
 - Excluded: 33 water/flush tests (`maxP < 3 bar` or `endWeight = 0`).
-- Bucketed by **shot ID** (monotonic counter), not timestamp - many shots had `timestamp=0` from post-reboot NTP-unsynced state.
+- Bucketed by **shot ID** (monotonic counter), not timestamp. Recount of the archived raw JSON (2026-11): of the 639 valid shots, 529 have small timestamps (33 to 83,191) that look like seconds since boot (inferred: no clock sync after a restart), 110 have Unix times from January to March 2026, and none is 0. The 11 truncated files do not parse at all.
 - Compared only **within the same profile** (apples-to-apples). Beans/grind/dose varied but **time-to-pressure**, **pump flow during low-P**, **temp delta**, and **steady-state temp** are machine-dominant.
 
 ## Metrics
@@ -127,7 +127,7 @@ The median time before pressure even starts to climb on a real shot has jumped f
 ## Caveats
 
 - Bean batch, grind setting, dose, and puck prep all varied across shots - drift is inferred only from **machine-side** quantities.
-- The shot timestamps are mostly unusable (many are uptime seconds from post-reboot states without NTP sync). All sequencing is by ID.
+- The shot timestamps are mostly unusable: 529 of 639 look like seconds since boot, and the 110 Unix times cover only January to March 2026. All sequencing is by ID.
 - Bucket 600-649 has only 23 Londinium real shots - sample size is smaller than ideal. Re-check after another 50-100 real shots.
 - 11 shots (id 52, 60, 67, 168, 172, 196, 306, 339, 461, 497, 629) were truncated by the Gaggiuino HTTP server at byte boundaries and excluded.
 
