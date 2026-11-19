@@ -1,6 +1,6 @@
-// Bathroom toe-kick vent grille — ¾ solid, right ¼ angled louvers (deflect air right)
+// Bathroom toe-kick vent grille: ¾ solid, centered ¼ angled louvers (deflect air right)
 // Original parametric design. Units: mm. Matches standard 2¼" × 12" toe-kick faceplate.
-// Print: PETG, 0.2mm layers, 4 walls — print flat, front face down for smoothest finish.
+// Print: PETG, 0.2mm layers, 4 walls; print flat, front face down for smoothest finish.
 
 /* [Plate] */
 W = 340;            // plate width
@@ -14,7 +14,7 @@ hole_y = 45;        // hole center from bottom
 hole_d = 4.2;       // clearance for #6 / M3.5 screw
 csk_d = 8.5;        // countersink dia (90°)
 
-/* [Louvered window — centered quarter] */
+/* [Louvered window, centered quarter] */
 win_w = 85;         // window width (quarter of plate)
 win_margin_y = 14;  // top/bottom margin (matches original grille inset)
 

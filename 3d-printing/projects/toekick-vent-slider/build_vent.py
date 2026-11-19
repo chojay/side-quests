@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bathroom toe-kick vent grille - 3/4 solid, right 1/4 angled louvers (deflect right).
+"""Bathroom toe-kick vent grille - 3/4 solid, centered 1/4 angled louvers (deflect right).
 Original design (not derived from MakerWorld files). Units: mm.
 """
 import os
