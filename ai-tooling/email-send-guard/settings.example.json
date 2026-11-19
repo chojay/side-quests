@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$HOME/.claude/hooks/email-send-guard/guard.py\" --policy /etc/email-send-guard/send_policy.json",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__.*([Mm]ail|[Oo]utlook).*([Ss]end|[Rr]eply|[Ff]orward).*|mcp__.*([Ss]end|[Rr]eply|[Ff]orward).*([Mm]ail|[Oo]utlook).*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$HOME/.claude/hooks/email-send-guard/guard.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "msg-001": {
+    "id": "msg-001",
+    "threadId": "thread-001",
+    "labelIds": ["INBOX"],
+    "payload": {
+      "headers": [
+        {"name": "From", "value": "Example Sender <sender@example.com>"},
+        {"name": "Reply-To", "value": "Replies Desk <replies@example.com>"},
+        {"name": "Subject", "value": "Review notes"},
+        {"name": "Message-ID", "value": "<m2@example.com>"},
+        {"name": "References", "value": "<m1@example.com>"}
+      ]
+    }
+  },
+  "msg-002": {
+    "id": "msg-002",
+    "threadId": "thread-002",
+    "labelIds": ["INBOX"],
+    "payload": {
+      "headers": [
+        {"name": "From", "value": "Second Sender <second@example.com>"},
+        {"name": "Subject", "value": "RE: Agenda"},
+        {"name": "Message-ID", "value": "<m5@example.com>"}
+      ]
+    }
+  }
+}

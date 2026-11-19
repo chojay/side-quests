@@ -1,0 +1,50 @@
+{
+  "_about": "Example send policy for guard.py. Invented names and example.com addresses. Rules here count only when the policy file and its folder are owned by root and not writable by group or others, unless the hook command passes --allow-user-policy.",
+  "message": "This command can send email, and agents in this setup do not send email. Save a draft instead and tell the owner it is waiting in Drafts.",
+  "smtp_helpers": [
+    {
+      "script": "send_files.py",
+      "send_flags": ["--send"],
+      "flag_options": ["--draft"],
+      "value_options": ["--subject", "--body-file", "--to", "--cc"],
+      "to_option": "--to",
+      "cc_option": "--cc",
+      "subject_option": "--subject",
+      "default_to": "reports@example.com",
+      "rules": [
+        {
+          "name": "weekly report to the team inbox",
+          "to": "reports@example.com",
+          "cc_allow": ["", "owner@example.com"],
+          "subject_words": ["weekly-report"]
+        },
+        {
+          "name": "digest to the team inbox",
+          "to": "reports@example.com",
+          "cc_allow": ["", "owner@example.com"],
+          "subject_words": ["digest", "digests"]
+        }
+      ]
+    }
+  ],
+  "report_senders": [
+    {
+      "script": "report_mailer.py",
+      "global_value_options": ["--profile"],
+      "subcommands": {
+        "send": {
+          "always_sends": true,
+          "safe_flags": ["--dry-run"],
+          "flag_options": ["--force"],
+          "value_options": ["--tag", "--to", "--cc", "--wait"]
+        },
+        "digest": {
+          "send_flags": ["--send", "--send-only"],
+          "safe_flags": ["--dry-run"],
+          "flag_options": ["--force"],
+          "value_options": ["--tag", "--to", "--cc", "--note"]
+        }
+      }
+    }
+  ]
+}
