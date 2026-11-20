@@ -2,7 +2,7 @@
 
 ![Workflow: a text file on a Mac goes over one Bluetooth LE connection to the NIIMBOT D110, which prints the whole batch of labels back to back](workflow.png)
 
-NIIMBOT label printers ship with no macOS or PC software at all: the only supported path is the phone app, one label at a time, tapping out text on a phone keyboard. That is fine for one label and miserable for twenty. The itch here was the good-husband weekend chores that come in batches - a week of baby-food containers, a whole-pantry reorganization - where you want to type a list once and have the printer emit the whole stack.
+NIIMBOT label printers ship with no macOS or PC software at all: the only supported path is the phone app, one label at a time, tapping out text on a phone keyboard. That is fine for one label and miserable for twenty. The itch here was the weekend chores that come in batches - a week of food containers, a whole-pantry reorganization - where you want to type a list once and have the printer emit the whole stack.
 
 This is a small command-line tool that does exactly that from a Mac: feed it a text file (one label per line, `--5` for five copies), and it renders, previews, and prints the entire batch over a single Bluetooth LE connection.
 
