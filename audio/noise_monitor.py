@@ -3,7 +3,7 @@
 
 Months of construction next door meant one question kept coming up: how loud,
 how often, and inside or outside working hours? This tool answers it with
-data. It takes a folder of home-camera clips (video or audio), extracts the
+data. It takes a folder of camera clips (video or audio), extracts the
 audio track, and produces:
 
   - a windowed RMS level timeline (dBFS) per clip

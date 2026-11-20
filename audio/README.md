@@ -1,13 +1,12 @@
 # Construction-Noise Monitor
 
-Months of construction next door, a napping infant, and one recurring
-question: how loud, how often, and inside or outside working hours? Opinions
-were plentiful; data was not. This tool turns home-camera clips into a noise
-report: level timelines, detected noise events, spectrograms, and an
-hour-bucketed summary that flags loud minutes outside a permitted-hours
-window.
+Months of construction next door and one recurring question: how loud, how
+often, and inside or outside working hours? Opinions were plentiful; data was
+not. This tool turns camera clips into a noise report: level timelines,
+detected noise events, spectrograms, and an hour-bucketed summary that flags
+loud minutes outside a permitted-hours window.
 
-![Workflow: home-camera clips go through ffmpeg audio extraction into a fully local numpy analysis producing a dBFS timeline with events and spectrograms, ending in an hour-bucketed report of loud minutes vs permitted hours](workflow.png)
+![Workflow: camera clips go through ffmpeg audio extraction into a fully local numpy analysis producing a dBFS timeline with events and spectrograms, ending in an hour-bucketed report of loud minutes vs permitted hours](workflow-v2.png)
 
 ## Pipeline
 
