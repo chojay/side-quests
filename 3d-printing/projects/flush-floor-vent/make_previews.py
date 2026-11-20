@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render PNG previews (matplotlib, orthographic-ish) for the nursery vent."""
+"""Render PNG previews (matplotlib, orthographic-ish) for the flush floor vent."""
 import numpy as np, trimesh, matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -44,7 +44,7 @@ for i, (m, t) in enumerate([(f, 'FITTES-style - 10 lengthwise 5 mm slots'),
     ax = fig.add_subplot(2, 1, i+1, projection='3d')
     draw(ax, m, elev=90, azim=-90, zoom=1.35)
     ax.set_title(t, fontsize=12)
-fig.suptitle("Nursery flush drop-in vent - 350 × 147 mm opening (one-piece, PETG)",
+fig.suptitle("Flush drop-in vent - 350 × 147 mm opening (one-piece, PETG)",
              fontsize=13, y=0.99)
 fig.tight_layout(); fig.savefig('preview_comparison_top.png', bbox_inches='tight',
                                 facecolor='white')
@@ -67,7 +67,7 @@ fig_single(f, 35, -35, 'preview_closeup_edge.png',
            zoom=4.2, center=[150, 75, -3])
 
 # 5) print orientation check (playbook rule 7): what touches the bed
-fp = trimesh.load('nursery_vent_FITTES_350x147_PRINT.stl')
+fp = trimesh.load('flush_vent_FITTES_350x147_PRINT.stl')
 fig_single(fp, 22, -60, 'preview_print_orientation.png',
            'PRINT orientation - top face down on bed; skirt+ribs grow upward (no supports)')
 

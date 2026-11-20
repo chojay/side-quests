@@ -19,7 +19,7 @@
 //          Print TOP FACE DOWN, flat, zero supports (house pattern).
 //   HOOD - low scoop over the slot, 20 mm total above floor (user cap),
 //          open room-facing side with deep vertical straightening fins,
-//          gaps <= 5 mm (child-safety house rule).
+//          gaps <= 5 mm (finger-safety rule).
 //          Print ROOF FACE DOWN, zero supports; both show faces get PEI
 //          texture. Walls drop into a locating groove in the pan; CA glue.
 // AIR DIRECTION: exits toward +Y. Install with +Y facing the open room.
@@ -63,7 +63,7 @@ hood_y1    = 96;      // open outlet face (room side)
 hood_margin_x = 4;    // hood extends past slot ends
 groove_depth = 1.2; groove_clear = 0.2;
 fin_t = 1.6;
-fin_gap = 5.0;        // CHILD SAFETY <= 5
+fin_gap = 5.0;        // FINGER SAFETY <= 5
 fin_y0 = 60;          // fins run fin_y0 .. hood_y1 (deep = straight throw)
 fin_z_clear = 0.3;    // fin bottom vs plate top
 hood_edge_ch = 2.0;
@@ -87,7 +87,7 @@ $fn = 48;
 
 assert(plate_L <= 350 && plate_W <= 320, "pan exceeds bed");
 assert(hood_L <= 350 && hood_D <= 320, "hood exceeds bed");
-assert(fin_gap <= 5.01, "child-safety: fin gap > 5");
+assert(fin_gap <= 5.01, "finger-safety: fin gap > 5");
 assert(skirt_depth <= ledge_depth - 2, "skirt hits the ledge");
 assert(slot_L/2 <= skirt_in_L/2 - 2 && slot_y1 <= skirt_in_W/2 - 2,
        "slot exceeds skirt interior");

@@ -1,6 +1,6 @@
 # KUMIKO-MAX - Design Log & Principles
 
-Nursery replacement for the Luxe Single, which proved too constricting in service (~45 cm², 9% of duct). Goal: **maximum airflow at a fixed child-safety opening, best structural support, one-piece 45°-tilted print on the H2D.**
+Replacement for the Luxe Single, which proved too constricting in service (~45 cm², 9% of duct). Goal: **maximum airflow at a fixed finger-safety opening, best structural support, one-piece 45°-tilted print on the H2D.**
 
 ## Final spec (v2, current)
 
@@ -14,11 +14,11 @@ Nursery replacement for the Luxe Single, which proved too constricting in servic
 | Print | pre-tilted 45° about the width axis: 266 × 171 × 266 on the bed | part exceeds 350 flat; tilt fits with margin |
 | Bar section props | S = 160 mm³, I = 1600 mm⁴ per bar | ×20 strength, ×92 stiffness vs the original 4.5 mm lattice skin |
 | Material | PETG | heat/creep + layer adhesion matters in the tilted orientation |
-| Render | `nursery_flush_vent.scad`: `RENDER_PART="kumiko" bar_w=2.4 kumiko_depth=20 full_end_lip=10` | fully parametric |
+| Render | `flush_floor_vent.scad`: `RENDER_PART="kumiko" bar_w=2.4 kumiko_depth=20 full_end_lip=10` | fully parametric |
 
 ## Design principles (the reusable part)
 
-1. **Airflow scales with total open area, not opening size.** The safety constraint fixes the maximum *gap* (5 mm, toddler finger), not the *porosity*. Many small openings can pass as much air as few large ones: porosity = gap²/(gap+bar)², so the only lever left is bar width. Thinning 3.4 → 2.4 mm took porosity 35% → 46% with zero safety change. (Same logic showed the decorative Ribbon Grille's big 10-15 mm apertures buy nothing but risk: ~35-42% of duct, same band as this lattice.)
+1. **Airflow scales with total open area, not opening size.** The safety constraint fixes the maximum *gap* (5 mm, finger-entrapment limit), not the *porosity*. Many small openings can pass as much air as few large ones: porosity = gap²/(gap+bar)², so the only lever left is bar width. Thinning 3.4 → 2.4 mm took porosity 35% → 46% with zero safety change. (Same logic showed the decorative Ribbon Grille's big 10-15 mm apertures buy nothing but risk: ~35-42% of duct, same band as this lattice.)
 
 2. **Depth is the cheapest strength there is: S ∝ h², I ∝ h³.** A lattice bar deepened 4.5 → 12 → 20 mm goes S = 8 → 58 → 160 mm³ and I = 18 → 346 → 1600 mm⁴. v2's 12→20 step alone bought ×2.8 strength and ×4.6 stiffness for ~40% more lattice plastic - and **zero outer-dimension cost**, because the skirt already made the part 20.5 tall. Rule: before adding members, ask whether existing members can simply grow into unused height.
 

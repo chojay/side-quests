@@ -58,7 +58,7 @@ check('pan fits bed 350x320', pe[0] <= 350 and pe[1] <= 320)
 check('hood fits bed', he[0] <= 350 and he[1] <= 320)
 check('skirt clears ledge', skirt_depth <= ledge_depth - 2)
 check('scoop <= 20mm above floor', plate_T + hood_h <= 20.01)
-check('child-safe fin gap <= 5', fin_gap <= 5.01)
+check('finger-safe fin gap <= 5', fin_gap <= 5.01)
 
 # ---- pan truth table (design orientation: plate top z=0) ----
 P = [

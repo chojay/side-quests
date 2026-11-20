@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the nursery vent meshes (Gotchas Playbook) and export print files.
+"""Validate the flush floor vent meshes (Gotchas Playbook) and export print files.
 
 Design orientation: top surface z=0, part extends -z, centered XY.
 Print orientation:  rotated 180deg about X (top face down), z >= 0.
@@ -122,7 +122,7 @@ print(f"Free area: fittes {fa_f:.0f} cm2 ({100*fa_f/duct:.0f}% of duct), "
 
 # ---------- export print orientation (top face down) ----------
 R = trimesh.transformations.rotation_matrix(np.pi, [1, 0, 0])
-for m, nm in [(f, 'nursery_vent_FITTES_350x147'), (k, 'nursery_vent_KUMIKO_350x147'),
+for m, nm in [(f, 'flush_vent_FITTES_350x147'), (k, 'flush_vent_KUMIKO_350x147'),
               (key, 'vent_lift_key')]:
     p = m.copy()
     if nm != 'vent_lift_key':

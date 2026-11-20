@@ -15,4 +15,4 @@ A wall-mounted sleeve for a Korean disposable-glove box (실속크린장갑, 190
 
 **Honest note:** the keyhole dimensions are sized to #8 pan-head screws from published head diameters, not measured hardware, and the 0.83 mm shank clearance is generous on purpose. The part has survived daily use; the tolerance stack was never tightened because it never needed to be.
 
-**AI-assisted build notes:** this is early, mostly clean AI-generated CAD, and it shows both sides: the geometry worked first print, but the code validates less than the later projects (no containment truth table yet, just a watertight check). Comparing this script to the nursery vent validators is a fair before/after of what the AI-assisted workflow learned in a year.
+**AI-assisted build notes:** this is early, mostly clean AI-generated CAD, and it shows both sides: the geometry worked first print, but the code validates less than the later projects (no containment truth table yet, just a watertight check). Comparing this script to the flush floor vent validators is a fair before/after of what the AI-assisted workflow learned in a year.

@@ -43,6 +43,6 @@ for style in ['fittes', 'kumiko', 'luxe']:
 R = trimesh.transformations.rotation_matrix(np.pi, [1,0,0])
 for (style, half), m in results.items():
     p = m.copy(); p.apply_transform(R); p.apply_translation(-p.bounds[0])
-    base = f'two-print/nursery_vent_{style.upper()}_half{half}_PRINT'
+    base = f'two-print/flush_vent_{style.upper()}_half{half}_PRINT'
     p.export(base + '.stl'); p.export(base + '.3mf')
 print("exported 12 files to two-print/")

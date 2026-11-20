@@ -87,5 +87,5 @@ print(f"\nFree area ~{(p1+p2+p3)*g/100:.0f} cm2 "
 
 R = trimesh.transformations.rotation_matrix(np.pi, [1,0,0])
 p = m.copy(); p.apply_transform(R); p.apply_translation(-p.bounds[0])
-p.export('nursery_vent_LUXE_350x147_PRINT.stl'); p.export('nursery_vent_LUXE_350x147_PRINT.3mf')
-print("exported nursery_vent_LUXE_350x147_PRINT.stl/.3mf", np.round(p.extents,1))
+p.export('flush_vent_LUXE_350x147_PRINT.stl'); p.export('flush_vent_LUXE_350x147_PRINT.3mf')
+print("exported flush_vent_LUXE_350x147_PRINT.stl/.3mf", np.round(p.extents,1))

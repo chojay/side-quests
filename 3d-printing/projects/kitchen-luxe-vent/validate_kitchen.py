@@ -42,7 +42,7 @@ check(f'extents {np.round(e,2)} == 334x167x26.5',
       np.allclose(e, [plate_L, plate_W, total_H], atol=0.1))
 check('fits bed 350x320', e[0] <= 350 and e[1] <= 320)
 check('lip == 17 max (wall constraint)', lip_w <= 17.0)
-check('child-safe channel <= 5', luxe_gap <= 5.01)
+check('finger-safe channel <= 5', luxe_gap <= 5.01)
 check('skirt clears end ledges (22 <= 23)', skirt_depth <= ledge_depth - 2)
 check(f'sightline atan(5/{grid_top:.0f}) = {np.degrees(np.arctan(luxe_gap/grid_top)):.1f} deg <= 15',
       np.degrees(np.arctan(luxe_gap/grid_top)) <= 15.01)

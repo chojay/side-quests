@@ -45,7 +45,7 @@ check(f'extents {np.round(e,2)} == 340x200x35',
 check('fits bed 350x320', e[0] <= 350 and e[1] <= 320)
 check('skirt clears ledge', skirt_depth <= ledge_depth - 2)
 check('height above floor == 20 cap', abs(p_H - 20) < 0.01)
-check('child-safe fin gap <= 5', fin_gap <= 5.01)
+check('finger-safe fin gap <= 5', fin_gap <= 5.01)
 check('stubs outside fin field', skirt_L/2 - skirt_wall - p_stub_len >= p_fins_span/2)
 
 kmid = p_n_fins//2

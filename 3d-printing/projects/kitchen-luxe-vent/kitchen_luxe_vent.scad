@@ -1,7 +1,7 @@
 // ============================================================
 // Kitchen LUXE flush vent - 3 nested channels, maximum-flow luxe.
-// Follows the nursery LUXE principles (nursery_flush_vent.scad):
-//   - child-safe: every opening is a 5.0 mm channel, 0.7 mm chamfered
+// Follows the flush-vent LUXE principles (flush_floor_vent.scad):
+//   - finger-safe: every opening is a 5.0 mm channel, 0.7 mm chamfered
 //   - "no visible line": NOTHING under any channel from the surface
 //     down to the deep grid at 20 mm -> sightline cuts off at
 //     atan(5/20) = 14 deg; channels read as continuous dark lines
@@ -16,7 +16,7 @@
 //   the floor -> ledge at the two ENDS only (7.5 mm each), sides sheer.
 //   One long edge near a wall: lip max 17 mm -> UNIFORM 17 mm lip,
 //   plate 334 x 167 - full perimeter lip AND fits the bed flat
-//   (the 350-opening nursery original couldn't have both).
+//   (the 350-opening original couldn't have both).
 //
 // ONE PIECE. Print TOP FACE DOWN on textured PEI, 0.2 mm, 4 walls,
 // zero supports (grid layer bridges <= ~20 mm between anchors - routine).
@@ -42,8 +42,8 @@ skirt_wall  = 2.4;
 edge_ch = 2.0; corner_r = 2.0; slot_ch = 0.7;
 
 /* [Luxe channels] */
-luxe_gap    = 5.0;    // CHILD SAFETY <= 5
-luxe_ring_w = 12.0;   // nested ring face width (nursery luxe value)
+luxe_gap    = 5.0;    // FINGER SAFETY <= 5
+luxe_ring_w = 12.0;   // nested ring face width (flush-vent luxe value)
 grid_top    = 20.0;   // deep grid top below TOP surface; sightline atan(5/20)
 spine_w     = 2.4;
 rib_t       = 2.4;
@@ -74,7 +74,7 @@ rib_span = skirt_W - skirt_wall;
 $fn = 48;
 
 assert(plate_L <= 350 && plate_W <= 320, "exceeds bed");
-assert(luxe_gap <= 5.01, "child-safety: channel > 5 mm");
+assert(luxe_gap <= 5.01, "finger-safety: channel > 5 mm");
 assert(panel_W > 40, "luxe panel too narrow - shrink ring_w or gap");
 assert(skirt_depth <= ledge_depth - 2, "skirt hits the end ledges");
 assert(luxe_FL <= skirt_in_L - 1, "luxe opening exceeds skirt interior (L)");

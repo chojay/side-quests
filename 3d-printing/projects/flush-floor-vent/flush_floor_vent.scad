@@ -1,6 +1,6 @@
 // ============================================================
-// Nursery Flush Drop-In Floor Vent - 350 x 147 mm opening
-// Fittes-inspired minimal flush register, child-safe (5 mm slots)
+// Flush Drop-In Floor Vent - 350 x 147 mm opening
+// Fittes-inspired minimal flush register, finger-safe (5 mm slots)
 // Two styles from one body: "fittes" (lengthwise slots) and
 // "kumiko" (45° diamond lattice, Japandi).
 // Drop-in: skirt registers inside the duct opening; flanges on the
@@ -35,7 +35,7 @@ edge_ch   = 2.0;     // 45° chamfer, top outer perimeter (45° = safe top-face-
 corner_r  = 1.5;     // XY corner radius of plate
 
 /* [Fittes slots] */
-slot_w  = 5.0;       // CHILD SAFETY: keep <= 5 (toddler finger ~8-10)
+slot_w  = 5.0;       // FINGER SAFETY: keep <= 5 (asserted)
 slat_w  = 8.0;
 n_slots = 10;
 slot_ch = 0.7;       // 45° chamfer on slot top edges (soft touch)
@@ -43,14 +43,14 @@ end_margin = 12.0;   // solid plate beyond slot field, each end
 
 /* [Kumiko lattice] */
 bar_w   = 3.4;       // lattice bar width
-gap_w   = 5.0;       // CHILD SAFETY: perpendicular gap between bars <= 5
+gap_w   = 5.0;       // FINGER SAFETY: perpendicular gap between bars <= 5
 // field matches fittes field for visual parity
 
 /* [Luxe frameless (parallel-openings principle, ONE PIECE): 3 nested 5mm channels] */
 // Panel + 2 rings are fused to the cross-ribs below - no separate tray.
 luxe_end_border  = 12;   // frame face beyond opening, ends
 luxe_side_border = 18;   // frame face beyond opening, sides (12 flange + 6 over opening)
-luxe_gap    = 5;         // channel width - CHILD SAFETY, same 5mm standard
+luxe_gap    = 5;         // channel width - FINGER SAFETY, same 5mm standard
 luxe_ring_w = 12;        // nested ring face width
 luxe_ch_depth = 16;      // channel downstand wall below top surface
 // Hidden understructure: NO material under any channel between the top
@@ -95,7 +95,7 @@ echo(str("plate ", plate_L, " x ", plate_W, " x ", total_H,
 // full_end_lip parts are exempt from the flat-bed check - they print tilted 45
 assert((TWO_PART ? plate_L/2 + 10 : (full_end_lip > 0 ? 0 : plate_L)) <= 350
        && plate_W <= 320, "exceeds H2D bed");
-assert(slot_w <= 5.01 && gap_w <= 5.01, "child-safety: opening > 5 mm");
+assert(slot_w <= 5.01 && gap_w <= 5.01, "finger-safety: opening > 5 mm");
 
 // ---------------- helpers ----------------
 // 45° chamfer prism along X at (y, z)
@@ -268,7 +268,7 @@ panel_L = r2_iL - 2*luxe_gap;  panel_W = r2_iW - 2*luxe_gap;      // 246.5 x 57
 // (e.g. the 10x4 bath) are valid for luxe1 but too narrow for 3 channels
 assert(RENDER_PART != "luxe" || panel_W > 40,
        "luxe panel too narrow - shrink ring_w or gap");
-assert(luxe_gap <= 5.01, "child-safety: channel > 5 mm");
+assert(luxe_gap <= 5.01, "finger-safety: channel > 5 mm");
 assert(luxe_FL <= skirt_L - 2*skirt_wall - 1, "luxe opening exceeds skirt interior (L)");
 // WIDTH was unchecked and bit us on the RMG bath variant: a lip wider than
 // luxe_side_border pushes the side channels off the skirt - they'd vent

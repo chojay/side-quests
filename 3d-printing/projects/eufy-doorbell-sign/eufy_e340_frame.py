@@ -5,9 +5,10 @@ Eufy Video Doorbell E340 - Frame + Customisable Sign  (build123d generator)
 Adapted from sebtobar's "Ring Doorbell Frame - Customisable Sign!"
 (MakerWorld model 1139309) for the Eufy E340. The original is a friction-fit
 picture frame that wraps the doorbell body, with a separate rounded plaque ABOVE
-it carrying two lines of contrasting-colour text ("PLEASE DON'T RING, BABY
-SLEEPING"). One commenter already remixed it for a Wyze doorbell by resizing the
-opening, which is exactly the adaptation done here.
+it carrying two lines of contrasting-colour text. One commenter already remixed
+it for a Wyze doorbell by resizing the opening, which is exactly the adaptation
+done here. The message is configurable: set LINE1 / LINE2 below; the font size
+auto-fits the wider line to the plaque.
 
 === MEASURED / SOURCE DIMENSIONS (record verbatim; do not re-research) ===
 Eufy E340 body (eufy official spec, support.nz.eufy.com art. 154000242527):
@@ -76,8 +77,9 @@ SIGN_BOTTOM = FRAME_OUTER_H / 2 - OVERLAP
 SIGN_CY = SIGN_BOTTOM + SIGN_H / 2
 
 # ─── TEXT + OUTLINE (raised, contrasting colour) ───────────────
+# Two-line message (edit to taste; fit_font_size() scales to the wider line)
 LINE1 = "PLEASE DON'T RING,"
-LINE2 = "BABY SLEEPING"
+LINE2 = "PLEASE KNOCK"
 FONT = "Helvetica"
 FONT_STYLE = FontStyle.BOLD
 RAISE = 0.8                       # mm  raised height of text + outline (~4 layers @0.2)

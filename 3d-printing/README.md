@@ -18,8 +18,8 @@ I did not set out to build a CAD portfolio. Each part exists because something i
 ## Why code instead of GUI CAD
 
 - **Every dimension is a named constant; everything else derives.** Scaling a 6-bowl dispenser to 8 bowls was one line. Re-fitting a caddy after caliper measurements is editing a table and re-running.
-- **Constraints become asserts.** Printer bed limits, a child-safety maximum opening, and motion-envelope clearances live as `assert` statements, so a bad future edit fails at build time instead of at install time.
-- **Validation is a program.** Watertight checks, point-containment truth tables (12-17 probes per part), envelope sweeps, and print-orientation renders run on every version. The nursery vent's "invisible understructure" is verified by containment sweeps (1,476 points on the printed v2, 528 on the deeper v3 grid).
+- **Constraints become asserts.** Printer bed limits, a finger-safety maximum opening, and motion-envelope clearances live as `assert` statements, so a bad future edit fails at build time instead of at install time.
+- **Validation is a program.** Watertight checks, point-containment truth tables (12-17 probes per part), envelope sweeps, and print-orientation renders run on every version. The flush floor vent's "invisible understructure" is verified by containment sweeps (1,476 points on the printed v2, 528 on the deeper v3 grid).
 - **Iteration is versioned.** `rice_tower_v1.py` through `v6.py` is a readable design history in the workshop; the repo ships v1 and the printed v6 as the endpoints, with the pivots told in prose.
 
 ## Start with the playbooks
@@ -34,14 +34,14 @@ The two documents in [playbooks/](playbooks/) are the distilled output of the wh
 | Project | One line |
 |---|---|
 | [microwave-rice-tower](projects/microwave-rice-tower/) | Rice-bowl gravity dispenser; 6 versions, gothic-arch mouth from the 45-degree rule, 23% filament cut last |
-| [nursery-flush-vent](projects/nursery-flush-vent/) | Child-safe flush floor register; <= 5 mm openings by assert, asymmetric flange to fit the bed, hidden understructure with sightline math |
+| [flush-floor-vent](projects/flush-floor-vent/) | Finger-safe flush floor register; <= 5 mm openings by assert, asymmetric flange to fit the bed, hidden understructure with sightline math |
 | [toekick-vent-slider](projects/toekick-vent-slider/) | Print-in-place sliding damper register; slider captured in rails, 3 mm travel phase-shifts slits from closed to ~43% open, collision-swept across the travel |
-| [hall-bath-vent](projects/hall-bath-vent/) | The nursery vent re-parametrized for a 10 x 4 in wet-room duct; zero new CAD lines - eight variants as `-D` override sets on the shipped generator, with a thickness study in an embedded comparison viewer |
+| [hall-bath-vent](projects/hall-bath-vent/) | The flush floor vent re-parametrized for a 10 x 4 in wet-room duct; zero new CAD lines - eight variants as `-D` override sets on the shipped generator, with a thickness study in an embedded comparison viewer |
 | [hallway-louver-vent](projects/hallway-louver-vent/) | 90-degree diverter for a register dead-ended under a cabinet; free-area arithmetic before printing, one-piece 20 mm plinth with zero supports and zero glue |
 | [kitchen-luxe-vent](projects/kitchen-luxe-vent/) | Frameless language pushed to maximum airflow: three nested 5 mm channels and hidden magnet pockets, the pivot taken after the 9% free-area lesson |
 | [honeywell-locking-nut](projects/honeywell-locking-nut/) | Multi-start thread replacement part; 8-ring overnight test matrix bracketing pitch/profile/depth/starts |
 | [level-lock-keypad-cover](projects/level-lock-keypad-cover/) | Rain awning fitting a Level Lock keypad; 4 architectures to a 15-degree awning 40% lighter, a phantom-backplate bug settled by 3-tool mesh forensics |
-| [eufy-doorbell-sign](projects/eufy-doorbell-sign/) | "Baby sleeping" doorbell sign; 4 mounting architectures, hand-rolled dual-color 3MF writer |
+| [eufy-doorbell-sign](projects/eufy-doorbell-sign/) | "Please don't ring" doorbell sign frame with configurable text; 4 mounting architectures, hand-rolled dual-color 3MF writer |
 | [coffee-scale-holder](projects/coffee-scale-holder/) | Under-beam garage docks; 4 architectures in one session, designed around an undocumented port location |
 | [glove-dispenser](projects/glove-dispenser/) | The original sleeve + scoop + keyhole design DNA the later holders inherit |
 | [kumiko-vent-covers](projects/kumiko-vent-covers/) | Asanoha kumiko lattice vent cover split for the bed with dovetail and tab-slot joints |
@@ -86,7 +86,7 @@ The stable division of labor: the AI writes geometry and checks, the human owns 
 
 One project adapts a community concept and says so in its README (sebtobar's Ring doorbell sign idea; the geometry here was authored independently). Third-party STLs, fonts, and vendor photos are not redistributed. Designs that would be derivative of protected commercial products or of third-party models with restrictive or unverified licenses are deliberately not published, even where a private version exists.
 
-A concrete example of that last rule: the most-liked sign on our front door is a text remix of Ahrar Monsur's ["Peeking Cat" No Soliciting Sign](https://makerworld.com/en/models/2626138-peeking-cat-no-soliciting-sign) (text swapped in the slicer to cover flyers and surveys too). It is not in this repo, in mesh or image form, because the model's MakerWorld Exclusive License permits derivatives only on MakerWorld itself. Licenses get checked before publication, not after; the remix lives on the door, not in git.
+A concrete example of that last rule: the most-liked sign on my front door is a text remix of Ahrar Monsur's ["Peeking Cat" No Soliciting Sign](https://makerworld.com/en/models/2626138-peeking-cat-no-soliciting-sign) (text swapped in the slicer to cover flyers and surveys too). It is not in this repo, in mesh or image form, because the model's MakerWorld Exclusive License permits derivatives only on MakerWorld itself. Licenses get checked before publication, not after; the remix lives on the door, not in git.
 
 The remix workflow itself is generic and worth having, since no protected geometry is involved in describing it:
 

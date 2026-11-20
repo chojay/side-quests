@@ -60,7 +60,8 @@ SIGN_BOT = Yt
 SIGN_CY = SIGN_BOT + SIGN_H / 2
 
 # ─── TEXT ──────────────────────────────────────────────────────
-LINE1, LINE2 = "PLEASE DON'T RING,", "BABY SLEEPING"
+# Two-line message (edit to taste; fit_font_size() scales to the wider line)
+LINE1, LINE2 = "PLEASE DON'T RING,", "PLEASE KNOCK"
 FONT, FONT_STYLE = "Helvetica", FontStyle.BOLD  # any installed sans works; pick one licensed on your system
 TEXT_MARGIN, LINE_GAP, MAX_FONT = 3.0, 3.0, 9.0
 OUTLINE_INSET, OUTLINE_W = 3.5, 1.4

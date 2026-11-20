@@ -1,7 +1,7 @@
 #!/bin/bash
 # Regenerate all eight hall-bath vent variants from the shared generator.
 # There is no bath fork of the CAD: every variant is a -D override set on
-# ../nursery-flush-vent/nursery_flush_vent.scad (RENDER_PART="luxe1").
+# ../flush-floor-vent/flush_floor_vent.scad (RENDER_PART="luxe1").
 #
 # Each override set below was reconstructed from the originally exported
 # meshes and re-verified against them with OpenSCAD 2021.01 + trimesh:
@@ -16,7 +16,7 @@
 # body extending -z). Print top-face-down on textured PEI, PETG.
 set -e
 cd "$(dirname "$0")"
-SCAD="../nursery-flush-vent/nursery_flush_vent.scad"
+SCAD="../flush-floor-vent/flush_floor_vent.scad"
 
 gen () { out="$1"; shift; openscad -o "$out" -D 'RENDER_PART="luxe1"' "$@" "$SCAD"; echo "wrote $out"; }
 

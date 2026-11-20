@@ -1,6 +1,6 @@
-# Nursery Flush Drop-In Floor Vent - Design Notes
+# Flush Drop-In Floor Vent - Design Notes
 
-Fittes-inspired flush, minimalist floor register for a nursery, replacing a stamped register whose openings were a finger-entrapment risk for small children. Three visual styles built on one shared body: **Fittes** (lengthwise slots), **Kumiko** (Japandi 45° diamond lattice), and **Luxe frameless** (nested parallel channels, after the Fittes wall-vent look). Original design - inspired by the Fittes Flush Vent and the VentForge parametric concept, no third-party files used (VentForge download is login-gated on MakerWorld; same license lesson as the [toe-kick vent](../toekick-vent-slider/)).
+Fittes-inspired flush, minimalist floor register, replacing a stamped register whose openings were a finger-entrapment risk. Three visual styles built on one shared body: **Fittes** (lengthwise slots), **Kumiko** (Japandi 45° diamond lattice), and **Luxe frameless** (nested parallel channels, after the Fittes wall-vent look). Original design - inspired by the Fittes Flush Vent and the VentForge parametric concept, no third-party files used (VentForge download is login-gated on MakerWorld; same license lesson as the [toe-kick vent](../toekick-vent-slider/)).
 
 ## Measurements (user-supplied)
 
@@ -10,7 +10,7 @@ Fittes-inspired flush, minimalist floor register for a nursery, replacing a stam
 ## Core design principles
 
 1. **Drop-in retention, no fasteners.** A 16 mm skirt (2.4 mm walls) drops inside the opening and registers the cover laterally; gravity holds it down. Skirt clearance 0.75 mm/end, 1.0 mm/side; 1.2 mm lead-in chamfer on the skirt's bottom edge for easy insertion.
-2. **Child safety drives every opening: ≤ 5 mm.** Slots are 5.0 mm, kumiko gaps 5.0 mm perpendicular - well under toddler finger size (~8-10 mm), nothing to catch. Slot top edges get 0.7 mm chamfers so they're soft to the touch. Enforced with an `assert` in the .scad.
+2. **Finger safety drives every opening: ≤ 5 mm.** Slots are 5.0 mm, kumiko gaps 5.0 mm perpendicular - well below fingertip width, nothing to catch. Slot top edges get 0.7 mm chamfers so they're soft to the touch. Enforced with an `assert` in the .scad.
 3. **One-piece on the H2D via asymmetric flange.** A flange on all four sides needs ~374 mm - over the 350 mm bed. Instead: **12 mm flanges on the two LONG edges only** (they run the full length, so they alone carry all load), ends sit flush *inside* the opening with a ~0.75 mm hairline gap. Total part: **348.5 × 171 × 20.5 mm** - fits flat.
 4. **Furniture-proof:** 4.5 mm top plate + 7 hidden cross-ribs (2.4 × 9 mm, fused into the skirt walls) every ~40.6 mm. A single 8 mm slat between ribs takes ~19 kg point load at PETG flexural strength before yield, and real loads spread across several slats + ribs. Kumiko's lattice is additionally self-bracing.
 5. **Print orientation as design input:** printed **top face down** on textured PEI → the visible face gets the uniform plate texture (a lesson from the [toe-kick vent](../toekick-vent-slider/)). Consequence: every top-side decorative edge must be a **45° chamfer**, never a shallow bevel (see mistake #3). Everything else (skirt, ribs, magnet bosses) grows upward - zero supports.
@@ -31,15 +31,15 @@ Fittes-inspired flush, minimalist floor register for a nursery, replacing a stam
 
 **Luxe single v3 - lowered supports + added structure.** I moved the support connections from 14.5 mm down to a grid whose top is **24 mm below the surface** (deeper 24 mm skirt, total height 28.5): sightline cutoff tightens from ~19° to **atan(5/24) ≈ 12°** - you'd have to stand directly over the channel and look straight down to catch a crossing, and at that depth it's in near-total shadow. The trade of "out of the visible path → add more structure" is taken literally: instead of 9 cross-ribs there is now a **bidirectional grid** - 13 cross members (7 main + 3 mid-span pairs + loop-end pair) × 5 longitudinal stringers, each stringer aligned exactly under a spine wall so every grid line is supported for printing and every spine lands on a grid line for stiffness. Verified: 528-point sweep, channel projection empty from the surface to −23.5. Install note: the skirt now reaches ~24 mm below the floor surface - check the duct for a damper/obstruction at that depth; `l1_skirt_depth` scales it down if needed.
 
-**Luxe single airflow warning:** one 5 mm loop is a quarter of the slot version's free area. Expect higher outlet velocity and possibly audible flow with the heater on full; fine if this register can afford to be partly decorative (door gap / other supply paths), risky if it's the room's only supply. The 3-channel Luxe is the airflow-safe frameless choice. If it whistles, `luxe_gap` can go to 6-7 later (once the child is older) - that alone takes single-channel to ~54-63 cm².
+**Luxe single airflow warning:** one 5 mm loop is a quarter of the slot version's free area. Expect higher outlet velocity and possibly audible flow with the heater on full; fine if this register can afford to be partly decorative (door gap / other supply paths), risky if it's the room's only supply. The 3-channel Luxe is the airflow-safe frameless choice. If it whistles, `luxe_gap` can go to 6-7 where the 5 mm limit does not apply - that alone takes single-channel to ~54-63 cm².
 
 ### Luxe frameless - how the mechanism translated
 
-The real Fittes frameless vent is a **floating tray** held in a recessed steel frame, with air exiting around its perimeter. I kept only the *parallel-openings principle*: instead of a removable tray (which a toddler could pry out, and which needed pins + wider 9-12 mm gaps), the panel and rings are **fused into one printed piece**, channels held at the same child-safe 5 mm. Three nested channels recover the airflow a single 5 mm perimeter gap would lose (1 channel ≈ 44 cm² → 3 channels ≈ 114 cm²).
+The real Fittes frameless vent is a **floating tray** held in a recessed steel frame, with air exiting around its perimeter. I kept only the *parallel-openings principle*: instead of a removable tray (which needs locating pins and wider 9-12 mm gaps, above the 5 mm limit), the panel and rings are **fused into one printed piece**, channels held at the same finger-safe 5 mm. Three nested channels recover the airflow a single 5 mm perimeter gap would lose (1 channel ≈ 44 cm² → 3 channels ≈ 114 cm²).
 
 **Hidden understructure (v2).** v1 ran the standard cross-ribs at the plate underside - their tops sat 4.5 mm down inside the channels, visible as bridges from almost any angle (`atan(5/4.5)` ≈ 48° sightline cone). I made the support invisible: the zone directly under every channel is kept **completely empty from the surface down to 14.5 mm**. Each island carries its loads through **spine walls hidden under its own solid face** (loops under the two ring-band centerlines - their end segments landing exactly on the extra ribs - plus 3 longitudinal spines under the panel), which guide down to **deep cross-ribs whose tops are 14.5 mm below the surface**. Sightline into a 5 mm channel is cut off beyond `atan(5/14.5)` ≈ 19° from vertical, so the channels read as continuous dark shadow lines, like the powder-coated original. Verified by a 1,476-point containment sweep along every channel projection at z = −6/−10/−14: zero obstructions. Print note: in the flipped print orientation the deep ribs' first layer bridges up to ~23 mm between spine walls - routine PETG bridging, and the (slightly saggy) bridge underside is the face 14.5 mm down that nobody can see.
 
-Airflow note: both are more restrictive than a stamped register (typical ~50-60%). Fine for a bedroom supply; if the room runs cold or the register whistles, bump `slot_w`→pattern regenerates (but keep ≤ 5 mm while the child is small), or drop `slat_w` to 7 / `bar_w` to 3.0.
+Airflow note: both are more restrictive than a stamped register (typical ~50-60%). Fine for a room supply; if the room runs cold or the register whistles, bump `slot_w`→pattern regenerates (but keep ≤ 5 mm to stay finger-safe), or drop `slat_w` to 7 / `bar_w` to 3.0.
 
 ## Two-part joinery v2 - four-level interlock (all six two-part variants)
 
@@ -80,7 +80,7 @@ Trade-off summary: one-piece = no seam, flush ends, riskier print; two-part = sy
 2. **Z-45° tilt rejected.** Tilting the plate 45° shortens the footprint (374→~264) but puts stair-stepped layer lines across the one surface everyone sees, needs a support forest, and weakens the slats along layer planes. Surface-critical flat parts want to lie flat.
 3. **Top-face-down inverts overhang logic for TOP features.** The first flange edge idea was a shallow ~18° trip-safe ramp - printed top-down that becomes a ~72°-from-vertical overhang right at the bed and will droop. Fixed: 2 mm 45° chamfer (and 0.7 mm 45° slot chamfers). When the show face is the first layer, *every* top-side bevel must obey the 45° rule in the flipped orientation.
 4. **Validation probes must be derived, not eyeballed.** Two "failures" were probe bugs, not geometry: (a) probed "empty duct" at x=0 - but rib #4 sits *exactly* at x=0 (`i·field_L/8`, i=4); (b) probed the magnet "boss" at r=0, which is the pocket cavity - the boss is a ring. Fix: compute probe coordinates from the same parameter formulas as the geometry (`rib_x(i)`, `slot_yc(i)`, boss at `r ≈ (mag_d+boss_d)/4`). A failing truth table doesn't always mean bad geometry - but check the geometry first before blaming the probe.
-5. **Removal vs. child-safety conflict.** Safe 5 mm openings are too small for adult fingers too - the cover would be sealed in. Solved twice over: rib-hooking lift key (needs the straight slot corridor) + magnet pockets with 1.2 mm ceilings (style-agnostic). Don't ship a drop-in cover without an extraction plan.
+5. **Removal vs. finger-safety conflict.** Safe 5 mm openings are too small for any finger to grip and lift the cover - it would be sealed in. Solved twice over: rib-hooking lift key (needs the straight slot corridor) + magnet pockets with 1.2 mm ceilings (style-agnostic). Don't ship a drop-in cover without an extraction plan.
 6. **Fresh-sandbox deps:** `trimesh.contains` needs `rtree` (not pulled in by trimesh). `pip install --break-system-packages manifold3d trimesh numpy matplotlib networkx rtree`. `networkx` still required for 3MF export.
 7. **Ribs read as "bridges" through slots - intentional.** Rib tops sit 4.5 mm below the surface, visible only looking straight down, same as commercial registers' hidden webs. In print orientation each rib bridges the 5 mm slot gaps - trivial bridging, no supports.
 8. **Kumiko needed thinner bars to keep breathing.** At the safety-fixed 5 mm gap, 4 mm bars gave ~31% field porosity; 3.4 mm bars give ~35.4% (→ ~140 cm²). Bars are 4.5 mm deep and triangulated, so thinner is fine structurally.
@@ -108,16 +108,16 @@ Trade-off summary: one-piece = no seam, flush ends, riskier print; two-part = sy
 
 ## Files
 
-Only the `.scad`, the Python validation/preview scripts, and the PNG previews are checked in; the STL/3MF print artifacts below are regenerated, not stored. Render each style with `openscad -o <style>_design.stl -D 'RENDER_PART="<style>"' nursery_flush_vent.scad` (producing the `<style>_design.stl` inputs the validate scripts expect), then run `validate_and_export.py` to emit the pre-rotated `*_PRINT.stl/.3mf` files.
+Only the `.scad`, the Python validation/preview scripts, and the PNG previews are checked in; the STL/3MF print artifacts below are regenerated, not stored. Render each style with `openscad -o <style>_design.stl -D 'RENDER_PART="<style>"' flush_floor_vent.scad` (producing the `<style>_design.stl` inputs the validate scripts expect), then run `validate_and_export.py` to emit the pre-rotated `*_PRINT.stl/.3mf` files.
 
 | File | What |
 |---|---|
-| `nursery_flush_vent.scad` | Parametric source of truth (`RENDER_PART` = `fittes`/`kumiko`/`luxe`/`liftkey`; `PART` = `full`/`A`/`B`) |
-| `nursery_vent_FITTES_350x147_PRINT.stl/.3mf` | One-piece, print-ready, pre-rotated |
-| `nursery_vent_KUMIKO_350x147_PRINT.stl/.3mf` | One-piece, print-ready, pre-rotated |
-| `nursery_vent_LUXE_350x147_PRINT.stl/.3mf` | One-piece (3-channel), print-ready, pre-rotated |
-| `nursery_vent_LUXE_SINGLE_350x147_PRINT.stl/.3mf` | One-piece (single channel), print-ready |
-| `two-print/nursery_vent_{STYLE}_half{A,B}_PRINT.stl/.3mf` | Two-part versions, all 4 styles (16 files) |
+| `flush_floor_vent.scad` | Parametric source of truth (`RENDER_PART` = `fittes`/`kumiko`/`luxe`/`liftkey`; `PART` = `full`/`A`/`B`) |
+| `flush_vent_FITTES_350x147_PRINT.stl/.3mf` | One-piece, print-ready, pre-rotated |
+| `flush_vent_KUMIKO_350x147_PRINT.stl/.3mf` | One-piece, print-ready, pre-rotated |
+| `flush_vent_LUXE_350x147_PRINT.stl/.3mf` | One-piece (3-channel), print-ready, pre-rotated |
+| `flush_vent_LUXE_SINGLE_350x147_PRINT.stl/.3mf` | One-piece (single channel), print-ready |
+| `two-print/flush_vent_{STYLE}_half{A,B}_PRINT.stl/.3mf` | Two-part versions, all 4 styles (16 files) |
 | `vent_lift_key_PRINT.stl/.3mf` | Removal tool, 7 mm foot - hooks under fittes cross-ribs |
 | `vent_lift_key_LUXE_PRINT.stl/.3mf` | Removal tool, 4.2 mm foot - hooks under a luxe panel/ring edge (rib-hooking can't reach the deep luxe structure; magnets/suction also work) |
 | `validate_and_export.py`, `validate_luxe.py`, `validate_halves.py` | Truth-table validation + print-orientation export |

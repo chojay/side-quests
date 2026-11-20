@@ -34,7 +34,7 @@ print(f"payload: raw {len(blob)//1024} KB -> gzip {len(gz)//1024} KB -> b64 {len
 
 html = """<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
-<title>Nursery Flush Vent - 350×147 (3 styles)</title>
+<title>Flush Floor Vent - 350×147 (3 styles)</title>
 <style>
  body{margin:0;font-family:-apple-system,'Segoe UI',sans-serif;background:#1b1d21;color:#eee;overflow:hidden}
  #bar{position:fixed;top:0;left:0;right:0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;
@@ -47,7 +47,7 @@ html = """<!DOCTYPE html>
  #err{position:fixed;top:40%;left:0;right:0;text-align:center;color:#e88;font-size:14px;display:none}
  canvas{display:block}
 </style></head><body>
-<div id="bar"><b>Nursery flush drop-in vent</b>
+<div id="bar"><b>Flush drop-in vent</b>
  <button id="bF" class="on">Fittes slots</button>
  <button id="bK">Kumiko lattice</button>
  <button id="bL">Luxe 3-channel</button>
@@ -56,7 +56,7 @@ html = """<!DOCTYPE html>
  <button id="bFloor" class="on">show floor</button>
 </div>
 <div id="info">349 × 171 × 20.5&nbsp;mm one-piece (two-part versions in two-print/) · PETG ·
- 5&nbsp;mm child-safe openings · drag = orbit, wheel = zoom, right-drag = pan</div>
+ 5&nbsp;mm finger-safe openings · drag = orbit, wheel = zoom, right-drag = pan</div>
 <div id="err"></div>
 <script type="importmap">{"imports":{
  "three":"https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.module.min.js"}}
