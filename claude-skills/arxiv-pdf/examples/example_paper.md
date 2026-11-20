@@ -14,7 +14,7 @@ abstract: |
   once, trusted, and wrong. We describe a code-as-CAD workflow in which every
   part is a parametric program, every physical constraint is an executable
   assertion, and every exported mesh passes a validation battery before a
-  slicer ever sees it. Constraints such as printer build volume, child-safety
+  slicer ever sees it. Constraints such as printer build volume, finger-safety
   opening limits, and motion-envelope clearances are encoded as asserts that
   fail at build time rather than at install time. We illustrate the workflow
   with dimension-sourcing rules, a containment-probe validation scheme, and a
@@ -46,7 +46,7 @@ $$
 $$
 
 where $B$ is the printable bed dimension and $m$ is a margin reserved for
-brims and skirts. A child-safety constraint on opening width $g$ is simply
+brims and skirts. A finger-safety constraint on opening width $g$ is simply
 $g \le 5\ \text{mm}$, asserted over every generated aperture. A violated
 constraint fails the build loudly; a printed part cannot violate it quietly.
 
